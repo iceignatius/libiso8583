@@ -20,7 +20,7 @@ void iso8583_init_clone(iso8583_t *obj, const iso8583_t *src)
      *        construct object and clone values from the other object.
      *
      * @param obj Object instance.
-     * @param src The source object to be clone.
+     * @param src The source object to be cloned.
      */
 #warning Not finished!
 }
@@ -47,6 +47,28 @@ void iso8583_deinit(iso8583_t *obj)
      * @param obj Object instance.
      */
 #warning Not finished!
+}
+//------------------------------------------------------------------------------
+void iso8583_clone(iso8583_t *obj, const iso8583_t *src)
+{
+    /**
+     * @memberof iso8583_t
+     * @brief Clone values from another object.
+     *
+     * @param obj Object instance.
+     * @param src The source object to be cloned.
+     */
+}
+//------------------------------------------------------------------------------
+void iso8583_movefrom(iso8583_t *obj, iso8583_t *src)
+{
+    /**
+     * @memberof iso8583_t
+     * @brief Move values from another object.
+     *
+     * @param obj Object instance.
+     * @param src The source object to be moved from.
+     */
 }
 //------------------------------------------------------------------------------
 int iso8583_encode(const iso8583_t *obj, void *buf, size_t size, int flags)

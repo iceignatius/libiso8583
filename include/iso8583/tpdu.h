@@ -46,4 +46,12 @@ void iso8583_tpdu_set_src (iso8583_tpdu_t *obj, unsigned src);
 }  // extern "C"
 #endif
 
+#ifdef __cplusplus
+/// C++ wrapper.
+namespace ISO8583
+{
+
+}  // namespace ISO8583
+#endif  // __cplusplus
+
 #endif

@@ -20,7 +20,7 @@ void iso8583_fields_init_clone(iso8583_fields_t *obj, const iso8583_fields_t *sr
      *        construct object and clone values from the other object.
      *
      * @param obj Object instance.
-     * @param src The source object to be clone.
+     * @param src The source object to be cloned.
      */
 #warning Not finished!
 }
@@ -47,6 +47,28 @@ void iso8583_fields_deinit(iso8583_fields_t *obj)
      * @param obj Object instance.
      */
 #warning Not finished!
+}
+//------------------------------------------------------------------------------
+void iso8583_fields_clone(iso8583_fields_t *obj, const iso8583_fields_t *src)
+{
+    /**
+     * @memberof iso8583_fields_t
+     * @brief Clone values from another object.
+     *
+     * @param obj Object instance.
+     * @param src The source object to be cloned.
+     */
+}
+//------------------------------------------------------------------------------
+void iso8583_fields_movefrom(iso8583_fields_t *obj, iso8583_fields_t *src)
+{
+    /**
+     * @memberof iso8583_fields_t
+     * @brief Move values from another object.
+     *
+     * @param obj Object instance.
+     * @param src The source object to be moved from.
+     */
 }
 //------------------------------------------------------------------------------
 int iso8583_fields_encode(const iso8583_fields_t *obj, void *buf, size_t size, int flags)
@@ -97,7 +119,7 @@ unsigned iso8583_fields_get_count(const iso8583_fields_t *obj)
 #warning Not finished!
 }
 //------------------------------------------------------------------------------
-iso8583_fitem_t* iso8583_fields_get_item(iso8583_fields_t *obj, unsigned id)
+const iso8583_fitem_t* iso8583_fields_get_item(const iso8583_fields_t *obj, unsigned id)
 {
     /**
      * @memberof iso8583_fields_t
@@ -110,7 +132,7 @@ iso8583_fitem_t* iso8583_fields_get_item(iso8583_fields_t *obj, unsigned id)
 #warning Not finished!
 }
 //------------------------------------------------------------------------------
-iso8583_fitem_t* iso8583_fields_get_first(iso8583_fields_t *obj)
+const iso8583_fitem_t* iso8583_fields_get_first(const iso8583_fields_t *obj)
 {
     /**
      * @memberof iso8583_fields_t
@@ -122,7 +144,7 @@ iso8583_fitem_t* iso8583_fields_get_first(iso8583_fields_t *obj)
 #warning Not finished!
 }
 //------------------------------------------------------------------------------
-iso8583_fitem_t* iso8583_fields_get_next(iso8583_fields_t *obj, const iso8583_fitem_t *prev)
+const iso8583_fitem_t* iso8583_fields_get_next(const iso8583_fields_t *obj, const iso8583_fitem_t *prev)
 {
     /**
      * @memberof iso8583_fields_t

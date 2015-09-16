@@ -36,6 +36,9 @@ void iso8583_init_clone(iso8583_t *obj, const iso8583_t *src);
 void iso8583_init_move (iso8583_t *obj, iso8583_t *src);
 void iso8583_deinit    (iso8583_t *obj);
 
+void iso8583_clone   (iso8583_t *obj, const iso8583_t *src);
+void iso8583_movefrom(iso8583_t *obj, iso8583_t *src);
+
 int iso8583_encode(const iso8583_t *obj, void *buf, size_t size, int flags);
 int iso8583_decode(      iso8583_t *obj, const void *data, size_t size, int flags);
 
@@ -72,5 +75,13 @@ const iso8583_fields_t* iso8583_get_cfields(const iso8583_t *obj)
 #ifdef __cplusplus
 }  // extern "C"
 #endif
+
+#ifdef __cplusplus
+/// C++ wrapper.
+namespace ISO8583
+{
+
+}  // namespace ISO8583
+#endif  // __cplusplus
 
 #endif

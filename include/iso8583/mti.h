@@ -91,4 +91,31 @@ int iso8583_mti_set_origin  (int mti, int ori);
 }  // extern "C"
 #endif
 
+#ifdef __cplusplus
+/// C++ wrapper.
+namespace ISO8583
+{
+/// C++ wrapper.
+namespace mti
+{
+
+inline int Make(int ver, int cla, int fun, int ori) { return iso8583_mti_make(ver, cla, fun, ori); }  ///< @see ::iso8583_mti_make
+
+inline int Encode(int  mti, void *buf, size_t size, int flags)        { return iso8583_mti_encode(mti, buf, size, flags); }    ///< @see ::iso8583_mti_encode
+inline int Decode(int &mti, const void *data, size_t size, int flags) { return iso8583_mti_decode(&mti, data, size, flags); }  ///< @see ::iso8583_mti_decode
+
+inline int GetVersion (int mti) { return iso8583_mti_get_version (mti); }  ///< @see ::iso8583_mti_get_version
+inline int GetClass   (int mti) { return iso8583_mti_get_class   (mti); }  ///< @see ::iso8583_mti_get_class
+inline int GetFunction(int mti) { return iso8583_mti_get_function(mti); }  ///< @see ::iso8583_mti_get_function
+inline int GetOrigin  (int mti) { return iso8583_mti_get_origin  (mti); }  ///< @see ::iso8583_mti_get_origin
+
+inline int SetVersion (int mti, int ver) { return iso8583_mti_set_version (mti, ver); }  ///< @see ::iso8583_mti_set_version
+inline int SetClass   (int mti, int cla) { return iso8583_mti_set_class   (mti, cla); }  ///< @see ::iso8583_mti_set_class
+inline int SetFunction(int mti, int fun) { return iso8583_mti_set_function(mti, fun); }  ///< @see ::iso8583_mti_set_function
+inline int SetOrigin  (int mti, int ori) { return iso8583_mti_set_origin  (mti, ori); }  ///< @see ::iso8583_mti_set_origin
+
+}  // namespace mti
+}  // namespace ISO8583
+#endif  // __cplusplus
+
 #endif

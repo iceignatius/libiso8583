@@ -20,7 +20,7 @@ void iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
      *        construct object and clone values from the other object.
      *
      * @param obj Object instance.
-     * @param src The source object to be clone.
+     * @param src The source object to be cloned.
      */
 #warning Not finished!
 }
@@ -47,6 +47,28 @@ void iso8583_fitem_deinit(iso8583_fitem_t *obj)
      * @param obj Object instance.
      */
 #warning Not finished!
+}
+//------------------------------------------------------------------------------
+void iso8583_fitem_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
+{
+    /**
+     * @memberof iso8583_fitem_t
+     * @brief Clone values from another object.
+     *
+     * @param obj Object instance.
+     * @param src The source object to be cloned.
+     */
+}
+//------------------------------------------------------------------------------
+void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src)
+{
+    /**
+     * @memberof iso8583_fitem_t
+     * @brief Move values from another object.
+     *
+     * @param obj Object instance.
+     * @param src The source object to be moved from.
+     */
 }
 //------------------------------------------------------------------------------
 int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags)

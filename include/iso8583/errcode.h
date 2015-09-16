@@ -10,6 +10,10 @@
 #define _ISO8583_ERRCODE_H_
 
 #ifdef __cplusplus
+#include <string>
+#endif
+
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -33,5 +37,19 @@ const char* iso8583_err_get_description(int errcode)
 #ifdef __cplusplus
 }  // extern "C"
 #endif
+
+#ifdef __cplusplus
+/// C++ wrapper.
+namespace ISO8583
+{
+/// C++ wrapper.
+namespace err
+{
+
+inline string GetDescription(int errcode) { return iso8583_err_get_description(errcode); }  ///< @see ::iso8583_err_get_description
+
+}  // namespace err
+}  // namespace ISO8583
+#endif  // __cplusplus
 
 #endif
