@@ -81,6 +81,39 @@ const iso8583_fields_t* iso8583_get_cfields(const iso8583_t *obj)
 namespace ISO8583
 {
 
+/**
+ * @brief C++ wrapper of iso8583_t.
+ */
+class TISO8583 : protected iso8583_t
+{
+public:
+    TISO8583()                               { iso8583_init      (this); }                    ///< @see iso8583_t::iso8583_init
+    TISO8583(const TISO8583 &src)            { iso8583_init_clone(this, &src); }              ///< @see iso8583_t::iso8583_init_clone
+#if __cplusplus >= 201103L
+    TISO8583(TISO8583 &&src)                 { iso8583_init_move (this, &src); }              ///< @see iso8583_t::iso8583_init_move
+#endif
+    ~TISO8583()                              { iso8583_deinit    (this); }                    ///< @see iso8583_t::iso8583_deinit
+
+    TISO8583& operator=(const TISO8583 &src) { iso8583_clone   (this, &src); return *this; }  ///< @see iso8583_t::iso8583_clone
+#if __cplusplus >= 201103L
+    TISO8583& operator=(TISO8583 &&src)      { iso8583_movefrom(this, &src); return *this; }  ///< @see iso8583_t::iso8583_movefrom
+#endif
+
+public:
+    int Encode(void *buf, size_t size, int flags)  const { return iso8583_encode(this, buf, size, flags); }   ///< @see iso8583_t::iso8583_encode
+    int Decode(const void *data, size_t size, int flags) { return iso8583_decode(this, data, size, flags); }  ///< @see iso8583_t::iso8583_decode
+
+    int&       MTI()       { return mti; }  ///< Get MTI.
+    const int& MTI() const { return mti; }  ///< Get MTI.
+
+    TTPDU&       TPDU()       { return * static_cast<      TTPDU*>( iso8583_get_tpdu (this) ); }  ///< Get TPDU.
+    const TTPDU& TPDU() const { return * static_cast<const TTPDU*>( iso8583_get_ctpdu(this) ); }  ///< Get TPDU.
+
+    TFields&       Fields()       { return * static_cast<      TFields*>( iso8583_get_fields (this) ); }  ///< Get fields.
+    const TFields& Fields() const { return * static_cast<const TFields*>( iso8583_get_cfields(this) ); }  ///< Get fields.
+
+};
+
 }  // namespace ISO8583
 #endif  // __cplusplus
 

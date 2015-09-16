@@ -58,10 +58,12 @@ namespace ISO8583
 {
 
 /**
- * @brief C++ wrapper of iso8583_fields_t
+ * @brief C++ wrapper of iso8583_fields_t.
  */
 class TFields : protected iso8583_fields_t
 {
+    friend class TISO8583;
+
 public:
     TFields()                              { iso8583_fields_init      (this); }        ///< @see iso8583_fields_t::iso8583_fields_init
     TFields(const TFields &src)            { iso8583_fields_init_clone(this, &src); }  ///< @see iso8583_fields_t::iso8583_fields_init_clone
@@ -81,8 +83,8 @@ public:
         /**
          * Get an empty item.
          */
-        static TFitem item;
-        return item;
+        static iso8583_fitem_t item = {0};
+        return *static_cast<TFitem*>(&item);
     }
 
 public:
@@ -100,7 +102,7 @@ public:
          * @return The corresponding item if succeed;
          *         or an empty item (can use TFields::npos to verify) if not found.
          */
-        const iso8583_fitem_t* item = iso8583_fields_get_item(this, id);
+        const TFitem *item = static_cast<const TFitem*>( iso8583_fields_get_item(this, id) );
         return item ? *item : npos();
     }
 
@@ -112,7 +114,7 @@ public:
          * @return The corresponding item if succeed;
          *         or an empty item (can use TFields::npos to verify) if not found.
          */
-        const iso8583_fitem_t* item = iso8583_fields_get_first(this);
+        const TFitem* item = static_cast<const TFitem*>( iso8583_fields_get_first(this) );
         return item ? *item : npos();
     }
 
@@ -125,7 +127,7 @@ public:
          * @return The corresponding item if succeed;
          *         or an empty item (can use TFields::npos to verify) if not found.
          */
-        const iso8583_fitem_t* item = iso8583_fields_get_next(this, &prev);
+        const TFitem* item = static_cast<const TFitem*>( iso8583_fields_get_next(this, &prev) );
         return item ? *item : npos();
     }
 

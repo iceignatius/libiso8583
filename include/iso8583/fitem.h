@@ -68,7 +68,6 @@ class TFitem : protected iso8583_fitem_t
 
 public:
     TFitem()                             { iso8583_fitem_init      (this); }                      ///< @see iso8583_fitem_t::iso8583_fitem_init
-    TFitem(const iso8583_fitem_t &src)   { iso8583_fitem_init_clone(this, &src); }
     TFitem(const TFitem &src)            { iso8583_fitem_init_clone(this, &src); }                ///< @see iso8583_fitem_t::iso8583_fitem_init_clone
 #if __cplusplus >= 201103L
     TFitem(TFitem &&src)                 { iso8583_fitem_init_move (this, &src); }                ///< @see iso8583_fitem_t::iso8583_fitem_init_move
