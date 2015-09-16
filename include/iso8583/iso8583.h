@@ -17,6 +17,10 @@
 extern "C" {
 #endif
 
+/**
+ * @class iso8583_t
+ * @brief ISO 8583 major object class.
+ */
 typedef struct iso8583_t
 {
     /*
@@ -38,11 +42,32 @@ int iso8583_decode(      iso8583_t *obj, const void *data, size_t size, int flag
 int  iso8583_get_mti(const iso8583_t *obj);
 void iso8583_set_mti(      iso8583_t *obj, int mti);
 
-iso8583_tpdu_t*   iso8583_get_tpdu (iso8583_t *obj);
-iso8583_fields_t* iso8583_get_field(iso8583_t *obj);
+iso8583_tpdu_t*   iso8583_get_tpdu  (iso8583_t *obj);
+iso8583_fields_t* iso8583_get_fields(iso8583_t *obj);
 
-const iso8583_tpdu_t* iso8583_get_ctpdu(const iso8583_t *obj);
-const iso8583_fields_t* iso8583_get_cfield(const iso8583_t *obj);
+static inline
+const iso8583_tpdu_t* iso8583_get_ctpdu(const iso8583_t *obj)
+{
+    /**
+     * @memberof iso8583_t
+     * @brief Get TPDU.
+     *
+     * @param obj Object instance.
+     * @return The TPDU object.
+     */
+}
+
+static inline
+const iso8583_fields_t* iso8583_get_cfields(const iso8583_t *obj)
+{
+    /**
+     * @memberof iso8583_t
+     * @brief Get fields.
+     *
+     * @param obj Object instance.
+     * @return The fields object.
+     */
+}
 
 #ifdef __cplusplus
 }  // extern "C"

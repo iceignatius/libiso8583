@@ -18,6 +18,10 @@ extern "C" {
 #define ISO8583_FITEM_ID_INVALID 0
 #define ISO8583_FITEM_ID_MAX     128
 
+/**
+ * @class iso8583_fitem_t
+ * @brief Field item.
+ */
 typedef struct iso8583_fitem_t
 {
     /*

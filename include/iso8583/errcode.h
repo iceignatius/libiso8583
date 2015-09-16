@@ -13,14 +13,21 @@
 extern "C" {
 #endif
 
-enum
+/**
+ * @brief ISO 8583 library error codes.
+ */
+enum iso8583_err_t
 {
-    ISO8583_ERR_SUCCESS = 0,
+    ISO8583_ERR_SUCCESS =  0,  ///< Success, no error.
+    ISO8583_ERR_GENERAL = -1,  ///< General or unknown error.
 };
 
 static inline
 const char* iso8583_err_get_description(int errcode)
 {
+    /**
+     * Get the corresponding description string of an error code.
+     */
 }
 
 #ifdef __cplusplus

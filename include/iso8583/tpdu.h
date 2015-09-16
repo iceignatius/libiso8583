@@ -15,6 +15,10 @@
 extern "C" {
 #endif
 
+/**
+ * @class iso8583_tpdu_t
+ * @brief TPDU.
+ */
 typedef struct iso8583_tpdu_t
 {
     /*

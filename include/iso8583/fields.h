@@ -15,6 +15,10 @@
 extern "C" {
 #endif
 
+/**
+ * @class iso8583_fields_t
+ * @brief Container of field items.
+ */
 typedef struct iso8583_fields_t
 {
     /*
@@ -38,13 +42,48 @@ iso8583_fitem_t* iso8583_fields_get_item (iso8583_fields_t *obj, unsigned id);
 iso8583_fitem_t* iso8583_fields_get_first(iso8583_fields_t *obj);
 iso8583_fitem_t* iso8583_fields_get_next (iso8583_fields_t *obj, const iso8583_fitem_t *prev);
 
-const iso8583_fitem_t* iso8583_fields_get_citem (const iso8583_fields_t *obj, unsigned id);
-const iso8583_fitem_t* iso8583_fields_get_cfirst(const iso8583_fields_t *obj);
-const iso8583_fitem_t* iso8583_fields_get_cnext (const iso8583_fields_t *obj, const iso8583_fitem_t *prev);
-
 int  iso8583_fields_insert(iso8583_fields_t *obj, const iso8583_fitem_t *item);
 void iso8583_fields_erase(iso8583_fields_t *obj, unsigned id);
 void iso8583_fields_clean(iso8583_fields_t *obj);
+
+static inline
+const iso8583_fitem_t* iso8583_fields_get_citem(const iso8583_fields_t *obj, unsigned id)
+{
+    /**
+     * @memberof iso8583_fields_t
+     * @brief Get field item by field ID.
+     *
+     * @param obj Object instance.
+     * @param id  The specific field ID.
+     * @return The field item if succeed; or NULL if no item be found.
+     */
+}
+
+static inline
+const iso8583_fitem_t* iso8583_fields_get_cfirst(const iso8583_fields_t *obj)
+{
+    /**
+     * @memberof iso8583_fields_t
+     * @brief Get the first field item.
+     *
+     * @param obj Object instance.
+     * @return The field item if succeed; or NULL if no item be found.
+     */
+}
+
+static inline
+const iso8583_fitem_t* iso8583_fields_get_cnext(const iso8583_fields_t *obj, const iso8583_fitem_t *prev)
+{
+    /**
+     * @memberof iso8583_fields_t
+     * @brief Get the next field item.
+     *
+     * @param obj  Object instance.
+     * @param prev The previous field item.
+     * @return The field item if succeed; or NULL if no item be found.
+     */
+}
+
 
 #ifdef __cplusplus
 }  // extern "C"
