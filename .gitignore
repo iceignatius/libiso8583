@@ -3,3 +3,6 @@ temp
 *.a
 *.so
 *.dll
+*.layout
+*.depend
+libiso8583_test*

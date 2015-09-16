@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="libiso8583_test" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="libiso8583_test" prefix_auto="1" extension_auto="1" />
+				<Option object_output="temp/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O0" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=gnu++11" />
+			<Add directory="../include" />
+			<Add directory="../include/iso8583" />
+		</Compiler>
+		<Unit filename="../include/iso8583/errcode.h" />
+		<Unit filename="../include/iso8583/fields.h" />
+		<Unit filename="../include/iso8583/fitem.h" />
+		<Unit filename="../include/iso8583/flags.h" />
+		<Unit filename="../include/iso8583/iso8583.h" />
+		<Unit filename="../include/iso8583/mti.h" />
+		<Unit filename="../include/iso8583/tpdu.h" />
+		<Unit filename="../src/fields.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/fitem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/iso8583.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/mti.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/tpdu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="main.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
