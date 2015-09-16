@@ -16,69 +16,61 @@ extern "C" {
 #endif
 
 /**
- * @name ISO 8583 version definition.
- * @{
+ * @brief ISO 8583 version definition.
  */
-#define ISO8583_MTI_VER_1               0x0000  ///< ISO 8583-1:1987 version.
-#define ISO8583_MTI_VER_2               0x1000  ///< ISO 8583-2:1993 version.
-#define ISO8583_MTI_VER_3               0x2000  ///< ISO 8583-3:2003 version.
-/**
- * @}
- */
+enum iso8583_mti_ver_t
+{
+    ISO8583_MTI_VER_1               = 0x0000,  ///< ISO 8583-1:1987 version.
+    ISO8583_MTI_VER_2               = 0x1000,  ///< ISO 8583-2:1993 version.
+    ISO8583_MTI_VER_3               = 0x2000,  ///< ISO 8583-3:2003 version.
+    ISO8583_MTI_VER_MASK            = 0xF000,  // Internal use.
+};
 
 /**
  * @name ISO 8583 class definition.
- * @{
  */
-#define ISO8583_MTI_CLA_AUTH            0x0100  ///< Authorization Message.
-#define ISO8583_MTI_CLA_FINANCIAL       0x0200  ///< Financial Messages.
-#define ISO8583_MTI_CLA_FILEACT         0x0300  ///< File Actions Message.
-#define ISO8583_MTI_CLA_REVERSAL        0x0400  ///< Reversal and Charge back Messages.
-#define ISO8583_MTI_CLA_RECON           0x0500  ///< Reconciliation Message.
-#define ISO8583_MTI_CLA_ADMIN           0x0600  ///< Administrative Message.
-#define ISO8583_MTI_CLA_FEE             0x0700  ///< Fee Collection Messages.
-#define ISO8583_MTI_CLA_NETWORK         0x0800  ///< Network Management Message.
-/**
- * @}
- */
+enum iso8583_mti_cla_t
+{
+    ISO8583_MTI_CLA_AUTH            = 0x0100,  ///< Authorization Message.
+    ISO8583_MTI_CLA_FINANCIAL       = 0x0200,  ///< Financial Messages.
+    ISO8583_MTI_CLA_FILEACT         = 0x0300,  ///< File Actions Message.
+    ISO8583_MTI_CLA_REVERSAL        = 0x0400,  ///< Reversal and Charge back Messages.
+    ISO8583_MTI_CLA_RECON           = 0x0500,  ///< Reconciliation Message.
+    ISO8583_MTI_CLA_ADMIN           = 0x0600,  ///< Administrative Message.
+    ISO8583_MTI_CLA_FEE             = 0x0700,  ///< Fee Collection Messages.
+    ISO8583_MTI_CLA_NETWORK         = 0x0800,  ///< Network Management Message.
+    ISO8583_MTI_CLA_MASK            = 0x0F00,  // Internal use.
+};
 
 /**
  * @name ISO 8583 function definition.
- * @{
  */
-#define ISO8583_MTI_FUN_REQUEST         0x0000  ///< Request.
-#define ISO8583_MTI_FUN_RESPONSE        0x0010  ///< Request Response.
-#define ISO8583_MTI_FUN_ADVICE          0x0020  ///< Advice.
-#define ISO8583_MTI_FUN_ADV_RESPONSE    0x0030  ///< Advice Response.
-#define ISO8583_MTI_FUN_NOTI            0x0040  ///< Notification.
-#define ISO8583_MTI_FUN_NOTI_ACK        0x0050  ///< Notification Acknowledgement.
-#define ISO8583_MTI_FUN_INST            0x0060  ///< Instruction (ISO 8583:2003 only).
-#define ISO8583_MTI_FUN_INST_ACK        0x0070  ///< Instruction Acknowledgement (ISO 8583:2003 only).
-/**
- * @}
- */
+enum iso8583_mti_fun_t
+{
+    ISO8583_MTI_FUN_REQUEST         = 0x0000,  ///< Request.
+    ISO8583_MTI_FUN_RESPONSE        = 0x0010,  ///< Request Response.
+    ISO8583_MTI_FUN_ADVICE          = 0x0020,  ///< Advice.
+    ISO8583_MTI_FUN_ADV_RESPONSE    = 0x0030,  ///< Advice Response.
+    ISO8583_MTI_FUN_NOTI            = 0x0040,  ///< Notification.
+    ISO8583_MTI_FUN_NOTI_ACK        = 0x0050,  ///< Notification Acknowledgement.
+    ISO8583_MTI_FUN_INST            = 0x0060,  ///< Instruction (ISO 8583:2003 only).
+    ISO8583_MTI_FUN_INST_ACK        = 0x0070,  ///< Instruction Acknowledgement (ISO 8583:2003 only).
+    ISO8583_MTI_FUN_MASK            = 0x00F0,  // Internal use.
+};
 
 /**
  * @name ISO 8583 origin definition.
- * @{
  */
-#define ISO8583_MTI_ORI_ACQ             0x0000  ///< Acquirer.
-#define ISO8583_MTI_ORI_ACQ_REPEAT      0x0001  ///< Acquirer Repeat.
-#define ISO8583_MTI_ORI_ISSUER          0x0002  ///< Issuer.
-#define ISO8583_MTI_ORI_ISSUER_REPEAT   0x0003  ///< Issuer Repeat.
-#define ISO8583_MTI_ORI_OTHER           0x0004  ///< Other.
-#define ISO8583_MTI_ORI_OTHER_REPEAT    0x0005  ///< Other Repeat.
-/**
- * @}
- */
-
-/*
- * MTI masks for internal use.
- */
-#define ISO8583_MTI_VER_MASK            0xF000
-#define ISO8583_MTI_CLA_MASK            0x0F00
-#define ISO8583_MTI_FUN_MASK            0x00F0
-#define ISO8583_MTI_ORI_MASK            0x000F
+enum iso8583_mti_ori_t
+{
+    ISO8583_MTI_ORI_ACQ             = 0x0000,  ///< Acquirer.
+    ISO8583_MTI_ORI_ACQ_REPEAT      = 0x0001,  ///< Acquirer Repeat.
+    ISO8583_MTI_ORI_ISSUER          = 0x0002,  ///< Issuer.
+    ISO8583_MTI_ORI_ISSUER_REPEAT   = 0x0003,  ///< Issuer Repeat.
+    ISO8583_MTI_ORI_OTHER           = 0x0004,  ///< Other.
+    ISO8583_MTI_ORI_OTHER_REPEAT    = 0x0005,  ///< Other Repeat.
+    ISO8583_MTI_ORI_MASK            = 0x000F,  // Internal use.
+};
 
 int iso8583_mti_make(int ver, int cla, int fun, int ori);
 

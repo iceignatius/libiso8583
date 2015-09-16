@@ -21,7 +21,7 @@ int iso8583_tpdu_encode(const iso8583_tpdu_t *obj, void *buf, size_t size, int f
      * @param obj   Object instance.
      * @param buf   The output buffer.
      * @param size  Size of the output buffer.
-     * @param flags Encode options, see flags.h for more information.
+     * @param flags Encode options, see ::iso8583_flags_t for more information.
      *
      * @retval Positive Size of data (including zero) filled to the output buffer.
      * @retval Negative An error code indicates that an error occurred during the process,
@@ -39,7 +39,7 @@ int iso8583_tpdu_decode(iso8583_tpdu_t *obj, const void *data, size_t size, int 
      * @param obj   Object instance.
      * @param data  The raw data to be read.
      * @param size  Size of the raw data.
-     * @param flags Decode options, see flags.h for more information.
+     * @param flags Decode options, see ::iso8583_flags_t for more information.
      *
      * @retval Positive Size of data (including zero) read from the input data.
      * @retval Negative An error code indicates that an error occurred during the process,
