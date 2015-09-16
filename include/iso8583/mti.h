@@ -27,7 +27,7 @@ enum iso8583_mti_ver_t
 };
 
 /**
- * @name ISO 8583 class definition.
+ * @brief ISO 8583 class definition.
  */
 enum iso8583_mti_cla_t
 {
@@ -43,7 +43,7 @@ enum iso8583_mti_cla_t
 };
 
 /**
- * @name ISO 8583 function definition.
+ * @brief ISO 8583 function definition.
  */
 enum iso8583_mti_fun_t
 {
@@ -59,7 +59,7 @@ enum iso8583_mti_fun_t
 };
 
 /**
- * @name ISO 8583 origin definition.
+ * @brief ISO 8583 origin definition.
  */
 enum iso8583_mti_ori_t
 {

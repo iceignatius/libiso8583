@@ -93,6 +93,8 @@ int iso8583_get_mti(const iso8583_t *obj)
      *
      * @param obj Object instance.
      * @return MTI value of the object.
+     *
+     * @remarks See mti.h for more operation about MTI.
      */
 #warning Not finished!
 }
@@ -105,6 +107,8 @@ void iso8583_set_mti(iso8583_t *obj, int mti)
      *
      * @param obj Object instance.
      * @param mti The MIT value to be set.
+     *
+     * @remarks See mti.h for more operation about MTI.
      */
 #warning Not finished!
 }
