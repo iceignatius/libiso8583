@@ -22,8 +22,10 @@ extern "C" {
  */
 enum iso8583_err_t
 {
-    ISO8583_ERR_SUCCESS =  0,  ///< Success, no error.
-    ISO8583_ERR_GENERAL = -1,  ///< General or unknown error.
+    ISO8583_ERR_SUCCESS         =  0,  ///< Success, no error.
+    ISO8583_ERR_GENERAL         = -1,  ///< General or unknown error.
+    ISO8583_ERR_INVALID_ARG     = -2,  ///< Invalid argument.
+    ISO8583_ERR_BUF_NOT_ENOUGH  = -3,  ///< Buffer size too small.
 };
 
 static inline
@@ -32,6 +34,8 @@ const char* iso8583_err_get_description(int errcode)
     /**
      * Get the corresponding description string of an error code.
      */
+#warning Not finished!
+    return "Unknown error occurred!";
 }
 
 #ifdef __cplusplus
@@ -46,7 +50,7 @@ namespace ISO8583
 namespace err
 {
 
-inline string GetDescription(int errcode) { return iso8583_err_get_description(errcode); }  ///< @see ::iso8583_err_get_description
+inline std::string GetDescription(int errcode) { return iso8583_err_get_description(errcode); }  ///< @see ::iso8583_err_get_description
 
 }  // namespace err
 }  // namespace ISO8583

@@ -10,6 +10,8 @@
 #define _ISO8583_TPDU_H_
 
 #include <stddef.h>
+#include "errcode.h"
+#include "flags.h"
 
 #ifdef __cplusplus
 extern "C" {

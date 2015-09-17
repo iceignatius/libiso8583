@@ -10,6 +10,7 @@
 #define _ISO8583_MTI_H_
 
 #include <stddef.h>
+#include "errcode.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,9 +21,9 @@ extern "C" {
  */
 enum iso8583_mti_ver_t
 {
-    ISO8583_MTI_VER_1               = 0x0000,  ///< ISO 8583-1:1987 version.
-    ISO8583_MTI_VER_2               = 0x1000,  ///< ISO 8583-2:1993 version.
-    ISO8583_MTI_VER_3               = 0x2000,  ///< ISO 8583-3:2003 version.
+    ISO8583_MTI_VER_1987            = 0x0000,  ///< ISO 8583-1:1987 version.
+    ISO8583_MTI_VER_1993            = 0x1000,  ///< ISO 8583-1:1993 version.
+    ISO8583_MTI_VER_2003            = 0x2000,  ///< ISO 8583-1:2003 version.
     ISO8583_MTI_VER_MASK            = 0xF000,  // Internal use.
 };
 
@@ -95,7 +96,7 @@ int iso8583_mti_set_origin  (int mti, int ori);
 /// C++ wrapper.
 namespace ISO8583
 {
-/// C++ wrapper.
+/// Message Type Indicator (MTI).
 namespace mti
 {
 

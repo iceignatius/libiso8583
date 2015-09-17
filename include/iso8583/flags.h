@@ -18,6 +18,7 @@ extern "C" {
  */
 enum iso8583_flags_t
 {
+    ISO8583_FLAG_HAVE_TPDU = 1,  ///< Have TPDU message.
 };
 
 #ifdef __cplusplus
