@@ -1,6 +1,11 @@
 #include <assert.h>
 #include <stdint.h>
+#include "iso8583/internal_test.h"
 #include "iso8583/iso8583.h"
+
+#ifndef ISO8583_DEBUGTEST
+    #error This test program needs to work with ISO8583_DEBUGTEST defined!
+#endif
 
 void test_tpdu()
 {
@@ -69,6 +74,7 @@ void test_mti()
 
 int main(int argc, char *argv[])
 {
+    iso8583_internal_test();
     test_tpdu();
     test_mti();
 

@@ -20,20 +20,32 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=gnu++11" />
+			<Add option="-DISO8583_DEBUGTEST" />
+			<Add directory="../3rd/genutil" />
 			<Add directory="../include" />
 			<Add directory="../include/iso8583" />
 		</Compiler>
+		<Unit filename="../3rd/genutil/gen/bits.h" />
+		<Unit filename="../3rd/genutil/gen/inline.h" />
 		<Unit filename="../include/iso8583/errcode.h" />
 		<Unit filename="../include/iso8583/fields.h" />
 		<Unit filename="../include/iso8583/fitem.h" />
 		<Unit filename="../include/iso8583/flags.h" />
+		<Unit filename="../include/iso8583/internal_test.h" />
 		<Unit filename="../include/iso8583/iso8583.h" />
 		<Unit filename="../include/iso8583/mti.h" />
 		<Unit filename="../include/iso8583/tpdu.h" />
+		<Unit filename="../src/bitmap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/bitmap.h" />
 		<Unit filename="../src/fields.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../src/fitem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/internal_test.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../src/iso8583.c">
