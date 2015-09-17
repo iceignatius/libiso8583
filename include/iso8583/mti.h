@@ -73,20 +73,90 @@ enum iso8583_mti_ori_t
     ISO8583_MTI_ORI_MASK            = 0x000F,  // Internal use.
 };
 
-int iso8583_mti_make(int ver, int cla, int fun, int ori);
-
 int iso8583_mti_encode(int  mti, void *buf, size_t size, int flags);
 int iso8583_mti_decode(int *mti, const void *data, size_t size, int flags);
 
-int iso8583_mti_get_version (int mti);
-int iso8583_mti_get_class   (int mti);
-int iso8583_mti_get_function(int mti);
-int iso8583_mti_get_origin  (int mti);
+static inline
+int iso8583_mti_make(int ver, int cla, int fun, int ori)
+{
+    /**
+     * Make a MTI value.
+     *
+     * @param ver ISO 8583 version value, see ::iso8583_mti_ver_t for more information.
+     * @param cla ISO 8583 class value, see ::iso8583_mti_cla_t for more information.
+     * @param fun ISO 8583 function value, see ::iso8583_mti_fun_t for more information.
+     * @param ori ISO 8583 origin value, see ::iso8583_mti_ori_t for more information.
+     * @return The final MTI value.
+     */
+    return ( ver & ISO8583_MTI_VER_MASK ) |
+           ( cla & ISO8583_MTI_CLA_MASK ) |
+           ( fun & ISO8583_MTI_FUN_MASK ) |
+           ( ori & ISO8583_MTI_ORI_MASK );
+}
 
-int iso8583_mti_set_version (int mti, int ver);
-int iso8583_mti_set_class   (int mti, int cla);
-int iso8583_mti_set_function(int mti, int fun);
-int iso8583_mti_set_origin  (int mti, int ori);
+static inline
+int iso8583_mti_get_version(int mti)
+{
+    /// Get ISO 8583 version value from MTI.
+    /// @return ISO 8583 version value, see ::iso8583_mti_ver_t for more information.
+    return mti & ISO8583_MTI_VER_MASK;
+}
+
+static inline
+int iso8583_mti_get_class(int mti)
+{
+    /// Get ISO 8583 class value from MTI.
+    /// @return ISO 8583 class value, see ::iso8583_mti_cla_t for more information.
+    return mti & ISO8583_MTI_CLA_MASK;
+}
+
+static inline
+int iso8583_mti_get_function(int mti)
+{
+    /// Get ISO 8583 function value from MTI.
+    /// @return ISO 8583 function value, see ::iso8583_mti_fun_t for more information.
+    return mti & ISO8583_MTI_FUN_MASK;
+}
+
+static inline
+int iso8583_mti_get_origin(int mti)
+{
+    /// Get ISO 8583 origin value from MTI.
+    /// @return ISO 8583 origin value, see ::iso8583_mti_ori_t for more information.
+    return mti & ISO8583_MTI_ORI_MASK;
+}
+
+static inline
+int iso8583_mti_set_version(int mti, int ver)
+{
+    /// Set ISO 8583 version value to MTI.
+    /// @return The final MTI value.
+    return ( mti & ~ISO8583_MTI_VER_MASK ) | ( ver & ISO8583_MTI_VER_MASK );
+}
+
+static inline
+int iso8583_mti_set_class(int mti, int cla)
+{
+    /// Set ISO 8583 class value to MTI.
+    /// @return The final MTI value.
+    return ( mti & ~ISO8583_MTI_CLA_MASK ) | ( cla & ISO8583_MTI_CLA_MASK );
+}
+
+static inline
+int iso8583_mti_set_function(int mti, int fun)
+{
+    /// Set ISO 8583 function value to MTI.
+    /// @return The final MTI value.
+    return ( mti & ~ISO8583_MTI_FUN_MASK ) | ( fun & ISO8583_MTI_FUN_MASK );
+}
+
+static inline
+int iso8583_mti_set_origin(int mti, int ori)
+{
+    /// Set ISO 8583 origin value to MTI.
+    /// @return The final MTI value.
+    return ( mti & ~ISO8583_MTI_ORI_MASK ) | ( ori & ISO8583_MTI_ORI_MASK );
+}
 
 #ifdef __cplusplus
 }  // extern "C"

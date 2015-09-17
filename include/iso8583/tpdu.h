@@ -36,13 +36,53 @@ void iso8583_tpdu_init(iso8583_tpdu_t *obj);
 int iso8583_tpdu_encode(const iso8583_tpdu_t *obj, void *buf, size_t size, int flags);
 int iso8583_tpdu_decode(      iso8583_tpdu_t *obj, const void *data, size_t size, int flags);
 
-unsigned iso8583_tpdu_get_id  (const iso8583_tpdu_t *obj);
-unsigned iso8583_tpdu_get_dest(const iso8583_tpdu_t *obj);
-unsigned iso8583_tpdu_get_src (const iso8583_tpdu_t *obj);
+static inline
+unsigned iso8583_tpdu_get_id(const iso8583_tpdu_t *obj)
+{
+    /// @memberof iso8583_tpdu_t
+    /// @brief Get ID.
+    return obj->id;
+}
 
-void iso8583_tpdu_set_id  (iso8583_tpdu_t *obj, unsigned id);
-void iso8583_tpdu_set_dest(iso8583_tpdu_t *obj, unsigned dest);
-void iso8583_tpdu_set_src (iso8583_tpdu_t *obj, unsigned src);
+static inline
+unsigned iso8583_tpdu_get_dest(const iso8583_tpdu_t *obj)
+{
+    /// @memberof iso8583_tpdu_t
+    /// @brief Get destination number.
+    return obj->dest;
+}
+
+static inline
+unsigned iso8583_tpdu_get_src(const iso8583_tpdu_t *obj)
+{
+    /// @memberof iso8583_tpdu_t
+    /// @brief Get source number.
+    return obj->src;
+}
+
+static inline
+void iso8583_tpdu_set_id(iso8583_tpdu_t *obj, unsigned id)
+{
+    /// @memberof iso8583_tpdu_t
+    /// @brief Set ID.
+    obj->id = 0xFF & id;
+}
+
+static inline
+void iso8583_tpdu_set_dest(iso8583_tpdu_t *obj, unsigned dest)
+{
+    /// @memberof iso8583_tpdu_t
+    /// @brief Set destination number.
+    obj->dest = 0xFFFF & dest;
+}
+
+static inline
+void iso8583_tpdu_set_src(iso8583_tpdu_t *obj, unsigned src)
+{
+    /// @memberof iso8583_tpdu_t
+    /// @brief Set source number.
+    obj->src = 0xFFFF & src;
+}
 
 #ifdef __cplusplus
 }  // extern "C"
