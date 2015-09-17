@@ -1,6 +1,7 @@
 #ifdef ISO8583_DEBUGTEST
 
 #include <assert.h>
+#include <stdint.h>
 #include <string.h>
 #include "bitmap.h"
 #include "internal_test.h"
@@ -9,7 +10,7 @@
 static
 void test_bitmap_case1(void)
 {
-    static const unsigned char raw[] = { 0x72,0x34,0x05,0x41,0x28,0xC2,0x88,0x05 };
+    static const uint8_t raw[] = { 0x72,0x34,0x05,0x41,0x28,0xC2,0x88,0x05 };
 
     // Encode test.
     {
@@ -37,7 +38,7 @@ void test_bitmap_case1(void)
         assert( !bitmap_set_id(&bmp, 62) );
         assert( !bitmap_set_id(&bmp, 64) );
 
-        unsigned char buf[64] = {0};
+        uint8_t buf[64] = {0};
         assert( sizeof(raw) == bitmap_encode(&bmp, buf, sizeof(buf), 0) );
         assert( 0 == memcmp(buf, raw, sizeof(raw)) );
     }
@@ -49,7 +50,7 @@ void test_bitmap_case1(void)
 
         assert( sizeof(raw) == bitmap_decode(&bmp, raw, sizeof(raw), 0) );
 
-        unsigned id = 0;
+        int id = 0;
         id = bitmap_get_first_id(&bmp);     assert( id ==  2 );
         id = bitmap_get_next_id(&bmp, id);  assert( id ==  3 );
         id = bitmap_get_next_id(&bmp, id);  assert( id ==  4 );
@@ -77,7 +78,7 @@ void test_bitmap_case1(void)
 static
 void test_bitmap_case2(void)
 {
-    static const unsigned char raw[] =
+    static const uint8_t raw[] =
     {
         0x80,0x00,0x00,0x00,0x00,0x00,0x00,0x01,
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x03
@@ -92,7 +93,7 @@ void test_bitmap_case2(void)
         assert( !bitmap_set_id(&bmp, 127) );
         assert( !bitmap_set_id(&bmp, 128) );
 
-        unsigned char buf[64] = {0};
+        uint8_t buf[64] = {0};
         assert( sizeof(raw) == bitmap_encode(&bmp, buf, sizeof(buf), 0) );
         assert( 0 == memcmp(buf, raw, sizeof(raw)) );
     }
@@ -104,7 +105,7 @@ void test_bitmap_case2(void)
 
         assert( sizeof(raw) == bitmap_decode(&bmp, raw, sizeof(raw), 0) );
 
-        unsigned id = 0;
+        int id = 0;
         id = bitmap_get_first_id(&bmp);     assert( id ==  64 );
         id = bitmap_get_next_id(&bmp, id);  assert( id == 127 );
         id = bitmap_get_next_id(&bmp, id);  assert( id == 128 );

@@ -11,9 +11,9 @@ void bitmap_init(bitmap_t *obj)
 }
 //------------------------------------------------------------------------------
 static
-unsigned get_last_id(const bitmap_t *obj)
+int get_last_id(const bitmap_t *obj)
 {
-    for(unsigned id=ISO8583_BITMAP_ID_MAX; id; --id)
+    for(int id=ISO8583_BITMAP_ID_MAX; id; --id)
     {
         if( obj->states[id] )
             return id;
@@ -33,7 +33,7 @@ int bitmap_encode(const bitmap_t *obj, void *buf, size_t size, int flags)
     if( size < encode_size ) return ISO8583_ERR_BUF_NOT_ENOUGH;
 
     memset(buf, 0, encode_size);
-    for(unsigned id=ISO8583_BITMAP_ID_MIN; id<=ISO8583_BITMAP_ID_MAX; ++id)
+    for(int id=ISO8583_BITMAP_ID_MIN; id<=ISO8583_BITMAP_ID_MAX; ++id)
     {
         if( obj->states[id] )
             bits_set_bit(buf, id-1);
@@ -58,8 +58,8 @@ int bitmap_decode(bitmap_t *obj, const void *data, size_t size, int flags)
 
     bitmap_clean(obj);
 
-    unsigned id_max = extend_mode ? ISO8583_BITMAP_ID_MAX : 64;
-    for(unsigned id=ISO8583_BITMAP_ID_MIN; id<=id_max; ++id)
+    int id_max = extend_mode ? ISO8583_BITMAP_ID_MAX : 64;
+    for(int id=ISO8583_BITMAP_ID_MIN; id<=id_max; ++id)
     {
         obj->states[id] = bits_get_bit(data, id-1);
     }
@@ -67,7 +67,7 @@ int bitmap_decode(bitmap_t *obj, const void *data, size_t size, int flags)
     return decode_size;
 }
 //------------------------------------------------------------------------------
-bool bitmap_have_id(const bitmap_t *obj, unsigned id)
+bool bitmap_have_id(const bitmap_t *obj, int id)
 {
     assert( obj );
 
@@ -76,9 +76,9 @@ bool bitmap_have_id(const bitmap_t *obj, unsigned id)
            obj->states[id];
 }
 //------------------------------------------------------------------------------
-unsigned bitmap_get_first_id(const bitmap_t *obj)
+int bitmap_get_first_id(const bitmap_t *obj)
 {
-    for(unsigned id=ISO8583_BITMAP_ID_MIN; id<=ISO8583_BITMAP_ID_MAX; ++id)
+    for(int id=ISO8583_BITMAP_ID_MIN; id<=ISO8583_BITMAP_ID_MAX; ++id)
     {
         if( obj->states[id] )
             return id;
@@ -87,9 +87,11 @@ unsigned bitmap_get_first_id(const bitmap_t *obj)
     return 0;
 }
 //------------------------------------------------------------------------------
-unsigned bitmap_get_next_id(const bitmap_t *obj, unsigned prev_id)
+int bitmap_get_next_id(const bitmap_t *obj, int prev_id)
 {
-    for(unsigned id=prev_id+1; id<=ISO8583_BITMAP_ID_MAX; ++id)
+    if( prev_id < ISO8583_BITMAP_ID_MIN ) return 0;
+
+    for(int id=prev_id+1; id<=ISO8583_BITMAP_ID_MAX; ++id)
     {
         if( obj->states[id] )
             return id;
@@ -98,7 +100,7 @@ unsigned bitmap_get_next_id(const bitmap_t *obj, unsigned prev_id)
     return 0;
 }
 //------------------------------------------------------------------------------
-int bitmap_set_id(bitmap_t *obj, unsigned id)
+int bitmap_set_id(bitmap_t *obj, int id)
 {
     assert( obj );
 

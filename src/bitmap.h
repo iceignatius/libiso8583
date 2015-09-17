@@ -21,11 +21,11 @@ void bitmap_init(bitmap_t *obj);
 int bitmap_encode(const bitmap_t *obj, void *buf, size_t size, int flags);
 int bitmap_decode(      bitmap_t *obj, const void *data, size_t size, int flags);
 
-bool     bitmap_have_id     (const bitmap_t *obj, unsigned id);
-unsigned bitmap_get_first_id(const bitmap_t *obj);
-unsigned bitmap_get_next_id (const bitmap_t *obj, unsigned prev_id);
+bool bitmap_have_id     (const bitmap_t *obj, int id);
+int  bitmap_get_first_id(const bitmap_t *obj);
+int  bitmap_get_next_id (const bitmap_t *obj, int prev_id);
 
-int  bitmap_set_id(bitmap_t *obj, unsigned id);
+int  bitmap_set_id(bitmap_t *obj, int id);
 void bitmap_clean (bitmap_t *obj);
 
 #endif
