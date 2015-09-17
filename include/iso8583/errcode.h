@@ -46,7 +46,7 @@ const char* iso8583_err_get_description(int errcode)
 /// C++ wrapper.
 namespace ISO8583
 {
-/// C++ wrapper.
+/// Error code.
 namespace err
 {
 
