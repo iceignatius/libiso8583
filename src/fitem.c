@@ -12,6 +12,21 @@ void iso8583_fitem_init(iso8583_fitem_t *obj)
 #warning Not finished!
 }
 //------------------------------------------------------------------------------
+void iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, size_t size)
+{
+    /**
+     * @memberof iso8583_fitem_t
+     * @brief Constructor that
+     *        construct object and set initial values.
+     *
+     * @param obj  Object instance.
+     * @param id   The field ID to be set.
+     * @param data The data to be set.
+     * @param size Size of the input data.
+     */
+#warning Not finished!
+}
+//------------------------------------------------------------------------------
 void iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
 {
     /**

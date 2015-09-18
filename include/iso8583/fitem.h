@@ -34,6 +34,7 @@ typedef struct iso8583_fitem_t
 } iso8583_fitem_t;
 
 void iso8583_fitem_init      (iso8583_fitem_t *obj);
+void iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, size_t size);
 void iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src);
 void iso8583_fitem_init_move (iso8583_fitem_t *obj, iso8583_fitem_t *src);
 void iso8583_fitem_deinit    (iso8583_fitem_t *obj);
@@ -68,24 +69,25 @@ class TFitem : protected iso8583_fitem_t
     friend class TFields;
 
 public:
-    TFitem()                             { iso8583_fitem_init      (this); }                      ///< @see iso8583_fitem_t::iso8583_fitem_init
-    TFitem(const TFitem &src)            { iso8583_fitem_init_clone(this, &src); }                ///< @see iso8583_fitem_t::iso8583_fitem_init_clone
+    TFitem()                                      { iso8583_fitem_init      (this); }                      ///< @see iso8583_fitem_t::iso8583_fitem_init
+    TFitem(int id, const void *data, size_t size) { iso8583_fitem_init_value(this, id, data, size); }      ///< @see iso8583_fitem_t::iso8583_fitem_init_value
+    TFitem(const TFitem &src)                     { iso8583_fitem_init_clone(this, &src); }                ///< @see iso8583_fitem_t::iso8583_fitem_init_clone
 #if __cplusplus >= 201103L
-    TFitem(TFitem &&src)                 { iso8583_fitem_init_move (this, &src); }                ///< @see iso8583_fitem_t::iso8583_fitem_init_move
+    TFitem(TFitem &&src)                          { iso8583_fitem_init_move (this, &src); }                ///< @see iso8583_fitem_t::iso8583_fitem_init_move
 #endif
-    ~TFitem()                            { iso8583_fitem_deinit    (this); }                      ///< @see iso8583_fitem_t::iso8583_fitem_deinit
+    ~TFitem()                                     { iso8583_fitem_deinit    (this); }                      ///< @see iso8583_fitem_t::iso8583_fitem_deinit
 
-    TFitem& operator=(const TFitem &src) { iso8583_fitem_clone     (this, &src); return *this; }  ///< @see iso8583_fitem_t::iso8583_fitem_clone
+    TFitem& operator=(const TFitem &src)          { iso8583_fitem_clone     (this, &src); return *this; }  ///< @see iso8583_fitem_t::iso8583_fitem_clone
 #if __cplusplus >= 201103L
-    TFitem& operator=(TFitem &&src)      { iso8583_fitem_movefrom  (this, &src); return *this; }  ///< @see iso8583_fitem_t::iso8583_fitem_movefrom
+    TFitem& operator=(TFitem &&src)               { iso8583_fitem_movefrom  (this, &src); return *this; }  ///< @see iso8583_fitem_t::iso8583_fitem_movefrom
 #endif
 
 public:
     int Encode(void *buf, size_t size, int flags)  const { return iso8583_fitem_encode(this, buf, size, flags); }   ///< @see iso8583_fitem_t::iso8583_fitem_encode
     int Decode(const void *data, size_t size, int flags) { return iso8583_fitem_decode(this, data, size, flags); }  ///< @see iso8583_fitem_t::iso8583_fitem_decode
 
-    unsigned GetID()      const { return iso8583_fitem_get_id(this); }      ///< @see iso8583_fitem_t::iso8583_fitem_get_id
-    void     SetID(unsigned id) {        iso8583_fitem_set_id(this, id); }  ///< @see iso8583_fitem_t::iso8583_fitem_set_id
+    int  GetID() const { return iso8583_fitem_get_id(this); }      ///< @see iso8583_fitem_t::iso8583_fitem_get_id
+    void SetID(int id) {        iso8583_fitem_set_id(this, id); }  ///< @see iso8583_fitem_t::iso8583_fitem_set_id
 
     const void* GetData()                        const { return iso8583_fitem_get_data(this); }              ///< @see iso8583_fitem_t::iso8583_fitem_get_data
     size_t      GetSize()                        const { return iso8583_fitem_get_size(this); }              ///< @see iso8583_fitem_t::iso8583_fitem_get_size
