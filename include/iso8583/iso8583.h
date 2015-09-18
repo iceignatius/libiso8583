@@ -103,8 +103,8 @@ public:
     int Encode(void *buf, size_t size, int flags)  const { return iso8583_encode(this, buf, size, flags); }   ///< @see iso8583_t::iso8583_encode
     int Decode(const void *data, size_t size, int flags) { return iso8583_decode(this, data, size, flags); }  ///< @see iso8583_t::iso8583_decode
 
-    int&       MTI()       { return mti; }  ///< Get MTI.
-    const int& MTI() const { return mti; }  ///< Get MTI.
+    int  GetMTI()  const { return iso8583_get_mti(this); }       ///< @see iso8583_t::iso8583_get_mti
+    void SetMTI(int mti) {        iso8583_set_mti(this, mti); }  ///< @see iso8583_t::iso8583_set_mti
 
     TTPDU&       TPDU()       { return * static_cast<      TTPDU*>( iso8583_get_tpdu (this) ); }  ///< Get TPDU.
     const TTPDU& TPDU() const { return * static_cast<const TTPDU*>( iso8583_get_ctpdu(this) ); }  ///< Get TPDU.
