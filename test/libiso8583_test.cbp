@@ -25,7 +25,12 @@
 			<Add directory="../include" />
 			<Add directory="../include/iso8583" />
 		</Compiler>
+		<Unit filename="../3rd/genutil/gen/bcd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../3rd/genutil/gen/bcd.h" />
 		<Unit filename="../3rd/genutil/gen/bits.h" />
+		<Unit filename="../3rd/genutil/gen/bufstm.h" />
 		<Unit filename="../3rd/genutil/gen/inline.h" />
 		<Unit filename="../include/iso8583/errcode.h" />
 		<Unit filename="../include/iso8583/fields.h" />
@@ -42,6 +47,7 @@
 		<Unit filename="../src/fields.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../src/finfo.h" />
 		<Unit filename="../src/fitem.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -51,6 +57,10 @@
 		<Unit filename="../src/iso8583.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../src/lvar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/lvar.h" />
 		<Unit filename="../src/mti.c">
 			<Option compilerVar="CC" />
 		</Unit>

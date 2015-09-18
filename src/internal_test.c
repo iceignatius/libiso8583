@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "bitmap.h"
+#include "lvar.h"
 #include "internal_test.h"
 
 //------------------------------------------------------------------------------
@@ -113,10 +114,139 @@ void test_bitmap_case2(void)
     }
 }
 //------------------------------------------------------------------------------
+static
+void test_lvar_compress_type(void)
+{
+    // LLVAR, uncompressed.
+    {
+        static const uint8_t raw[] = { '0','7', 'm','e','s','s','a','g','e' };
+
+        char buf[128] = {0};
+        assert( sizeof(raw) == lvar_decode(buf, sizeof(buf), raw, sizeof(raw), FINFO_ELE_ANS, FINFO_LEN_LLVAR, 99, 0) );
+        assert( 0 == strcmp(buf, "message") );
+
+        assert( sizeof(raw) == lvar_encode(buf, sizeof(buf), "message", strlen("message"), FINFO_ELE_ANS, FINFO_LEN_LLVAR, 99, 0) );
+        assert( 0 == memcmp(buf, raw, sizeof(raw)) );
+    }
+
+    // LLVAR, compressed.
+    {
+        static const uint8_t raw[] = { 0x07, 'm','e','s','s','a','g','e' };
+
+        char buf[128] = {0};
+        assert( sizeof(raw) == lvar_decode(buf, sizeof(buf), raw, sizeof(raw), FINFO_ELE_ANS, FINFO_LEN_LLVAR, 99, ISO8583_FLAG_LVAR_COMPRESSED) );
+        assert( 0 == strcmp(buf, "message") );
+
+        assert( sizeof(raw) == lvar_encode(buf, sizeof(buf), "message", strlen("message"), FINFO_ELE_ANS, FINFO_LEN_LLVAR, 99, ISO8583_FLAG_LVAR_COMPRESSED) );
+        assert( 0 == memcmp(buf, raw, sizeof(raw)) );
+    }
+
+    // LLLVAR, uncompressed.
+    {
+        static const uint8_t raw[] = { '0','0','7', 'm','e','s','s','a','g','e' };
+
+        char buf[128] = {0};
+        assert( sizeof(raw) == lvar_decode(buf, sizeof(buf), raw, sizeof(raw), FINFO_ELE_ANS, FINFO_LEN_LLLVAR, 99, 0) );
+        assert( 0 == strcmp(buf, "message") );
+
+        assert( sizeof(raw) == lvar_encode(buf, sizeof(buf), "message", strlen("message"), FINFO_ELE_ANS, FINFO_LEN_LLLVAR, 99, 0) );
+        assert( 0 == memcmp(buf, raw, sizeof(raw)) );
+    }
+
+    // LLLVAR, compressed.
+    {
+        static const uint8_t raw[] = { 0x00,0x07, 'm','e','s','s','a','g','e' };
+
+        char buf[128] = {0};
+        assert( sizeof(raw) == lvar_decode(buf, sizeof(buf), raw, sizeof(raw), FINFO_ELE_ANS, FINFO_LEN_LLLVAR, 99, ISO8583_FLAG_LVAR_COMPRESSED) );
+        assert( 0 == strcmp(buf, "message") );
+
+        assert( sizeof(raw) == lvar_encode(buf, sizeof(buf), "message", strlen("message"), FINFO_ELE_ANS, FINFO_LEN_LLLVAR, 99, ISO8583_FLAG_LVAR_COMPRESSED) );
+        assert( 0 == memcmp(buf, raw, sizeof(raw)) );
+    }
+}
+//------------------------------------------------------------------------------
+static
+void test_lvar_size_mode(void)
+{
+    // Byte mode, ASCII data.
+    {
+        static const uint8_t raw[] = { 0x05, '1','3','5','7','9' };
+
+        finfo_eletype_t eletype = FINFO_ELE_ANS;
+        finfo_lenmode_t lenmode = FINFO_LEN_LLVAR;
+        size_t          maxsize = 99;
+        int             flags   = ISO8583_FLAG_LVAR_COMPRESSED;
+
+        char buf[128] = {0};
+        assert( sizeof(raw) == lvar_decode(buf, sizeof(buf), raw, sizeof(raw), eletype, lenmode, maxsize, flags) );
+        assert( 0 == strcmp(buf, "13579") );
+
+        assert( sizeof(raw) == lvar_encode(buf, sizeof(buf), "13579", strlen("13579"), eletype, lenmode, maxsize, flags) );
+        assert( 0 == memcmp(buf, raw, sizeof(raw)) );
+    }
+
+    // Byte mode, digit data.
+    {
+        static const uint8_t raw[] = { 0x03, 0x01,0x35,0x79 };
+        static const uint8_t pay[] = { 0x01,0x35,0x79 };
+
+        finfo_eletype_t eletype = FINFO_ELE_N;
+        finfo_lenmode_t lenmode = FINFO_LEN_LLVAR;
+        size_t          maxsize = 99;
+        int             flags   = ISO8583_FLAG_LVAR_COMPRESSED;
+
+        char buf[128] = {0};
+        assert( sizeof(raw) == lvar_decode(buf, sizeof(buf), raw, sizeof(raw), eletype, lenmode, maxsize, flags) );
+        assert( 0 == memcmp(buf, pay, sizeof(pay)) );
+
+        assert( sizeof(raw) == lvar_encode(buf, sizeof(buf), pay, sizeof(pay), eletype, lenmode, maxsize, flags) );
+        assert( 0 == memcmp(buf, raw, sizeof(raw)) );
+    }
+
+    // Element mode, ASCII data.
+    {
+        static const uint8_t raw[] = { 0x05, '1','3','5','7','9' };
+
+        finfo_eletype_t eletype = FINFO_ELE_ANS;
+        finfo_lenmode_t lenmode = FINFO_LEN_LLVAR;
+        size_t          maxsize = 99;
+        int             flags   = ISO8583_FLAG_LVAR_COMPRESSED | ISO8583_FLAG_LVAR_LEN_IN_ELEMENTS;
+
+        char buf[128] = {0};
+        assert( sizeof(raw) == lvar_decode(buf, sizeof(buf), raw, sizeof(raw), eletype, lenmode, maxsize, flags) );
+        assert( 0 == strcmp(buf, "13579") );
+
+        assert( sizeof(raw) == lvar_encode(buf, sizeof(buf), "13579", strlen("13579"), eletype, lenmode, maxsize, flags) );
+        assert( 0 == memcmp(buf, raw, sizeof(raw)) );
+    }
+
+    // Element mode, digit data.
+    {
+        static const uint8_t raw[] = { 0x05, 0x01,0x35,0x79 };
+        static const uint8_t pay[] = { 0x01,0x35,0x79 };
+
+        finfo_eletype_t eletype = FINFO_ELE_N;
+        finfo_lenmode_t lenmode = FINFO_LEN_LLVAR;
+        size_t          maxsize = 99;
+        int             flags   = ISO8583_FLAG_LVAR_COMPRESSED | ISO8583_FLAG_LVAR_LEN_IN_ELEMENTS;
+
+        char buf[128] = {0};
+        assert( sizeof(raw) == lvar_decode(buf, sizeof(buf), raw, sizeof(raw), eletype, lenmode, maxsize, flags) );
+        assert( 0 == memcmp(buf, pay, sizeof(pay)) );
+
+        assert( sizeof(raw) == lvar_encode(buf, sizeof(buf), pay, sizeof(pay), eletype, lenmode, maxsize, flags) );
+        static const uint8_t raw_enc[] = { 0x06, 0x01,0x35,0x79 };
+        assert( 0 == memcmp(buf, raw_enc, sizeof(raw_enc)) );
+    }
+}
+//------------------------------------------------------------------------------
 void iso8583_internal_test(void)
 {
     test_bitmap_case1();
     test_bitmap_case2();
+    test_lvar_compress_type();
+    test_lvar_size_mode();
 }
 //------------------------------------------------------------------------------
 
