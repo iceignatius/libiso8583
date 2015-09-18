@@ -42,34 +42,41 @@ void iso8583_movefrom(iso8583_t *obj, iso8583_t *src);
 int iso8583_encode(const iso8583_t *obj, void *buf, size_t size, int flags);
 int iso8583_decode(      iso8583_t *obj, const void *data, size_t size, int flags);
 
+void iso8583_clean(iso8583_t *obj);
+
 int  iso8583_get_mti(const iso8583_t *obj);
 void iso8583_set_mti(      iso8583_t *obj, int mti);
 
-iso8583_tpdu_t*   iso8583_get_tpdu  (iso8583_t *obj);
-iso8583_fields_t* iso8583_get_fields(iso8583_t *obj);
+static inline
+iso8583_tpdu_t* iso8583_get_tpdu(iso8583_t *obj)
+{
+    /// @memberof iso8583_t
+    /// @brief Get TPDU object.
+    return &obj->tpdu;
+}
 
 static inline
 const iso8583_tpdu_t* iso8583_get_ctpdu(const iso8583_t *obj)
 {
-    /**
-     * @memberof iso8583_t
-     * @brief Get TPDU.
-     *
-     * @param obj Object instance.
-     * @return The TPDU object.
-     */
+    /// @memberof iso8583_t
+    /// @brief Get TPDU object.
+    return &obj->tpdu;
+}
+
+static inline
+iso8583_fields_t* iso8583_get_fields(iso8583_t *obj)
+{
+    /// @memberof iso8583_t
+    /// @brief Get fields container.
+    return &obj->fields;
 }
 
 static inline
 const iso8583_fields_t* iso8583_get_cfields(const iso8583_t *obj)
 {
-    /**
-     * @memberof iso8583_t
-     * @brief Get fields.
-     *
-     * @param obj Object instance.
-     * @return The fields object.
-     */
+    /// @memberof iso8583_t
+    /// @brief Get fields container.
+    return &obj->fields;
 }
 
 #ifdef __cplusplus

@@ -18,6 +18,11 @@ extern "C" {
 /**
  * @class iso8583_fields_t
  * @brief Container of field items.
+ *
+ * @remarks We redefine the message block to that
+ *          the bitmap will be part of data fields.
+ *          Or it will be hard to encapsulate the
+ *          encode and decode operations for field items.
  */
 typedef struct iso8583_fields_t
 {

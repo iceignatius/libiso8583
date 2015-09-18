@@ -31,8 +31,10 @@ enum iso8583_err_t
     ISO8583_ERR_GENERAL         = -1,  ///< General or unknown error.
     ISO8583_ERR_INVALID_ARG     = -2,  ///< Invalid argument.
     ISO8583_ERR_BUF_NOT_ENOUGH  = -3,  ///< Buffer size too small.
-    ISO8583_ERR_LVAR_TOO_LONG   = -4,  ///< LVAR payload size too long.
-    ISO8583_ERR_LVAR_HDR_FORMAT = -5,  ///< LVAR header value unrecognised.
+    ISO8583_ERR_MSG_TOO_LONG    = -4,  ///< Total message too long.
+    ISO8583_ERR_SIZEHDR_FAILED  = -5,  ///< Size header verification failed.
+    ISO8583_ERR_LVAR_TOO_LONG   = -6,  ///< LVAR payload size too long.
+    ISO8583_ERR_LVAR_HDR_FORMAT = -7,  ///< LVAR header value unrecognised.
 
 };
 
