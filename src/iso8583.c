@@ -98,37 +98,37 @@ void iso8583_movefrom(iso8583_t *obj, iso8583_t *src)
 static
 int write_tpdu(bufostm_t *stream, const iso8583_tpdu_t *tpdu, int flags)
 {
-    int recsz = iso8583_tpdu_encode(tpdu,
-                                    bufostm_get_writebuf(stream),
-                                    bufostm_get_restsize(stream),
-                                    flags);
-    if( recsz < 0 ) return recsz;
+    int fillsz = iso8583_tpdu_encode(tpdu,
+                                     bufostm_get_writebuf(stream),
+                                     bufostm_get_restsize(stream),
+                                     flags);
+    if( fillsz < 0 ) return fillsz;
 
-    return bufostm_write_notify(stream, recsz) ? recsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufostm_write_notify(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 static
 int write_mti(bufostm_t *stream, int mti, int flags)
 {
-    int recsz = iso8583_mti_encode(mti,
-                                   bufostm_get_writebuf(stream),
-                                   bufostm_get_restsize(stream),
-                                   flags);
-    if( recsz < 0 ) return recsz;
+    int fillsz = iso8583_mti_encode(mti,
+                                    bufostm_get_writebuf(stream),
+                                    bufostm_get_restsize(stream),
+                                    flags);
+    if( fillsz < 0 ) return fillsz;
 
-    return bufostm_write_notify(stream, recsz) ? recsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufostm_write_notify(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 static
 int write_fields(bufostm_t *stream, const iso8583_fields_t *fields, int flags)
 {
-    int recsz = iso8583_fields_encode(fields,
-                                      bufostm_get_writebuf(stream),
-                                      bufostm_get_restsize(stream),
-                                      flags);
-    if( recsz < 0 ) return recsz;
+    int fillsz = iso8583_fields_encode(fields,
+                                       bufostm_get_writebuf(stream),
+                                       bufostm_get_restsize(stream),
+                                       flags);
+    if( fillsz < 0 ) return fillsz;
 
-    return bufostm_write_notify(stream, recsz) ? recsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufostm_write_notify(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 int iso8583_encode(const iso8583_t *obj, void *buf, size_t size, int flags)
@@ -156,28 +156,28 @@ int iso8583_encode(const iso8583_t *obj, void *buf, size_t size, int flags)
     int res = 0;
     JMPBK_BEGIN
     {
-        int      recsz;
+        int      fillsz;
         uint8_t *sizehdr = NULL;
 
         if( flags & ISO8583_FLAG_HAVE_SIZEHDR )
         {
             // Save 2 bytes for size header.
             sizehdr = bufostm_get_writebuf(&stream);
-            recsz   = bufostm_write_notify(&stream, 2);
-            if( recsz < 0 ) JMPBK_THROW(ISO8583_ERR_BUF_NOT_ENOUGH);
+            fillsz  = bufostm_write_notify(&stream, 2);
+            if( fillsz < 0 ) JMPBK_THROW(ISO8583_ERR_BUF_NOT_ENOUGH);
         }
 
         if( flags & ISO8583_FLAG_HAVE_TPDU )
         {
-            recsz = write_tpdu(&stream, &obj->tpdu, flags);
-            if( recsz < 0 ) JMPBK_THROW(recsz);
+            fillsz = write_tpdu(&stream, &obj->tpdu, flags);
+            if( fillsz < 0 ) JMPBK_THROW(fillsz);
         }
 
-        recsz = write_mti(&stream, obj->mti, flags);
-        if( recsz < 0 ) JMPBK_THROW(recsz);
+        fillsz = write_mti(&stream, obj->mti, flags);
+        if( fillsz < 0 ) JMPBK_THROW(fillsz);
 
-        recsz = write_fields(&stream, &obj->fields, flags);
-        if( recsz < 0 ) JMPBK_THROW(recsz);
+        fillsz = write_fields(&stream, &obj->fields, flags);
+        if( fillsz < 0 ) JMPBK_THROW(fillsz);
 
         if( sizehdr )
         {

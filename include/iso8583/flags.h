@@ -15,6 +15,8 @@ extern "C" {
 
 /**
  * ISO 8583 encode and decode options.
+ *
+ * @remarks Flags can combine with bit or.
  */
 enum iso8583_flags_t
 {
