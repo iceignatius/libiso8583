@@ -23,11 +23,17 @@ extern "C" {
 enum iso8583_err_t
 {
     ISO8583_ERR_SUCCESS         =  0,  ///< Success, no error.
+
+    /*
+     * WARNING: All error codes must be negative value.
+     */
+
     ISO8583_ERR_GENERAL         = -1,  ///< General or unknown error.
     ISO8583_ERR_INVALID_ARG     = -2,  ///< Invalid argument.
     ISO8583_ERR_BUF_NOT_ENOUGH  = -3,  ///< Buffer size too small.
     ISO8583_ERR_LVAR_TOO_LONG   = -4,  ///< LVAR payload size too long.
     ISO8583_ERR_LVAR_HDR_FORMAT = -5,  ///< LVAR header value unrecognised.
+
 };
 
 static inline

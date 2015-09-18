@@ -72,11 +72,162 @@ void test_mti()
     }
 }
 
+void test_total_message()
+{
+    static const uint8_t raw[] =
+    {
+        // Packet header
+        0x00, 0x77,
+
+        // TPDU
+        0x60, 0x12, 0x34, 0x56, 0x78,
+
+        // MTI
+        0x08, 0x10,
+
+        // Bitmap
+        0x70, 0x18, 0x01, 0x00, 0x06, 0xA0, 0x00, 0x08,
+
+        // Field 2
+        0x08, 0x40, 0x12, 0x88, 0x18, 0x88, 0x81, 0x88, 0x88,
+
+        // Field 3
+        0x00, 0x24, 0x00,
+
+        // Field 4
+        0x00, 0x00, 0x00, 0x24, 0x00, 0x00,
+
+        // Field 12
+        0x13, 0x15, 0x30,
+
+        // Field 13
+        0x12, 0x25,
+
+        // Field 24
+        0x02, 0x46,
+
+        // Field 38
+        'A', 'P', 'P', '1', '2', '3',
+
+        // Field 39
+        '0', '0',
+
+        // Field 41
+        'A', 'c', 'c', 'e', 'p', 't', 'o', 'r',
+
+        // Field 43
+        'O', 'n', 'e', ' ', 'a', 'd', 'd', 'r', 'e', 's', 's', ' ', 'h', 'e', 'r', 'e', '.', ' ', ' ', ' ', ' ', ' ', ' ',
+        'T', 'h', 'e', ' ', 'c', 'i', 't', 'y', '.', ' ', ' ', ' ', ' ',
+        'S', 'T',
+        'Z', 'H',
+
+        // Field 61
+        0x00, 0x21,
+        'U','s','e','r',' ','d','e','f','i','n','e','d',' ','m','e','s','s','a','g','e','.',
+    };
+
+    static const uint8_t pan      [] = { 0x40, 0x12, 0x88, 0x18, 0x88, 0x81, 0x88, 0x88 };
+    static const uint8_t proccode [] = { 0x00, 0x24, 0x00 };
+    static const uint8_t amount   [] = { 0x00, 0x00, 0x00, 0x24, 0x00, 0x00 };
+    static const uint8_t localtime[] = { 0x13, 0x15, 0x30 };
+    static const uint8_t localdate[] = { 0x12, 0x25 };
+    static const uint8_t nii      [] = { 0x02, 0x46 };
+    static const uint8_t authcode [] = { 'A', 'P', 'P', '1', '2', '3' };
+    static const uint8_t respcode [] = { '0', '0' };
+    static const uint8_t tid      [] = { 'A', 'c', 'c', 'e', 'p', 't', 'o', 'r' };
+    static const uint8_t addr     [] = { 'O', 'n', 'e', ' ', 'a', 'd', 'd', 'r', 'e', 's', 's', ' ', 'h', 'e', 'r', 'e', '.', ' ', ' ', ' ', ' ', ' ', ' ',
+                                         'T', 'h', 'e', ' ', 'c', 'i', 't', 'y', '.', ' ', ' ', ' ', ' ',
+                                         'S', 'T',
+                                         'Z', 'H' };
+    static const uint8_t userdata [] = { 'U','s','e','r',' ','d','e','f','i','n','e','d',' ','m','e','s','s','a','g','e','.' };
+
+    // Encode test.
+    {
+        ISO8583::TISO8583 msg;
+
+        msg.TPDU().SetID  (0x60);
+        msg.TPDU().SetDest(0x1234);
+        msg.TPDU().SetSrc (0x5678);
+
+        msg.SetMTI(0x0810);
+
+        msg.Fields().Insert(ISO8583::TFitem( 2, pan      , sizeof(pan      )));
+        msg.Fields().Insert(ISO8583::TFitem( 3, proccode , sizeof(proccode )));
+        msg.Fields().Insert(ISO8583::TFitem( 4, amount   , sizeof(amount   )));
+        msg.Fields().Insert(ISO8583::TFitem(12, localtime, sizeof(localtime)));
+        msg.Fields().Insert(ISO8583::TFitem(13, localdate, sizeof(localdate)));
+        msg.Fields().Insert(ISO8583::TFitem(24, nii      , sizeof(nii      )));
+        msg.Fields().Insert(ISO8583::TFitem(38, authcode , sizeof(authcode )));
+        msg.Fields().Insert(ISO8583::TFitem(39, respcode , sizeof(respcode )));
+        msg.Fields().Insert(ISO8583::TFitem(41, tid      , sizeof(tid      )));
+        msg.Fields().Insert(ISO8583::TFitem(43, addr     , sizeof(addr     )));
+        msg.Fields().Insert(ISO8583::TFitem(61, userdata , sizeof(userdata )));
+
+        uint8_t buf[512] = {0};
+        int flags = ISO8583_FLAG_HAVE_SIZEHDR | ISO8583_FLAG_HAVE_TPDU | ISO8583_FLAG_LVAR_COMPRESSED;
+        assert( sizeof(raw) == msg.Encode(buf, sizeof(buf), flags) );
+        assert( 0 == memcmp(buf, raw, sizeof(raw)) );
+    }
+
+    // Decode test.
+    {
+        ISO8583::TISO8583 msg;
+
+        int flags = ISO8583_FLAG_HAVE_SIZEHDR | ISO8583_FLAG_HAVE_TPDU | ISO8583_FLAG_LVAR_COMPRESSED;
+        assert( sizeof(raw) == msg.Decode(raw, sizeof(raw), flags) );
+
+        assert(   0x60 == msg.TPDU().GetID  () );
+        assert( 0x1234 == msg.TPDU().GetDest() );
+        assert( 0x5678 == msg.TPDU().GetSrc () );
+
+        assert( 0x0810 == msg.GetMTI() );
+
+        ISO8583::TFitem item;
+
+        item = msg.Fields().GetFirst();
+        assert( item == ISO8583::TFitem( 2, pan      , sizeof(pan      )) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFitem( 3, proccode , sizeof(proccode )) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFitem( 4, amount   , sizeof(amount   )) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFitem(12, localtime, sizeof(localtime)) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFitem(13, localdate, sizeof(localdate)) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFitem(24, nii      , sizeof(nii      )) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFitem(38, authcode , sizeof(authcode )) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFitem(39, respcode , sizeof(respcode )) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFitem(41, tid      , sizeof(tid      )) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFitem(43, addr     , sizeof(addr     )) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFitem(61, userdata , sizeof(userdata )) );
+
+        item = msg.Fields().GetNext(item);
+        assert( item == ISO8583::TFields::npos() );
+    }
+}
+
 int main(int argc, char *argv[])
 {
     iso8583_internal_test();
     test_tpdu();
     test_mti();
+    test_total_message();
 
     return 0;
 }
