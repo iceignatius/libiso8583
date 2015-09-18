@@ -73,6 +73,7 @@ void iso8583_fitem_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
      * @param obj Object instance.
      * @param src The source object to be cloned.
      */
+#warning Not finished!
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src)
@@ -84,6 +85,7 @@ void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src)
      * @param obj Object instance.
      * @param src The source object to be moved from.
      */
+#warning Not finished!
 }
 //------------------------------------------------------------------------------
 int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags)
@@ -118,6 +120,17 @@ int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, in
      * @retval Positive Size of data (including zero) read from the input data.
      * @retval Negative An error code indicates that an error occurred during the process,
      *         see ::iso8583_err_t for more information.
+     */
+#warning Not finished!
+}
+//------------------------------------------------------------------------------
+void iso8583_fitem_clean(iso8583_fitem_t *obj)
+{
+    /**
+     * @memberof iso8583_fitem_t
+     * @brief Clean all values it contained.
+     *
+     * @param obj Object instance.
      */
 #warning Not finished!
 }

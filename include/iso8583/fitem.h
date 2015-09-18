@@ -10,6 +10,8 @@
 #define _ISO8583_FITEM_H_
 
 #include <string.h>
+#include "errcode.h"
+#include "flags.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,6 +46,8 @@ void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src);
 
 int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags);
 int iso8583_fitem_decode(      iso8583_fitem_t *obj, const void *data, size_t size, int flags);
+
+void iso8583_fitem_clean(iso8583_fitem_t *obj);
 
 int  iso8583_fitem_get_id(const iso8583_fitem_t *obj);
 void iso8583_fitem_set_id(      iso8583_fitem_t *obj, int id);
