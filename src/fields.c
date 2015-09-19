@@ -109,6 +109,8 @@ void iso8583_fields_movefrom(iso8583_fields_t *obj, iso8583_fields_t *src)
 static
 void buildup_bitmap(bitmap_t *bmp, const iso8583_fields_t *fields)
 {
+    bitmap_clean(bmp);
+
     for(const iso8583_fitem_t *item = iso8583_fields_get_first(fields);
         item;
         item = iso8583_fields_get_next(fields, item))
@@ -127,6 +129,28 @@ int write_bitmap(bufostm_t *stream, const bitmap_t *bmp, int flags)
     if( fillsz < 0 ) return fillsz;
 
     return bufostm_write_notify(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+}
+//------------------------------------------------------------------------------
+static
+int write_field_items(bufostm_t *stream, const iso8583_fields_t *fields, int flags)
+{
+    int total_fillsz = 0;
+
+    for(const iso8583_fitem_t *item = iso8583_fields_get_first(fields);
+        item;
+        item = iso8583_fields_get_next(fields, item))
+    {
+        int fillsz = iso8583_fitem_encode(item,
+                                          bufostm_get_writebuf(stream),
+                                          bufostm_get_restsize(stream),
+                                          flags);
+        if( fillsz < 0 ) return fillsz;
+        if( !bufostm_write_notify(stream, fillsz) ) return ISO8583_ERR_BUF_NOT_ENOUGH;
+
+        total_fillsz += fillsz;
+    }
+
+    return total_fillsz;
 }
 //------------------------------------------------------------------------------
 int iso8583_fields_encode(const iso8583_fields_t *obj, void *buf, size_t size, int flags)
@@ -158,9 +182,14 @@ int iso8583_fields_encode(const iso8583_fields_t *obj, void *buf, size_t size, i
 
         bitmap_t bmp;
         bitmap_init(&bmp);
+
         buildup_bitmap(&bmp, obj);
 
-#warning Not finished!
+        fillsz = write_bitmap(&stream, &bmp, flags);
+        if( fillsz < 0 ) JMPBK_THROW(fillsz);
+
+        fillsz = write_field_items(&stream, obj, flags);
+        if( fillsz < 0 ) JMPBK_THROW(fillsz);
 
         res = bufostm_get_datasize(&stream);
     }
@@ -171,6 +200,53 @@ int iso8583_fields_encode(const iso8583_fields_t *obj, void *buf, size_t size, i
     JMPBK_END
 
     return res;
+}
+//------------------------------------------------------------------------------
+static
+int read_bitmap(bufistm_t *stream, bitmap_t *bmp, int flags)
+{
+    int readsz = bitmap_decode(bmp,
+                               bufistm_get_readbuf(stream),
+                               bufistm_get_restsize(stream),
+                               flags);
+    if( readsz < 0 ) return readsz;
+
+    return bufistm_read_notify(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+}
+//------------------------------------------------------------------------------
+static
+int read_field_items(bufistm_t *stream, iso8583_fields_t *fields, const bitmap_t *bmp, int flags)
+{
+    iso8583_fitem_t item;
+    iso8583_fitem_init(&item);
+
+    int total_readsz = 0;
+    JMPBK_BEGIN
+    {
+        iso8583_fields_clean(fields);
+
+        for(int id=bitmap_get_first_id(bmp); id; id=bitmap_get_next_id(bmp, id))
+        {
+            int readsz = iso8583_fitem_decode(&item,
+                                              bufistm_get_readbuf(stream),
+                                              bufistm_get_restsize(stream),
+                                              flags,
+                                              id);
+            if( readsz < 0 ) JMPBK_THROW(readsz);
+
+            total_readsz += readsz;
+            iso8583_fields_insert(fields, &item);
+        }
+    }
+    JMPBK_CATCH_ALL
+    {
+        total_readsz = JMPBK_ERRCODE;
+    }
+    JMPBK_END
+
+    iso8583_fitem_deinit(&item);
+
+    return total_readsz;
 }
 //------------------------------------------------------------------------------
 int iso8583_fields_decode(iso8583_fields_t *obj, const void *data, size_t size, int flags)
@@ -188,7 +264,39 @@ int iso8583_fields_decode(iso8583_fields_t *obj, const void *data, size_t size, 
      * @retval Negative An error code indicates that an error occurred during the process,
      *         see ::iso8583_err_t for more information.
      */
-#warning Not finished!
+    assert( obj );
+
+    if( !data ) return ISO8583_ERR_INVALID_ARG;
+
+    bufistm_t stream;
+    bufistm_init(&stream, data, size);
+
+    int res = 0;
+    JMPBK_BEGIN
+    {
+        int readsz;
+
+        iso8583_fields_clean(obj);
+
+        bitmap_t bmp;
+        bitmap_init(&bmp);
+
+        readsz = read_bitmap(&stream, &bmp, flags);
+        if( readsz < 0 ) JMPBK_THROW(readsz);
+
+        readsz = read_field_items(&stream, obj, &bmp, flags);
+        if( readsz < 0 ) JMPBK_THROW(readsz);
+
+        res = bufistm_get_readsize(&stream);
+    }
+    JMPBK_CATCH_ALL
+    {
+        iso8583_fields_clean(obj);
+        res = JMPBK_ERRCODE;
+    }
+    JMPBK_END
+
+    return res;
 }
 //------------------------------------------------------------------------------
 unsigned iso8583_fields_get_count(const iso8583_fields_t *obj)
