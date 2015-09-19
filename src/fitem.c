@@ -106,7 +106,7 @@ int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int
 #warning Not finished!
 }
 //------------------------------------------------------------------------------
-int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, int flags)
+int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, int flags, int id)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -116,6 +116,7 @@ int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, in
      * @param data  The raw data to be read.
      * @param size  Size of the raw data.
      * @param flags Decode options, see ::iso8583_flags_t for more information.
+     * @param id    Field ID of the field item to decode data.
      *
      * @retval Positive Size of data (including zero) read from the input data.
      * @retval Negative An error code indicates that an error occurred during the process,

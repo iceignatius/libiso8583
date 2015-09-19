@@ -45,7 +45,7 @@ void iso8583_fitem_clone   (iso8583_fitem_t *obj, const iso8583_fitem_t *src);
 void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src);
 
 int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags);
-int iso8583_fitem_decode(      iso8583_fitem_t *obj, const void *data, size_t size, int flags);
+int iso8583_fitem_decode(      iso8583_fitem_t *obj, const void *data, size_t size, int flags, int id);
 
 void iso8583_fitem_clean(iso8583_fitem_t *obj);
 
@@ -87,8 +87,8 @@ public:
 #endif
 
 public:
-    int Encode(void *buf, size_t size, int flags)  const { return iso8583_fitem_encode(this, buf, size, flags); }   ///< @see iso8583_fitem_t::iso8583_fitem_encode
-    int Decode(const void *data, size_t size, int flags) { return iso8583_fitem_decode(this, data, size, flags); }  ///< @see iso8583_fitem_t::iso8583_fitem_decode
+    int Encode(void *buf, size_t size, int flags)          const { return iso8583_fitem_encode(this, buf, size, flags); }       ///< @see iso8583_fitem_t::iso8583_fitem_encode
+    int Decode(const void *data, size_t size, int flags, int id) { return iso8583_fitem_decode(this, data, size, flags, id); }  ///< @see iso8583_fitem_t::iso8583_fitem_decode
 
     int  GetID() const { return iso8583_fitem_get_id(this); }      ///< @see iso8583_fitem_t::iso8583_fitem_get_id
     void SetID(int id) {        iso8583_fitem_set_id(this, id); }  ///< @see iso8583_fitem_t::iso8583_fitem_set_id
