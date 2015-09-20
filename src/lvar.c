@@ -24,7 +24,7 @@ int llvar_write_header(uint8_t buf[3+1], size_t value, finfo_eletype_t eletype, 
     }
     else
     {
-        snprintf((char*)buf, 2+1, "%02u", value);
+        snprintf((char*)buf, 2+1, "%02u", (unsigned)value);
         return 2;
     }
 }
@@ -48,7 +48,7 @@ int lllvar_write_header(uint8_t buf[3+1], size_t value, finfo_eletype_t eletype,
     }
     else
     {
-        snprintf((char*)buf, 3+1, "%03u", value);
+        snprintf((char*)buf, 3+1, "%03u", (unsigned)value);
         return 3;
     }
 }
