@@ -31,7 +31,7 @@ typedef struct iso8583_fitem_t
      * WARNING : All members are private.
      */
     int     id;  // Field item ID is item index in ISO 8583 bitmap.
-    void   *data;
+    void   *buf;
     size_t  size;
 } iso8583_fitem_t;
 

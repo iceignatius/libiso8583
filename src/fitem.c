@@ -1,5 +1,25 @@
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
 #include "fitem.h"
 
+//------------------------------------------------------------------------------
+static
+void* resize_buffer(void *buf, size_t size)
+{
+    if( size )
+    {
+        buf = realloc(buf, size);
+        assert( buf );
+    }
+    else
+    {
+        if( buf ) free(buf);
+        buf = NULL;
+    }
+
+    return buf;
+}
 //------------------------------------------------------------------------------
 void iso8583_fitem_init(iso8583_fitem_t *obj)
 {
@@ -9,7 +29,8 @@ void iso8583_fitem_init(iso8583_fitem_t *obj)
      *
      * @param obj Object instance.
      */
-#warning Not finished!
+    assert( obj );
+    memset(obj, 0, sizeof(*obj));
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, size_t size)
@@ -24,7 +45,11 @@ void iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, si
      * @param data The data to be set.
      * @param size Size of the input data.
      */
-#warning Not finished!
+    assert( obj );
+
+    iso8583_fitem_init(obj);
+    iso8583_fitem_set_id(obj, id);
+    iso8583_fitem_ste_data(obj, data, size);
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
@@ -37,7 +62,10 @@ void iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
      * @param obj Object instance.
      * @param src The source object to be cloned.
      */
-#warning Not finished!
+    assert( obj && src );
+
+    iso8583_fitem_init(obj);
+    iso8583_fitem_clone(obj, src);
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_init_move(iso8583_fitem_t *obj, iso8583_fitem_t *src)
@@ -50,7 +78,10 @@ void iso8583_fitem_init_move(iso8583_fitem_t *obj, iso8583_fitem_t *src)
      * @param obj Object instance.
      * @param src The source object to be moved from.
      */
-#warning Not finished!
+    assert( obj && src );
+
+    iso8583_fitem_init(obj);
+    iso8583_fitem_movefrom(obj, src);
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_deinit(iso8583_fitem_t *obj)
@@ -61,7 +92,8 @@ void iso8583_fitem_deinit(iso8583_fitem_t *obj)
      *
      * @param obj Object instance.
      */
-#warning Not finished!
+    assert( obj );
+    if( obj->buf ) free(obj->buf);
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
@@ -73,7 +105,11 @@ void iso8583_fitem_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
      * @param obj Object instance.
      * @param src The source object to be cloned.
      */
-#warning Not finished!
+    assert( obj && src );
+
+    obj->id  = src->id;
+    obj->buf = resize_buffer(obj->buf, src->size);
+    memcpy(obj->buf, src->buf, src->size);
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src)
@@ -85,7 +121,12 @@ void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src)
      * @param obj Object instance.
      * @param src The source object to be moved from.
      */
-#warning Not finished!
+    assert( obj && src );
+
+    iso8583_fitem_clean(obj);
+
+    *obj = *src;
+    memset(src, 0, sizeof(*obj));
 }
 //------------------------------------------------------------------------------
 int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags)
@@ -133,7 +174,8 @@ void iso8583_fitem_clean(iso8583_fitem_t *obj)
      *
      * @param obj Object instance.
      */
-#warning Not finished!
+    assert( obj );
+    obj->buf = resize_buffer(obj->buf, 0);
 }
 //------------------------------------------------------------------------------
 int iso8583_fitem_get_id(const iso8583_fitem_t *obj)
@@ -145,7 +187,8 @@ int iso8583_fitem_get_id(const iso8583_fitem_t *obj)
      * @param obj Object instance.
      * @return The field ID.
      */
-#warning Not finished!
+    assert( obj );
+    return obj->id;
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_set_id(iso8583_fitem_t *obj, int id)
@@ -157,7 +200,8 @@ void iso8583_fitem_set_id(iso8583_fitem_t *obj, int id)
      * @param obj Object instance.
      * @param id  The field ID to be set.
      */
-#warning Not finished!
+    assert( obj );
+    obj->id = id;
 }
 //------------------------------------------------------------------------------
 const void* iso8583_fitem_get_data(const iso8583_fitem_t *obj)
@@ -169,7 +213,8 @@ const void* iso8583_fitem_get_data(const iso8583_fitem_t *obj)
      * @param obj Object instance.
      * @return Pointer to the field data; or NULL if no data contained.
      */
-#warning Not finished!
+    assert( obj );
+    return obj->buf;
 }
 //------------------------------------------------------------------------------
 size_t iso8583_fitem_get_size(const iso8583_fitem_t *obj)
@@ -181,7 +226,8 @@ size_t iso8583_fitem_get_size(const iso8583_fitem_t *obj)
      * @param obj Object instance.
      * @return Size of the field data.
      */
-#warning Not finished!
+    assert( obj );
+    return obj->size;
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_set_data(const iso8583_fitem_t *obj, const void *data, size_t size)
@@ -194,6 +240,11 @@ void iso8583_fitem_set_data(const iso8583_fitem_t *obj, const void *data, size_t
      * @param data The data to be set.
      * @param size Size of the input data.
      */
-#warning Not finished!
+    assert( obj );
+
+    if( !data ) size = 0;
+
+    obj->buf = resize_buffer(obj->buf, size);
+    memcpy(obj->buf, data, size);
 }
 //------------------------------------------------------------------------------
