@@ -49,7 +49,7 @@ void iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, si
 
     iso8583_fitem_init(obj);
     iso8583_fitem_set_id(obj, id);
-    iso8583_fitem_ste_data(obj, data, size);
+    iso8583_fitem_set_data(obj, data, size);
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
@@ -230,7 +230,7 @@ size_t iso8583_fitem_get_size(const iso8583_fitem_t *obj)
     return obj->size;
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_set_data(const iso8583_fitem_t *obj, const void *data, size_t size)
+void iso8583_fitem_set_data(iso8583_fitem_t *obj, const void *data, size_t size)
 {
     /**
      * @memberof iso8583_fitem_t

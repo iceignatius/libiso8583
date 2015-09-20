@@ -54,7 +54,7 @@ void iso8583_fitem_set_id(      iso8583_fitem_t *obj, int id);
 
 const void* iso8583_fitem_get_data(const iso8583_fitem_t *obj);
 size_t      iso8583_fitem_get_size(const iso8583_fitem_t *obj);
-void        iso8583_fitem_set_data(const iso8583_fitem_t *obj, const void *data, size_t size);
+void        iso8583_fitem_set_data(      iso8583_fitem_t *obj, const void *data, size_t size);
 
 #ifdef __cplusplus
 }  // extern "C"
@@ -98,8 +98,8 @@ public:
     void        SetData(const void *data, size_t size) {        iso8583_fitem_set_data(this, data, size); }  ///< @see iso8583_fitem_t::iso8583_fitem_set_data
 
 public:
-    bool operator==(const TFitem &tar) { return id == tar.id && size == tar.size && !memcmp(data, tar.data, tar.size); }  ///< Comparison.
-    bool operator!=(const TFitem &tar) { return id != tar.id || size != tar.size ||  memcmp(data, tar.data, tar.size); }  ///< Comparison.
+    bool operator==(const TFitem &tar) { return id == tar.id && size == tar.size && !memcmp(buf, tar.buf, tar.size); }  ///< Comparison.
+    bool operator!=(const TFitem &tar) { return id != tar.id || size != tar.size ||  memcmp(buf, tar.buf, tar.size); }  ///< Comparison.
 
 };
 
