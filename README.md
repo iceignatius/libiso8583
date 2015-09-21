@@ -1,4 +1,4 @@
-# Main Page # {#mainpage}
+# Introduction # {#mainpage}
 
 目的：提供 ISO 8583 封包編解程式庫。<br/>
 作者：王文佑。<br/>
@@ -7,7 +7,8 @@
 ### 建置
 * 在程式庫目錄下直接以 make 指令，並依據作業系統指定對應的 makefile，即可完成程式的建置。
 * 使用 make 帶 install 參數可以進行安裝(Windows 不支援)。
-* 亦可使用 Doxygen 程式產生說明文件。
+* 亦可使用 make 帶 doc 參數產生說明文件
+  (需要先安裝 graphviz、doxygen-latex、latex-cjk-chinese 等套件)。
 
 ### 程式庫引用方式
 1. 完成本程式庫的建置。

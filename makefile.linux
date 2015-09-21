@@ -1,0 +1,52 @@
+# ----------------------------------------------------------
+# ---- ISO 8583 Library ------------------------------------
+# ----------------------------------------------------------
+
+# Tools setting
+CC  := gcc
+CXX := g++
+LD  := gcc
+AR  := ar rcs
+
+# Path setting
+ifndef DESTDIR
+	DESTDIR = /usr/local
+endif
+
+# Processes
+
+.PHONY: all clean install uninstall test doc
+
+all:
+	cd lib && $(MAKE) -f makefile-static.linux $(MAKECMDGOALS)
+	cd lib && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
+
+clean:
+	cd lib  && $(MAKE) -f makefile-static.linux $(MAKECMDGOALS)
+	cd lib  && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
+	cd test && $(MAKE) -f makefile.linux $(MAKECMDGOALS)
+
+install:
+	cd lib && $(MAKE) -f makefile-static.linux $(MAKECMDGOALS)
+	cd lib && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
+
+	test -d $(DESTDIR)/include/iso8583 || mkdir $(DESTDIR)/include/iso8583
+	cp include/iso8583/*  $(DESTDIR)/include/iso8583
+	cp lib/libiso8583_s.a $(DESTDIR)/lib
+	cp lib/libiso8583.so  $(DESTDIR)/lib
+
+uninstall:
+	-rm $(DESTDIR)/lib/libiso8583.so
+	-rm $(DESTDIR)/lib/libiso8583_s.a
+	-rm $(DESTDIR)/include/iso8583/*
+	-rmdir $(DESTDIR)/include/iso8583
+
+test: all
+	cd test && $(MAKE) -f makefile.linux $(MAKECMDGOALS)
+
+doc:
+	doxygen
+	sed -i -e 's,begin{document},usepackage{CJKutf8}\n\\begin{document}\n\\begin{CJK}{UTF8}{bsmi},' doc/latex/refman.tex
+	sed -i -e 's,end{document},end{CJK}\n\\end{document},' doc/latex/refman.tex
+	cd doc/latex/ && make pdf
+	cp doc/latex/refman.pdf doc/ISO8583_Library_Document.pdf

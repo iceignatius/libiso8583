@@ -1,5 +1,6 @@
 doc
 temp
+temp-*
 *.a
 *.so
 *.dll
