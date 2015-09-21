@@ -1,6 +1,9 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <gen/jmpbk.h>
+#include <gen/bufstm.h>
+#include "lvar.h"
 #include "fitem.h"
 
 //------------------------------------------------------------------------------
@@ -123,10 +126,9 @@ void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src)
      */
     assert( obj && src );
 
-    iso8583_fitem_clean(obj);
-
+    iso8583_fitem_deinit(obj);
     *obj = *src;
-    memset(src, 0, sizeof(*obj));
+    iso8583_fitem_init(src);
 }
 //------------------------------------------------------------------------------
 int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags)
@@ -145,6 +147,61 @@ int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int
      *         see ::iso8583_err_t for more information.
      */
 #warning Not finished!
+int lvar_encode(void           *buf,
+                size_t          bufsz,
+                const void     *data,
+                size_t          datsz,
+                finfo_eletype_t eletype,
+                finfo_lenmode_t lvartype,
+                size_t          maxsize,
+                int             flags);
+}
+//------------------------------------------------------------------------------
+static
+const finfo_t* get_finfo(int id)
+{
+    return ( ISO8583_FITEM_ID_MIN <= id && id <= ISO8583_FITEM_ID_MAX )?
+           ( &finfo_list[id] ):( NULL );
+}
+//------------------------------------------------------------------------------
+static
+int elecount_to_bytes(finfo_eletype_t eletype, unsigned elecount)
+{
+    if( !( eletype & ~FINFO_ELE_N ) )
+        return ( elecount + 1 ) >> 1;  // Convert BCD counts to byte counts.
+    else if( !( eletype & ~FINFO_ELE_B ) )
+        return ( elecount + ( 8 - 1 ) ) >> 3;  // Convert bit counts to byte counts.
+    else
+        return elecount;
+}
+//------------------------------------------------------------------------------
+static
+int read_fixlen_data(bufistm_t *stream, uint8_t *buf, finfo_eletype_t eletype, unsigned elecount)
+{
+    int readsz = elecount_to_bytes(eletype, elecount);
+    return bufistm_read(stream, buf, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+}
+//------------------------------------------------------------------------------
+static
+int read_lvar_data(bufistm_t     *stream,
+                   uint8_t       *buf,
+                   size_t         bufsz,
+                   size_t        *fillsz,
+                   const finfo_t *finfo,
+                   int            flags)
+{
+    int readsz = lvar_decode(buf,
+                             bufsz,
+                             fillsz,
+                             bufistm_get_readbuf(stream),
+                             bufistm_get_restsize(stream),
+                             finfo->eletype,
+                             finfo->lenmode,
+                             finfo->maxsize,
+                             flags);
+    if( readsz < 0 ) return readsz;
+
+    return bufistm_read_notify(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, int flags, int id)
@@ -163,7 +220,53 @@ int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, in
      * @retval Negative An error code indicates that an error occurred during the process,
      *         see ::iso8583_err_t for more information.
      */
-#warning Not finished!
+    assert( obj );
+
+    if( !data ) return ISO8583_ERR_INVALID_ARG;
+
+    bufistm_t stream;
+    bufistm_init(&stream, data, size);
+
+    static const size_t bufsz = 9999;
+    uint8_t *buf = malloc(bufsz);
+    assert( buf );
+
+    int res = 0;
+    JMPBK_BEGIN
+    {
+        int    readsz;
+        size_t datasz;
+
+        const finfo_t *finfo = get_finfo(id);
+        if( !finfo ) JMPBK_THROW(ISO8583_ERR_INVALID_ARG);
+
+        if( finfo->lenmode == FINFO_LEN_FIXED )
+        {
+            readsz = read_fixlen_data(&stream, buf, finfo->eletype, finfo->maxsize);
+            if( readsz < 0 ) JMPBK_THROW(readsz);
+
+            datasz = readsz;
+        }
+        else
+        {
+            readsz = read_lvar_data(&stream, buf, bufsz, &datasz, finfo, flags);
+            if( readsz < 0 ) JMPBK_THROW(readsz);
+        }
+
+        iso8583_fitem_set_id(obj, id);
+        iso8583_fitem_set_data(obj, buf, datasz);
+
+        res = bufistm_get_readsize(&stream);
+    }
+    JMPBK_CATCH_ALL
+    {
+        res = JMPBK_ERRCODE;
+    }
+    JMPBK_END
+
+    free(buf);
+
+    return res;
 }
 //------------------------------------------------------------------------------
 void iso8583_fitem_clean(iso8583_fitem_t *obj)

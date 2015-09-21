@@ -179,18 +179,16 @@ cout << "Total encode size : " << msg.Encode(buf, sizeof(buf), flags) << "/" << 
         ISO8583::TISO8583 msg;
 
         int flags = ISO8583_FLAG_HAVE_SIZEHDR | ISO8583_FLAG_HAVE_TPDU | ISO8583_FLAG_LVAR_COMPRESSED;
-cout << "Total decode size : " << msg.Decode(raw, sizeof(raw), flags) << "/" << sizeof(raw) << endl;
-//        assert( sizeof(raw) == msg.Decode(raw, sizeof(raw), flags) );
+        assert( sizeof(raw) == msg.Decode(raw, sizeof(raw), flags) );
 
-//        assert(   0x60 == msg.TPDU().GetID  () );
-//        assert( 0x1234 == msg.TPDU().GetDest() );
-//        assert( 0x5678 == msg.TPDU().GetSrc () );
+        assert(   0x60 == msg.TPDU().GetID  () );
+        assert( 0x1234 == msg.TPDU().GetDest() );
+        assert( 0x5678 == msg.TPDU().GetSrc () );
 
-//        assert( 0x0810 == msg.GetMTI() );
+        assert( 0x0810 == msg.GetMTI() );
 
         ISO8583::TFitem item;
 
-/*
         item = msg.Fields().GetFirst();
         assert( item == ISO8583::TFitem( 2, pan      , sizeof(pan      )) );
 
@@ -226,7 +224,6 @@ cout << "Total decode size : " << msg.Decode(raw, sizeof(raw), flags) << "/" << 
 
         item = msg.Fields().GetNext(item);
         assert( item == ISO8583::TFields::npos() );
-*/
     }
 }
 

@@ -234,6 +234,8 @@ int read_field_items(bufistm_t *stream, iso8583_fields_t *fields, const bitmap_t
                                               id);
             if( readsz < 0 ) JMPBK_THROW(readsz);
 
+            if( !bufistm_read_notify(stream, readsz) ) JMPBK_THROW(ISO8583_ERR_BUF_NOT_ENOUGH);
+
             total_readsz += readsz;
             iso8583_fields_insert(fields, &item);
         }
