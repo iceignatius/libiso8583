@@ -110,8 +110,9 @@ void iso8583_fitem_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
      */
     assert( obj && src );
 
-    obj->id  = src->id;
-    obj->buf = resize_buffer(obj->buf, src->size);
+    obj->id   = src->id;
+    obj->size = src->size;
+    obj->buf  = resize_buffer(obj->buf, src->size);
     memcpy(obj->buf, src->buf, src->size);
 }
 //------------------------------------------------------------------------------
@@ -131,32 +132,6 @@ void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src)
     iso8583_fitem_init(src);
 }
 //------------------------------------------------------------------------------
-int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags)
-{
-    /**
-     * @memberof iso8583_fitem_t
-     * @brief Encode to raw data.
-     *
-     * @param obj   Object instance.
-     * @param buf   The output buffer.
-     * @param size  Size of the output buffer.
-     * @param flags Encode options, see ::iso8583_flags_t for more information.
-     *
-     * @retval Positive Size of data (including zero) filled to the output buffer.
-     * @retval Negative An error code indicates that an error occurred during the process,
-     *         see ::iso8583_err_t for more information.
-     */
-#warning Not finished!
-int lvar_encode(void           *buf,
-                size_t          bufsz,
-                const void     *data,
-                size_t          datsz,
-                finfo_eletype_t eletype,
-                finfo_lenmode_t lvartype,
-                size_t          maxsize,
-                int             flags);
-}
-//------------------------------------------------------------------------------
 static
 const finfo_t* get_finfo(int id)
 {
@@ -173,6 +148,51 @@ int elecount_to_bytes(finfo_eletype_t eletype, unsigned elecount)
         return ( elecount + ( 8 - 1 ) ) >> 3;  // Convert bit counts to byte counts.
     else
         return elecount;
+}
+//------------------------------------------------------------------------------
+int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags)
+{
+    /**
+     * @memberof iso8583_fitem_t
+     * @brief Encode to raw data.
+     *
+     * @param obj   Object instance.
+     * @param buf   The output buffer.
+     * @param size  Size of the output buffer.
+     * @param flags Encode options, see ::iso8583_flags_t for more information.
+     *
+     * @retval Positive Size of data (including zero) filled to the output buffer.
+     * @retval Negative An error code indicates that an error occurred during the process,
+     *         see ::iso8583_err_t for more information.
+     */
+    assert( obj );
+
+    if( !buf ) return ISO8583_ERR_INVALID_ARG;
+
+    const finfo_t *finfo = get_finfo(obj->id);
+    if( !finfo ) return ISO8583_ERR_INVALID_FIELD_ID;
+
+    if( finfo->lenmode == FINFO_LEN_FIXED )
+    {
+        int fieldsize = elecount_to_bytes(finfo->eletype, finfo->maxsize);
+        if( obj->size != fieldsize ) return ISO8583_ERR_FIELD_SIZE_ERROR;
+
+        if( size < fieldsize ) return ISO8583_ERR_BUF_NOT_ENOUGH;
+
+        memcpy(buf, obj->buf, obj->size);
+        return fieldsize;
+    }
+    else
+    {
+        return lvar_encode(buf,
+                           size,
+                           obj->buf,
+                           obj->size,
+                           finfo->eletype,
+                           finfo->lenmode,
+                           finfo->maxsize,
+                           flags);
+    }
 }
 //------------------------------------------------------------------------------
 int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, int flags, int id)
@@ -206,12 +226,14 @@ int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, in
         size_t paysz;
 
         const finfo_t *finfo = get_finfo(id);
-        if( !finfo ) JMPBK_THROW(ISO8583_ERR_INVALID_ARG);
+        if( !finfo ) JMPBK_THROW(ISO8583_ERR_INVALID_FIELD_ID);
 
         if( finfo->lenmode == FINFO_LEN_FIXED )
         {
             paysz = readsz = elecount_to_bytes(finfo->eletype, finfo->maxsize);
             if( size < readsz ) JMPBK_THROW(ISO8583_ERR_BUF_NOT_ENOUGH);
+
+            memcpy(buf, data, paysz);
         }
         else
         {
@@ -252,7 +274,9 @@ void iso8583_fitem_clean(iso8583_fitem_t *obj)
      * @param obj Object instance.
      */
     assert( obj );
-    obj->buf = resize_buffer(obj->buf, 0);
+
+    obj->size = 0;
+    obj->buf  = resize_buffer(obj->buf, 0);
 }
 //------------------------------------------------------------------------------
 int iso8583_fitem_get_id(const iso8583_fitem_t *obj)
@@ -321,7 +345,8 @@ void iso8583_fitem_set_data(iso8583_fitem_t *obj, const void *data, size_t size)
 
     if( !data ) size = 0;
 
-    obj->buf = resize_buffer(obj->buf, size);
+    obj->size = size;
+    obj->buf  = resize_buffer(obj->buf, size);
     memcpy(obj->buf, data, size);
 }
 //------------------------------------------------------------------------------

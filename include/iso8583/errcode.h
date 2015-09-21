@@ -34,8 +34,9 @@ enum iso8583_err_t
     ISO8583_ERR_MSG_TOO_LONG     = -4,  ///< Total message too long.
     ISO8583_ERR_SIZEHDR_FAILED   = -5,  ///< Size header verification failed.
     ISO8583_ERR_INVALID_FIELD_ID = -6,  ///< Invalid field ID.
-    ISO8583_ERR_LVAR_TOO_LONG    = -7,  ///< LVAR payload size too long.
-    ISO8583_ERR_LVAR_HDR_FORMAT  = -8,  ///< LVAR header value unrecognised.
+    ISO8583_ERR_FIELD_SIZE_ERROR = -7,  ///< Size of field item not match to what it should be.
+    ISO8583_ERR_LVAR_TOO_LONG    = -8,  ///< LVAR payload size too long.
+    ISO8583_ERR_LVAR_HDR_FORMAT  = -9,  ///< LVAR header value unrecognised.
 
 };
 
