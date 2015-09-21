@@ -174,7 +174,7 @@ int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int
 
     if( finfo->lenmode == FINFO_LEN_FIXED )
     {
-        int fieldsize = elecount_to_bytes(finfo->eletype, finfo->maxsize);
+        int fieldsize = elecount_to_bytes(finfo->eletype, finfo->maxcount);
         if( obj->size != fieldsize ) return ISO8583_ERR_FIELD_SIZE_ERROR;
 
         if( size < fieldsize ) return ISO8583_ERR_BUF_NOT_ENOUGH;
@@ -190,7 +190,7 @@ int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int
                            obj->size,
                            finfo->eletype,
                            finfo->lenmode,
-                           finfo->maxsize,
+                           finfo->maxcount,
                            flags);
     }
 }
@@ -230,7 +230,7 @@ int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, in
 
         if( finfo->lenmode == FINFO_LEN_FIXED )
         {
-            paysz = readsz = elecount_to_bytes(finfo->eletype, finfo->maxsize);
+            paysz = readsz = elecount_to_bytes(finfo->eletype, finfo->maxcount);
             if( size < readsz ) JMPBK_THROW(ISO8583_ERR_BUF_NOT_ENOUGH);
 
             memcpy(buf, data, paysz);
@@ -244,7 +244,7 @@ int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, in
                                  size,
                                  finfo->eletype,
                                  finfo->lenmode,
-                                 finfo->maxsize,
+                                 finfo->maxcount,
                                  flags);
             if( readsz < 0 ) JMPBK_THROW(readsz);
         }

@@ -74,13 +74,13 @@ int lvar_encode(void           *buf,
                 size_t          datsz,
                 finfo_eletype_t eletype,
                 finfo_lenmode_t lvartype,
-                size_t          maxsize,
+                size_t          maxcount,
                 int             flags)
 {
     if( !buf || !data ) return ISO8583_ERR_INVALID_ARG;
 
     if( !( flags & ISO8583_FLAG_LVAR_LEN_NO_LIMIT ) &&
-        datsz > maxsize )
+        datsz > maxcount )
     {
         return ISO8583_ERR_LVAR_TOO_LONG;
     }
@@ -188,7 +188,7 @@ int lvar_decode(void           *buf,
                 size_t          datsz,
                 finfo_eletype_t eletype,
                 finfo_lenmode_t lvartype,
-                size_t          maxsize,
+                size_t          maxcount,
                 int             flags)
 {
     if( !buf || !data ) return ISO8583_ERR_INVALID_ARG;
@@ -203,7 +203,7 @@ int lvar_decode(void           *buf,
     if( bufsz < hdrval ) return ISO8583_ERR_BUF_NOT_ENOUGH;
 
     if( !( flags & ISO8583_FLAG_LVAR_LEN_NO_LIMIT ) &&
-        hdrval > maxsize )
+        hdrval > maxcount )
     {
         return ISO8583_ERR_LVAR_TOO_LONG;
     }

@@ -28,7 +28,7 @@ typedef struct finfo_t
 {
     finfo_eletype_t eletype;
     finfo_lenmode_t lenmode;
-    int             maxsize;
+    int             maxcount;  // Maximum element count of field item.
 } finfo_t;
 
 static const finfo_t finfo_list[] =

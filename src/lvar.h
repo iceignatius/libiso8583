@@ -15,7 +15,7 @@ int lvar_encode(void           *buf,
                 size_t          datsz,
                 finfo_eletype_t eletype,
                 finfo_lenmode_t lvartype,
-                size_t          maxsize,
+                size_t          maxcount,
                 int             flags);
 
 int lvar_decode(void           *buf,
@@ -25,7 +25,7 @@ int lvar_decode(void           *buf,
                 size_t          datsz,
                 finfo_eletype_t eletype,
                 finfo_lenmode_t lvartype,
-                size_t          maxsize,
+                size_t          maxcount,
                 int             flags);
 
 #endif
