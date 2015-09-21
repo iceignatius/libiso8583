@@ -183,6 +183,7 @@ int lvar_read_header(bufistm_t       *stream,
 //------------------------------------------------------------------------------
 int lvar_decode(void           *buf,
                 size_t          bufsz,
+                size_t         *fillsz,  // Return data bytes filled to the output buffer.
                 const void     *data,
                 size_t          datsz,
                 finfo_eletype_t eletype,
@@ -208,6 +209,7 @@ int lvar_decode(void           *buf,
     }
 
     if( !bufistm_read(&stream, buf, hdrval) ) return ISO8583_ERR_BUF_NOT_ENOUGH;
+    *fillsz = hdrval;
 
     return bufistm_get_readsize(&stream);
 }

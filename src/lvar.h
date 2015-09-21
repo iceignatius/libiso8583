@@ -20,6 +20,7 @@ int lvar_encode(void           *buf,
 
 int lvar_decode(void           *buf,
                 size_t          bufsz,
+                size_t         *fillsz,  // Return data bytes filled to the output buffer.
                 const void     *data,
                 size_t          datsz,
                 finfo_eletype_t eletype,
