@@ -29,14 +29,14 @@ enum iso8583_err_t
      */
 
     ISO8583_ERR_GENERAL          = -1,  ///< General or unknown error.
-    ISO8583_ERR_INVALID_ARG      = -2,  ///< Invalid argument.
-    ISO8583_ERR_BUF_NOT_ENOUGH   = -3,  ///< Buffer size too small.
-    ISO8583_ERR_MSG_TOO_LONG     = -4,  ///< Total message too long.
-    ISO8583_ERR_SIZEHDR_FAILED   = -5,  ///< Size header verification failed.
-    ISO8583_ERR_INVALID_FIELD_ID = -6,  ///< Invalid field ID.
-    ISO8583_ERR_FIELD_SIZE_ERROR = -7,  ///< Size of field item not match to what it should be.
-    ISO8583_ERR_LVAR_TOO_LONG    = -8,  ///< LVAR payload size too long.
-    ISO8583_ERR_LVAR_HDR_FORMAT  = -9,  ///< LVAR header value unrecognised.
+    ISO8583_ERR_INVALID_ARG      = -2,  ///< Invalid argument!
+    ISO8583_ERR_BUF_NOT_ENOUGH   = -3,  ///< Buffer size too small!
+    ISO8583_ERR_MSG_TOO_LONG     = -4,  ///< Total message too long!
+    ISO8583_ERR_SIZEHDR_FAILED   = -5,  ///< Size header verification failed!
+    ISO8583_ERR_INVALID_FIELD_ID = -6,  ///< Invalid field ID!
+    ISO8583_ERR_FIELD_SIZE_ERROR = -7,  ///< Size of field item not match to what it should be!
+    ISO8583_ERR_LVAR_TOO_LONG    = -8,  ///< LVAR payload size too long!
+    ISO8583_ERR_LVAR_HDR_FORMAT  = -9,  ///< LVAR header value unrecognised!
 
 };
 
@@ -46,7 +46,20 @@ const char* iso8583_err_get_description(int errcode)
     /**
      * Get the corresponding description string of an error code.
      */
-#warning Not finished!
+    switch( errcode )
+    {
+    case ISO8583_ERR_SUCCESS          :  return "Success, no error.";
+    case ISO8583_ERR_GENERAL          :  return "General or unknown error!";
+    case ISO8583_ERR_INVALID_ARG      :  return "Invalid argument!";
+    case ISO8583_ERR_BUF_NOT_ENOUGH   :  return "Buffer size too small!";
+    case ISO8583_ERR_MSG_TOO_LONG     :  return "Total message too long!";
+    case ISO8583_ERR_SIZEHDR_FAILED   :  return "Size header verification failed!";
+    case ISO8583_ERR_INVALID_FIELD_ID :  return "Invalid field ID!";
+    case ISO8583_ERR_FIELD_SIZE_ERROR :  return "Size of field item not match to what it should be!";
+    case ISO8583_ERR_LVAR_TOO_LONG    :  return "LVAR payload size too long!";
+    case ISO8583_ERR_LVAR_HDR_FORMAT  :  return "LVAR header value unrecognised!";
+    }
+
     return "Unknown error occurred!";
 }
 
