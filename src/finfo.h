@@ -24,14 +24,14 @@ typedef enum finfo_lenmode_t
     FINFO_LEN_LLLVAR,
 } finfo_lenmode_t;
 
-typedef struct finfo_item_t
+typedef struct finfo_t
 {
     finfo_eletype_t eletype;
     finfo_lenmode_t lenmode;
     int             maxsize;
-} finfo_item_t;
+} finfo_t;
 
-static const finfo_item_t finfo[] =
+static const finfo_t finfo_list[] =
 {
     // Field_ID  Element_type   Length_mode       Maximum_size
               {  0,             0,                  0 },
