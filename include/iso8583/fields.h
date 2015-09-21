@@ -70,16 +70,16 @@ class TFields : protected iso8583_fields_t
     friend class TISO8583;
 
 public:
-    TFields()                              { iso8583_fields_init      (this); }        ///< @see iso8583_fields_t::iso8583_fields_init
-    TFields(const TFields &src)            { iso8583_fields_init_clone(this, &src); }  ///< @see iso8583_fields_t::iso8583_fields_init_clone
+    TFields()                              { iso8583_fields_init      (this); }                      ///< @see iso8583_fields_t::iso8583_fields_init
+    TFields(const TFields &src)            { iso8583_fields_init_clone(this, &src); }                ///< @see iso8583_fields_t::iso8583_fields_init_clone
 #if __cplusplus >= 201103L
-    TFields(TFields &&src)                 { iso8583_fields_init_move (this, &src); }  ///< @see iso8583_fields_t::iso8583_fields_init_move
+    TFields(TFields &&src)                 { iso8583_fields_init_move (this, &src); }                ///< @see iso8583_fields_t::iso8583_fields_init_move
 #endif
-    ~TFields()                             { iso8583_fields_deinit    (this); }        ///< @see iso8583_fields_t::iso8583_fields_deinit
+    ~TFields()                             { iso8583_fields_deinit    (this); }                      ///< @see iso8583_fields_t::iso8583_fields_deinit
 
-    TFields& operator=(const TFields &src) { iso8583_fields_clone     (this, &src); }  ///< @see iso8583_fields_t::iso8583_fields_clone
+    TFields& operator=(const TFields &src) { iso8583_fields_clone     (this, &src); return *this; }  ///< @see iso8583_fields_t::iso8583_fields_clone
 #if __cplusplus >= 201103L
-    TFields& operator=(TFields &&src)      { iso8583_fields_movefrom  (this, &src); }  ///< @see iso8583_fields_t::iso8583_fields_movefrom
+    TFields& operator=(TFields &&src)      { iso8583_fields_movefrom  (this, &src); return *this; }  ///< @see iso8583_fields_t::iso8583_fields_movefrom
 #endif
 
 public:
@@ -94,7 +94,7 @@ public:
 
 public:
     int Encode(void *buf, size_t size, int flags)  const { return iso8583_fields_encode(this, buf, size, flags); }   ///< @see iso8583_fields_t::iso8583_fields_encode
-    int Decode(const void *data, size_t size, int flags) {        iso8583_fields_decode(this, data, size, flags); }  ///< @see iso8583_fields_t::iso8583_fields_decode
+    int Decode(const void *data, size_t size, int flags) { return iso8583_fields_decode(this, data, size, flags); }  ///< @see iso8583_fields_t::iso8583_fields_decode
 
     unsigned GetCount() const { return iso8583_fields_get_count(this); }  ///< @see iso8583_fields_t::iso8583_fields_get_count
 
