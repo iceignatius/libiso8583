@@ -29,8 +29,10 @@
 #endif
 
 // Library interface.
-#ifdef ISO8583_MAKESHARED
+#if   defined(ISO8583_MAKESHARED)
     #define ISO8583_API(type) ISO8583_EXPORT type ISO8583_CALL
+#elif defined(ISO8583_MAKESTATIC) || defined(ISO8583_USE_STATICLIB)
+    #define ISO8583_API(type) type ISO8583_CALL
 #else
     #define ISO8583_API(type) ISO8583_IMPORT type ISO8583_CALL
 #endif

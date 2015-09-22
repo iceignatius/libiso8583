@@ -19,7 +19,8 @@ LIBDIR  :=
 CFLAGS  :=
 CFLAGS  += -Wall
 CFLAGS  += -O2
-#CFLAGS  += -fvisibility=hidden
+CFLAGS  += -fvisibility=hidden
+CFLAGS  += -DISO8583_MAKESTATIC
 ifeq ($(MAKECMDGOALS),test)
 CFLAGS  += -DISO8583_DEBUGTEST
 endif
