@@ -33,25 +33,25 @@ typedef struct iso8583_fields_t
     unsigned        count;
 } iso8583_fields_t;
 
-void iso8583_fields_init      (iso8583_fields_t *obj);
-void iso8583_fields_init_clone(iso8583_fields_t *obj, const iso8583_fields_t *src);
-void iso8583_fields_init_move (iso8583_fields_t *obj, iso8583_fields_t *src);
-void iso8583_fields_deinit    (iso8583_fields_t *obj);
+ISO8583_API(void) iso8583_fields_init      (iso8583_fields_t *obj);
+ISO8583_API(void) iso8583_fields_init_clone(iso8583_fields_t *obj, const iso8583_fields_t *src);
+ISO8583_API(void) iso8583_fields_init_move (iso8583_fields_t *obj, iso8583_fields_t *src);
+ISO8583_API(void) iso8583_fields_deinit    (iso8583_fields_t *obj);
 
-void iso8583_fields_clone   (iso8583_fields_t *obj, const iso8583_fields_t *src);
-void iso8583_fields_movefrom(iso8583_fields_t *obj, iso8583_fields_t *src);
+ISO8583_API(void) iso8583_fields_clone   (iso8583_fields_t *obj, const iso8583_fields_t *src);
+ISO8583_API(void) iso8583_fields_movefrom(iso8583_fields_t *obj, iso8583_fields_t *src);
 
-int iso8583_fields_encode(const iso8583_fields_t *obj, void *buf, size_t size, int flags);
-int iso8583_fields_decode(      iso8583_fields_t *obj, const void *data, size_t size, int flags);
+ISO8583_API(int) iso8583_fields_encode(const iso8583_fields_t *obj, void *buf, size_t size, int flags);
+ISO8583_API(int) iso8583_fields_decode(      iso8583_fields_t *obj, const void *data, size_t size, int flags);
 
-unsigned               iso8583_fields_get_count(const iso8583_fields_t *obj);
-const iso8583_fitem_t* iso8583_fields_get_item (const iso8583_fields_t *obj, unsigned id);
-const iso8583_fitem_t* iso8583_fields_get_first(const iso8583_fields_t *obj);
-const iso8583_fitem_t* iso8583_fields_get_next (const iso8583_fields_t *obj, const iso8583_fitem_t *prev);
+ISO8583_API(unsigned              ) iso8583_fields_get_count(const iso8583_fields_t *obj);
+ISO8583_API(const iso8583_fitem_t*) iso8583_fields_get_item (const iso8583_fields_t *obj, unsigned id);
+ISO8583_API(const iso8583_fitem_t*) iso8583_fields_get_first(const iso8583_fields_t *obj);
+ISO8583_API(const iso8583_fitem_t*) iso8583_fields_get_next (const iso8583_fields_t *obj, const iso8583_fitem_t *prev);
 
-int  iso8583_fields_insert(iso8583_fields_t *obj, const iso8583_fitem_t *item);
-void iso8583_fields_erase (iso8583_fields_t *obj, unsigned id);
-void iso8583_fields_clean (iso8583_fields_t *obj);
+ISO8583_API(int ) iso8583_fields_insert(iso8583_fields_t *obj, const iso8583_fitem_t *item);
+ISO8583_API(void) iso8583_fields_erase (iso8583_fields_t *obj, unsigned id);
+ISO8583_API(void) iso8583_fields_clean (iso8583_fields_t *obj);
 
 #ifdef __cplusplus
 }  // extern "C"

@@ -4,7 +4,7 @@
 #include "iso8583.h"
 
 //------------------------------------------------------------------------------
-void iso8583_init(iso8583_t *obj)
+void ISO8583_CALL iso8583_init(iso8583_t *obj)
 {
     /**
      * @memberof iso8583_t
@@ -19,7 +19,7 @@ void iso8583_init(iso8583_t *obj)
     iso8583_fields_init(&obj->fields);
 }
 //------------------------------------------------------------------------------
-void iso8583_init_clone(iso8583_t *obj, const iso8583_t *src)
+void ISO8583_CALL iso8583_init_clone(iso8583_t *obj, const iso8583_t *src)
 {
     /**
      * @memberof iso8583_t
@@ -35,7 +35,7 @@ void iso8583_init_clone(iso8583_t *obj, const iso8583_t *src)
     iso8583_clone(obj, src);
 }
 //------------------------------------------------------------------------------
-void iso8583_init_move(iso8583_t *obj, iso8583_t *src)
+void ISO8583_CALL iso8583_init_move(iso8583_t *obj, iso8583_t *src)
 {
     /**
      * @memberof iso8583_t
@@ -51,7 +51,7 @@ void iso8583_init_move(iso8583_t *obj, iso8583_t *src)
     iso8583_movefrom(obj, src);
 }
 //------------------------------------------------------------------------------
-void iso8583_deinit(iso8583_t *obj)
+void ISO8583_CALL iso8583_deinit(iso8583_t *obj)
 {
     /**
      * @memberof iso8583_t
@@ -63,7 +63,7 @@ void iso8583_deinit(iso8583_t *obj)
     iso8583_fields_deinit(&obj->fields);
 }
 //------------------------------------------------------------------------------
-void iso8583_clone(iso8583_t *obj, const iso8583_t *src)
+void ISO8583_CALL iso8583_clone(iso8583_t *obj, const iso8583_t *src)
 {
     /**
      * @memberof iso8583_t
@@ -79,7 +79,7 @@ void iso8583_clone(iso8583_t *obj, const iso8583_t *src)
     iso8583_fields_clone(&obj->fields, &src->fields);
 }
 //------------------------------------------------------------------------------
-void iso8583_movefrom(iso8583_t *obj, iso8583_t *src)
+void ISO8583_CALL iso8583_movefrom(iso8583_t *obj, iso8583_t *src)
 {
     /**
      * @memberof iso8583_t
@@ -131,7 +131,7 @@ int write_fields(bufostm_t *stream, const iso8583_fields_t *fields, int flags)
     return bufostm_write_notify(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
-int iso8583_encode(const iso8583_t *obj, void *buf, size_t size, int flags)
+int ISO8583_CALL iso8583_encode(const iso8583_t *obj, void *buf, size_t size, int flags)
 {
     /**
      * @memberof iso8583_t
@@ -247,7 +247,7 @@ int read_fields(bufistm_t *stream, iso8583_fields_t *fields, int flags)
     return bufistm_read_notify(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
-int iso8583_decode(iso8583_t *obj, const void *data, size_t size, int flags)
+int ISO8583_CALL iso8583_decode(iso8583_t *obj, const void *data, size_t size, int flags)
 {
     /**
      * @memberof iso8583_t
@@ -306,7 +306,7 @@ int iso8583_decode(iso8583_t *obj, const void *data, size_t size, int flags)
     return res;
 }
 //------------------------------------------------------------------------------
-void iso8583_clean(iso8583_t *obj)
+void ISO8583_CALL iso8583_clean(iso8583_t *obj)
 {
     /**
      * @memberof iso8583_t
@@ -321,7 +321,7 @@ void iso8583_clean(iso8583_t *obj)
     iso8583_fields_clean(&obj->fields);
 }
 //------------------------------------------------------------------------------
-int iso8583_get_mti(const iso8583_t *obj)
+int ISO8583_CALL iso8583_get_mti(const iso8583_t *obj)
 {
     /**
      * @memberof iso8583_t
@@ -336,7 +336,7 @@ int iso8583_get_mti(const iso8583_t *obj)
     return obj->mti;
 }
 //------------------------------------------------------------------------------
-void iso8583_set_mti(iso8583_t *obj, int mti)
+void ISO8583_CALL iso8583_set_mti(iso8583_t *obj, int mti)
 {
     /**
      * @memberof iso8583_t

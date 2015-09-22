@@ -34,6 +34,7 @@
 		<Unit filename="../3rd/genutil/gen/inline.h" />
 		<Unit filename="../3rd/genutil/gen/jmpbk.h" />
 		<Unit filename="../include/iso8583/errcode.h" />
+		<Unit filename="../include/iso8583/export.h" />
 		<Unit filename="../include/iso8583/fields.h" />
 		<Unit filename="../include/iso8583/fitem.h" />
 		<Unit filename="../include/iso8583/flags.h" />

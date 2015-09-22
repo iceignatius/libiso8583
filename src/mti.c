@@ -2,7 +2,7 @@
 #include "mti.h"
 
 //------------------------------------------------------------------------------
-int iso8583_mti_encode(int mti, void *buf, size_t size, int flags)
+int ISO8583_CALL iso8583_mti_encode(int mti, void *buf, size_t size, int flags)
 {
     /**
      * Encode to raw data.
@@ -26,7 +26,7 @@ int iso8583_mti_encode(int mti, void *buf, size_t size, int flags)
     return 2;
 }
 //------------------------------------------------------------------------------
-int iso8583_mti_decode(int *mti, const void *data, size_t size, int flags)
+int ISO8583_CALL iso8583_mti_decode(int *mti, const void *data, size_t size, int flags)
 {
     /**
      * Decode from raw data.

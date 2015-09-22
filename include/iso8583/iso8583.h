@@ -31,21 +31,21 @@ typedef struct iso8583_t
     iso8583_fields_t fields;
 } iso8583_t;
 
-void iso8583_init      (iso8583_t *obj);
-void iso8583_init_clone(iso8583_t *obj, const iso8583_t *src);
-void iso8583_init_move (iso8583_t *obj, iso8583_t *src);
-void iso8583_deinit    (iso8583_t *obj);
+ISO8583_API(void) iso8583_init      (iso8583_t *obj);
+ISO8583_API(void) iso8583_init_clone(iso8583_t *obj, const iso8583_t *src);
+ISO8583_API(void) iso8583_init_move (iso8583_t *obj, iso8583_t *src);
+ISO8583_API(void) iso8583_deinit    (iso8583_t *obj);
 
-void iso8583_clone   (iso8583_t *obj, const iso8583_t *src);
-void iso8583_movefrom(iso8583_t *obj, iso8583_t *src);
+ISO8583_API(void) iso8583_clone   (iso8583_t *obj, const iso8583_t *src);
+ISO8583_API(void) iso8583_movefrom(iso8583_t *obj, iso8583_t *src);
 
-int iso8583_encode(const iso8583_t *obj, void *buf, size_t size, int flags);
-int iso8583_decode(      iso8583_t *obj, const void *data, size_t size, int flags);
+ISO8583_API(int) iso8583_encode(const iso8583_t *obj, void *buf, size_t size, int flags);
+ISO8583_API(int) iso8583_decode(      iso8583_t *obj, const void *data, size_t size, int flags);
 
-void iso8583_clean(iso8583_t *obj);
+ISO8583_API(void) iso8583_clean(iso8583_t *obj);
 
-int  iso8583_get_mti(const iso8583_t *obj);
-void iso8583_set_mti(      iso8583_t *obj, int mti);
+ISO8583_API(int ) iso8583_get_mti(const iso8583_t *obj);
+ISO8583_API(void) iso8583_set_mti(      iso8583_t *obj, int mti);
 
 static inline
 iso8583_tpdu_t* iso8583_get_tpdu(iso8583_t *obj)

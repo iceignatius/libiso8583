@@ -10,6 +10,7 @@
 #define _ISO8583_FITEM_H_
 
 #include <string.h>
+#include "export.h"
 #include "errcode.h"
 #include "flags.h"
 
@@ -35,26 +36,29 @@ typedef struct iso8583_fitem_t
     size_t  size;
 } iso8583_fitem_t;
 
-void iso8583_fitem_init      (iso8583_fitem_t *obj);
-void iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, size_t size);
-void iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src);
-void iso8583_fitem_init_move (iso8583_fitem_t *obj, iso8583_fitem_t *src);
-void iso8583_fitem_deinit    (iso8583_fitem_t *obj);
+ISO8583_API(void)iso8583_fitem_init      (iso8583_fitem_t *obj);
+ISO8583_API(void)iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, size_t size);
+ISO8583_API(void)iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src);
+ISO8583_API(void)iso8583_fitem_init_move (iso8583_fitem_t *obj, iso8583_fitem_t *src);
+ISO8583_API(void)iso8583_fitem_deinit    (iso8583_fitem_t *obj);
 
-void iso8583_fitem_clone   (iso8583_fitem_t *obj, const iso8583_fitem_t *src);
-void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src);
+ISO8583_API(void) iso8583_fitem_clone   (iso8583_fitem_t *obj, const iso8583_fitem_t *src);
+ISO8583_API(void) iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src);
 
-int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags);
-int iso8583_fitem_decode(      iso8583_fitem_t *obj, const void *data, size_t size, int flags, int id);
+ISO8583_API(int) iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags);
+ISO8583_API(int) iso8583_fitem_decode(      iso8583_fitem_t *obj, const void *data,
+                                                                  size_t      size,
+                                                                  int         flags,
+                                                                  int         id);
 
-void iso8583_fitem_clean(iso8583_fitem_t *obj);
+ISO8583_API(void) iso8583_fitem_clean(iso8583_fitem_t *obj);
 
-int  iso8583_fitem_get_id(const iso8583_fitem_t *obj);
-void iso8583_fitem_set_id(      iso8583_fitem_t *obj, int id);
+ISO8583_API(int ) iso8583_fitem_get_id(const iso8583_fitem_t *obj);
+ISO8583_API(void) iso8583_fitem_set_id(      iso8583_fitem_t *obj, int id);
 
-const void* iso8583_fitem_get_data(const iso8583_fitem_t *obj);
-size_t      iso8583_fitem_get_size(const iso8583_fitem_t *obj);
-void        iso8583_fitem_set_data(      iso8583_fitem_t *obj, const void *data, size_t size);
+ISO8583_API(const void*) iso8583_fitem_get_data(const iso8583_fitem_t *obj);
+ISO8583_API(size_t     ) iso8583_fitem_get_size(const iso8583_fitem_t *obj);
+ISO8583_API(void       ) iso8583_fitem_set_data(      iso8583_fitem_t *obj, const void *data, size_t size);
 
 #ifdef __cplusplus
 }  // extern "C"

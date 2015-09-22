@@ -257,7 +257,7 @@ void test_lvar_size_mode(void)
     }
 }
 //------------------------------------------------------------------------------
-void iso8583_internal_test(void)
+void ISO8583_CALL iso8583_internal_test(void)
 {
     test_bitmap_case1();
     test_bitmap_case2();

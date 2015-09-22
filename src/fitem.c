@@ -24,7 +24,7 @@ void* resize_buffer(void *buf, size_t size)
     return buf;
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_init(iso8583_fitem_t *obj)
+void ISO8583_CALL iso8583_fitem_init(iso8583_fitem_t *obj)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -36,7 +36,7 @@ void iso8583_fitem_init(iso8583_fitem_t *obj)
     memset(obj, 0, sizeof(*obj));
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, size_t size)
+void ISO8583_CALL iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, size_t size)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -55,7 +55,7 @@ void iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, si
     iso8583_fitem_set_data(obj, data, size);
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
+void ISO8583_CALL iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -71,7 +71,7 @@ void iso8583_fitem_init_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
     iso8583_fitem_clone(obj, src);
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_init_move(iso8583_fitem_t *obj, iso8583_fitem_t *src)
+void ISO8583_CALL iso8583_fitem_init_move(iso8583_fitem_t *obj, iso8583_fitem_t *src)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -87,7 +87,7 @@ void iso8583_fitem_init_move(iso8583_fitem_t *obj, iso8583_fitem_t *src)
     iso8583_fitem_movefrom(obj, src);
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_deinit(iso8583_fitem_t *obj)
+void ISO8583_CALL iso8583_fitem_deinit(iso8583_fitem_t *obj)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -99,7 +99,7 @@ void iso8583_fitem_deinit(iso8583_fitem_t *obj)
     if( obj->buf ) free(obj->buf);
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
+void ISO8583_CALL iso8583_fitem_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -116,7 +116,7 @@ void iso8583_fitem_clone(iso8583_fitem_t *obj, const iso8583_fitem_t *src)
     memcpy(obj->buf, src->buf, src->size);
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src)
+void ISO8583_CALL iso8583_fitem_movefrom(iso8583_fitem_t *obj, iso8583_fitem_t *src)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -150,7 +150,7 @@ int elecount_to_bytes(finfo_eletype_t eletype, unsigned elecount)
         return elecount;
 }
 //------------------------------------------------------------------------------
-int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags)
+int ISO8583_CALL iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int flags)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -195,7 +195,10 @@ int iso8583_fitem_encode(const iso8583_fitem_t *obj, void *buf, size_t size, int
     }
 }
 //------------------------------------------------------------------------------
-int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, int flags, int id)
+int ISO8583_CALL iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data,
+                                                            size_t      size,
+                                                            int         flags,
+                                                            int         id)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -265,7 +268,7 @@ int iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data, size_t size, in
     return res;
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_clean(iso8583_fitem_t *obj)
+void ISO8583_CALL iso8583_fitem_clean(iso8583_fitem_t *obj)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -279,7 +282,7 @@ void iso8583_fitem_clean(iso8583_fitem_t *obj)
     obj->buf  = resize_buffer(obj->buf, 0);
 }
 //------------------------------------------------------------------------------
-int iso8583_fitem_get_id(const iso8583_fitem_t *obj)
+int ISO8583_CALL iso8583_fitem_get_id(const iso8583_fitem_t *obj)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -292,7 +295,7 @@ int iso8583_fitem_get_id(const iso8583_fitem_t *obj)
     return obj->id;
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_set_id(iso8583_fitem_t *obj, int id)
+void ISO8583_CALL iso8583_fitem_set_id(iso8583_fitem_t *obj, int id)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -305,7 +308,7 @@ void iso8583_fitem_set_id(iso8583_fitem_t *obj, int id)
     obj->id = id;
 }
 //------------------------------------------------------------------------------
-const void* iso8583_fitem_get_data(const iso8583_fitem_t *obj)
+const void* ISO8583_CALL iso8583_fitem_get_data(const iso8583_fitem_t *obj)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -318,7 +321,7 @@ const void* iso8583_fitem_get_data(const iso8583_fitem_t *obj)
     return obj->buf;
 }
 //------------------------------------------------------------------------------
-size_t iso8583_fitem_get_size(const iso8583_fitem_t *obj)
+size_t ISO8583_CALL iso8583_fitem_get_size(const iso8583_fitem_t *obj)
 {
     /**
      * @memberof iso8583_fitem_t
@@ -331,7 +334,7 @@ size_t iso8583_fitem_get_size(const iso8583_fitem_t *obj)
     return obj->size;
 }
 //------------------------------------------------------------------------------
-void iso8583_fitem_set_data(iso8583_fitem_t *obj, const void *data, size_t size)
+void ISO8583_CALL iso8583_fitem_set_data(iso8583_fitem_t *obj, const void *data, size_t size)
 {
     /**
      * @memberof iso8583_fitem_t

@@ -10,6 +10,7 @@
 #define _ISO8583_MTI_H_
 
 #include <stddef.h>
+#include "export.h"
 #include "errcode.h"
 
 #ifdef __cplusplus
@@ -73,8 +74,8 @@ enum iso8583_mti_ori_t
     ISO8583_MTI_ORI_MASK            = 0x000F,  // Internal use.
 };
 
-int iso8583_mti_encode(int  mti, void *buf, size_t size, int flags);
-int iso8583_mti_decode(int *mti, const void *data, size_t size, int flags);
+ISO8583_API(int) iso8583_mti_encode(int  mti, void *buf, size_t size, int flags);
+ISO8583_API(int) iso8583_mti_decode(int *mti, const void *data, size_t size, int flags);
 
 static inline
 int iso8583_mti_make(int ver, int cla, int fun, int ori)

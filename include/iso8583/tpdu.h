@@ -10,6 +10,7 @@
 #define _ISO8583_TPDU_H_
 
 #include <stddef.h>
+#include "export.h"
 #include "errcode.h"
 #include "flags.h"
 
@@ -31,10 +32,10 @@ typedef struct iso8583_tpdu_t
     unsigned src;
 } iso8583_tpdu_t;
 
-void iso8583_tpdu_init(iso8583_tpdu_t *obj);
+ISO8583_API(void) iso8583_tpdu_init(iso8583_tpdu_t *obj);
 
-int iso8583_tpdu_encode(const iso8583_tpdu_t *obj, void *buf, size_t size, int flags);
-int iso8583_tpdu_decode(      iso8583_tpdu_t *obj, const void *data, size_t size, int flags);
+ISO8583_API(int) iso8583_tpdu_encode(const iso8583_tpdu_t *obj, void *buf, size_t size, int flags);
+ISO8583_API(int) iso8583_tpdu_decode(      iso8583_tpdu_t *obj, const void *data, size_t size, int flags);
 
 static inline
 unsigned iso8583_tpdu_get_id(const iso8583_tpdu_t *obj)

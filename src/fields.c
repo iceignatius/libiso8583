@@ -5,7 +5,7 @@
 #include "fields.h"
 
 //------------------------------------------------------------------------------
-void iso8583_fields_init(iso8583_fields_t *obj)
+void ISO8583_CALL iso8583_fields_init(iso8583_fields_t *obj)
 {
     /**
      * @memberof iso8583_fields_t
@@ -22,7 +22,7 @@ void iso8583_fields_init(iso8583_fields_t *obj)
     }
 }
 //------------------------------------------------------------------------------
-void iso8583_fields_init_clone(iso8583_fields_t *obj, const iso8583_fields_t *src)
+void ISO8583_CALL iso8583_fields_init_clone(iso8583_fields_t *obj, const iso8583_fields_t *src)
 {
     /**
      * @memberof iso8583_fields_t
@@ -38,7 +38,7 @@ void iso8583_fields_init_clone(iso8583_fields_t *obj, const iso8583_fields_t *sr
     iso8583_fields_clone(obj, src);
 }
 //------------------------------------------------------------------------------
-void iso8583_fields_init_move(iso8583_fields_t *obj, iso8583_fields_t *src)
+void ISO8583_CALL iso8583_fields_init_move(iso8583_fields_t *obj, iso8583_fields_t *src)
 {
     /**
      * @memberof iso8583_fields_t
@@ -54,7 +54,7 @@ void iso8583_fields_init_move(iso8583_fields_t *obj, iso8583_fields_t *src)
     iso8583_fields_movefrom(obj, src);
 }
 //------------------------------------------------------------------------------
-void iso8583_fields_deinit(iso8583_fields_t *obj)
+void ISO8583_CALL iso8583_fields_deinit(iso8583_fields_t *obj)
 {
     /**
      * @memberof iso8583_fields_t
@@ -70,7 +70,7 @@ void iso8583_fields_deinit(iso8583_fields_t *obj)
     }
 }
 //------------------------------------------------------------------------------
-void iso8583_fields_clone(iso8583_fields_t *obj, const iso8583_fields_t *src)
+void ISO8583_CALL iso8583_fields_clone(iso8583_fields_t *obj, const iso8583_fields_t *src)
 {
     /**
      * @memberof iso8583_fields_t
@@ -88,7 +88,7 @@ void iso8583_fields_clone(iso8583_fields_t *obj, const iso8583_fields_t *src)
     }
 }
 //------------------------------------------------------------------------------
-void iso8583_fields_movefrom(iso8583_fields_t *obj, iso8583_fields_t *src)
+void ISO8583_CALL iso8583_fields_movefrom(iso8583_fields_t *obj, iso8583_fields_t *src)
 {
     /**
      * @memberof iso8583_fields_t
@@ -153,7 +153,7 @@ int write_field_items(bufostm_t *stream, const iso8583_fields_t *fields, int fla
     return total_fillsz;
 }
 //------------------------------------------------------------------------------
-int iso8583_fields_encode(const iso8583_fields_t *obj, void *buf, size_t size, int flags)
+int ISO8583_CALL iso8583_fields_encode(const iso8583_fields_t *obj, void *buf, size_t size, int flags)
 {
     /**
      * @memberof iso8583_fields_t
@@ -251,7 +251,7 @@ int read_field_items(bufistm_t *stream, iso8583_fields_t *fields, const bitmap_t
     return total_readsz;
 }
 //------------------------------------------------------------------------------
-int iso8583_fields_decode(iso8583_fields_t *obj, const void *data, size_t size, int flags)
+int ISO8583_CALL iso8583_fields_decode(iso8583_fields_t *obj, const void *data, size_t size, int flags)
 {
     /**
      * @memberof iso8583_fields_t
@@ -301,7 +301,7 @@ int iso8583_fields_decode(iso8583_fields_t *obj, const void *data, size_t size, 
     return res;
 }
 //------------------------------------------------------------------------------
-unsigned iso8583_fields_get_count(const iso8583_fields_t *obj)
+unsigned ISO8583_CALL iso8583_fields_get_count(const iso8583_fields_t *obj)
 {
     /**
      * @memberof iso8583_fields_t
@@ -314,7 +314,7 @@ unsigned iso8583_fields_get_count(const iso8583_fields_t *obj)
     return obj->count;
 }
 //------------------------------------------------------------------------------
-const iso8583_fitem_t* iso8583_fields_get_item(const iso8583_fields_t *obj, unsigned id)
+const iso8583_fitem_t* ISO8583_CALL iso8583_fields_get_item(const iso8583_fields_t *obj, unsigned id)
 {
     /**
      * @memberof iso8583_fields_t
@@ -332,7 +332,7 @@ const iso8583_fitem_t* iso8583_fields_get_item(const iso8583_fields_t *obj, unsi
     return item->id ? item : NULL;
 }
 //------------------------------------------------------------------------------
-const iso8583_fitem_t* iso8583_fields_get_first(const iso8583_fields_t *obj)
+const iso8583_fitem_t* ISO8583_CALL iso8583_fields_get_first(const iso8583_fields_t *obj)
 {
     /**
      * @memberof iso8583_fields_t
@@ -352,7 +352,8 @@ const iso8583_fitem_t* iso8583_fields_get_first(const iso8583_fields_t *obj)
     return NULL;
 }
 //------------------------------------------------------------------------------
-const iso8583_fitem_t* iso8583_fields_get_next(const iso8583_fields_t *obj, const iso8583_fitem_t *prev)
+const iso8583_fitem_t* ISO8583_CALL iso8583_fields_get_next(const iso8583_fields_t *obj,
+                                                            const iso8583_fitem_t  *prev)
 {
     /**
      * @memberof iso8583_fields_t
@@ -375,7 +376,7 @@ const iso8583_fitem_t* iso8583_fields_get_next(const iso8583_fields_t *obj, cons
     return NULL;
 }
 //------------------------------------------------------------------------------
-int iso8583_fields_insert(iso8583_fields_t *obj, const iso8583_fitem_t *item)
+int ISO8583_CALL iso8583_fields_insert(iso8583_fields_t *obj, const iso8583_fitem_t *item)
 {
     /**
      * @memberof iso8583_fields_t
@@ -399,7 +400,7 @@ int iso8583_fields_insert(iso8583_fields_t *obj, const iso8583_fitem_t *item)
     return ISO8583_ERR_SUCCESS;
 }
 //------------------------------------------------------------------------------
-void iso8583_fields_erase(iso8583_fields_t *obj, unsigned id)
+void ISO8583_CALL iso8583_fields_erase(iso8583_fields_t *obj, unsigned id)
 {
     /**
      * @memberof iso8583_fields_t
@@ -420,7 +421,7 @@ void iso8583_fields_erase(iso8583_fields_t *obj, unsigned id)
     -- obj->count;
 }
 //------------------------------------------------------------------------------
-void iso8583_fields_clean(iso8583_fields_t *obj)
+void ISO8583_CALL iso8583_fields_clean(iso8583_fields_t *obj)
 {
     /**
      * @memberof iso8583_fields_t

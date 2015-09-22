@@ -6,11 +6,13 @@
 
 #ifdef ISO8583_DEBUGTEST
 
+#include "export.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void iso8583_internal_test(void);
+ISO8583_API(void) iso8583_internal_test(void);
 
 #ifdef __cplusplus
 }  // #extern "C"

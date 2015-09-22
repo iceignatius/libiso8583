@@ -4,7 +4,7 @@
 #include "tpdu.h"
 
 //------------------------------------------------------------------------------
-void iso8583_tpdu_init(iso8583_tpdu_t *obj)
+void ISO8583_CALL iso8583_tpdu_init(iso8583_tpdu_t *obj)
 {
     /**
      * @memberof iso8583_tpdu_t
@@ -16,7 +16,7 @@ void iso8583_tpdu_init(iso8583_tpdu_t *obj)
     memset(obj, 0, sizeof(*obj));
 }
 //------------------------------------------------------------------------------
-int iso8583_tpdu_encode(const iso8583_tpdu_t *obj, void *buf, size_t size, int flags)
+int ISO8583_CALL iso8583_tpdu_encode(const iso8583_tpdu_t *obj, void *buf, size_t size, int flags)
 {
     /**
      * @memberof iso8583_tpdu_t
@@ -48,7 +48,7 @@ int iso8583_tpdu_encode(const iso8583_tpdu_t *obj, void *buf, size_t size, int f
     return 5;
 }
 //------------------------------------------------------------------------------
-int iso8583_tpdu_decode(iso8583_tpdu_t *obj, const void *data, size_t size, int flags)
+int ISO8583_CALL iso8583_tpdu_decode(iso8583_tpdu_t *obj, const void *data, size_t size, int flags)
 {
     /**
      * @memberof iso8583_tpdu_t
