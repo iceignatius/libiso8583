@@ -19,24 +19,24 @@ endif
 
 all:
 	cd lib && $(MAKE) -f makefile-static.linux $(MAKECMDGOALS)
-#	cd lib && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
+	cd lib && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
 
 clean:
 	cd lib  && $(MAKE) -f makefile-static.linux $(MAKECMDGOALS)
-#	cd lib  && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
+	cd lib  && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
 	cd test && $(MAKE) -f makefile.linux $(MAKECMDGOALS)
 
 install:
 	cd lib && $(MAKE) -f makefile-static.linux $(MAKECMDGOALS)
-#	cd lib && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
+	cd lib && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
 
 	test -d $(DESTDIR)/include/iso8583 || mkdir $(DESTDIR)/include/iso8583
 	cp include/iso8583/*  $(DESTDIR)/include/iso8583
 	cp lib/libiso8583_s.a $(DESTDIR)/lib
-#	cp lib/libiso8583.so  $(DESTDIR)/lib
+	cp lib/libiso8583.so  $(DESTDIR)/lib
 
 uninstall:
-#	-rm $(DESTDIR)/lib/libiso8583.so
+	-rm $(DESTDIR)/lib/libiso8583.so
 	-rm $(DESTDIR)/lib/libiso8583_s.a
 	-rm $(DESTDIR)/include/iso8583/*
 	-rmdir $(DESTDIR)/include/iso8583

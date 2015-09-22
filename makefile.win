@@ -14,11 +14,11 @@ AR  := ar rcs
 
 all:
 	cd lib && $(MAKE) -f makefile-static.win $(MAKECMDGOALS)
-#	cd lib && $(MAKE) -f makefile-shared.win $(MAKECMDGOALS)
+	cd lib && $(MAKE) -f makefile-shared.win $(MAKECMDGOALS)
 
 clean:
 	cd lib  && $(MAKE) -f makefile-static.win $(MAKECMDGOALS)
-#	cd lib  && $(MAKE) -f makefile-shared.win $(MAKECMDGOALS)
+	cd lib  && $(MAKE) -f makefile-shared.win $(MAKECMDGOALS)
 	cd test && $(MAKE) -f makefile.win $(MAKECMDGOALS)
 
 install:
