@@ -25,6 +25,7 @@ clean:
 	cd lib  && $(MAKE) -f makefile-static.linux $(MAKECMDGOALS)
 	cd lib  && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
 	cd test && $(MAKE) -f makefile.linux $(MAKECMDGOALS)
+	-rm -r doc
 
 install:
 	cd lib && $(MAKE) -f makefile-static.linux $(MAKECMDGOALS)
