@@ -1,42 +1,41 @@
 # ----------------------------------------------------------
-# ---- ISO 8583 Library - Static Library -------------------
+# ---- ISO 8583 Library - Test Process ---------------------
 # ----------------------------------------------------------
+
+# Detect OS name
+ifeq ($(OS),)
+	OS := $(shell uname -s)
+endif
 
 # Tools setting
 CC  := gcc
 CXX := g++
-LD  := gcc
+LD  := g++
 AR  := ar rcs
 
 # Setting
 OUTDIR  := .
-OUTPUT  := $(OUTDIR)/libiso8583_s.a
-TEMPDIR := temp-static
-INCDIR  :=
-INCDIR  += -I../3rd/genutil
-INCDIR  += -I../include/iso8583
-LIBDIR  :=
-CFLAGS  :=
-CFLAGS  += -Wall
-CFLAGS  += -O2
-CFLAGS  += -fvisibility=hidden
-CFLAGS  += -DISO8583_MAKESTATIC
-ifeq ($(MAKECMDGOALS),test)
-CFLAGS  += -DISO8583_DEBUGTEST
+ifeq ($(OS),Windows_NT)
+	OUTPUT := $(OUTDIR)/libiso8583_test.exe
+else
+	OUTPUT := $(OUTDIR)/libiso8583_test
 endif
+TEMPDIR := temp
+INCDIR  :=
+INCDIR  += -I../include
+LIBDIR  :=
+LIBDIR  += -L../lib
+CFLAGS  :=
+CFLAGS  += -std=gnu++11
+CFLAGS  += -Wall
+CFLAGS  += -O0
+CFLAGS  += -DISO8583_USE_STATICLIB
+CFLAGS  += -DISO8583_DEBUGTEST
 LDFLAGS :=
-LDFLAGS += -s
 SRCS    :=
-SRCS    += ../3rd/genutil/gen/bcd.c
-SRCS    += ../src/bitmap.c
-SRCS    += ../src/fields.c
-SRCS    += ../src/fitem.c
-SRCS    += ../src/internal_test.c
-SRCS    += ../src/iso8583.c
-SRCS    += ../src/lvar.c
-SRCS    += ../src/mti.c
-SRCS    += ../src/tpdu.c
+SRCS    += main.cpp
 LIBS    :=
+LIBS    += -liso8583_s
 OBJS    := $(notdir $(SRCS))
 OBJS    := $(addprefix $(TEMPDIR)/,$(OBJS))
 OBJS    := $(OBJS:%.c=%.o)
@@ -51,20 +50,32 @@ all: pre_step create_dir build_step post_step
 
 # Clean process
 clean:
+ifeq ($(OS),Windows_NT)
+	-del /Q $(subst /,\,$(OBJS))
+	-del /Q $(subst /,\,$(DEPS))
+	-del /Q $(subst /,\,$(OUTPUT))
+	-rmdir /Q $(subst /,\,$(TEMPDIR))
+else
 	-@rm -f $(OBJS) $(DEPS) $(OUTPUT)
 	-@rmdir $(TEMPDIR)
+endif
 
 # Build process
 
 pre_step:
 create_dir:
+ifeq ($(OS),Windows_NT)
+	@cmd /c if not exist $(subst /,\,$(TEMPDIR)) mkdir $(subst /,\,$(TEMPDIR))
+	@cmd /c if not exist $(subst /,\,$(OUTDIR)) mkdir $(subst /,\,$(OUTDIR))
+else
 	@test -d $(TEMPDIR) || mkdir $(TEMPDIR)
 	@test -d $(OUTDIR)  || mkdir $(OUTDIR)
+endif
 build_step: $(OUTPUT)
 post_step:
 
 $(OUTPUT): $(OBJS)
-	$(AR) $@ $^
+	$(LD) -o $@ $(LIBDIR) $(LDFLAGS) $^ $(LIBS)
 
 define Compile-C-Unit
 $(CC) -MM $(INCDIR) $(CFLAGS) -o $(TEMPDIR)/$*.d $< -MT $@
@@ -76,13 +87,9 @@ $(CXX) -c  $(INCDIR) $(CFLAGS) -o $@ $<
 endef
 
 -include $(DEPS)
-$(TEMPDIR)/%.o: ../3rd/genutil/gen/%.c
+$(TEMPDIR)/%.o: %.c
 	$(Compile-C-Unit)
-$(TEMPDIR)/%.o: ../3rd/genutil/gen/%.cpp
-	$(Compile-Cpp-Unit)
-$(TEMPDIR)/%.o: ../src/%.c
-	$(Compile-C-Unit)
-$(TEMPDIR)/%.o: ../src/%.cpp
+$(TEMPDIR)/%.o: %.cpp
 	$(Compile-Cpp-Unit)
 
 # User extended process
@@ -90,3 +97,4 @@ $(TEMPDIR)/%.o: ../src/%.cpp
 install: all
 
 test: all
+	./libiso8583_test

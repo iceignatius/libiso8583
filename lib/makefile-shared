@@ -2,6 +2,11 @@
 # ---- ISO 8583 Library - Shared Library -------------------
 # ----------------------------------------------------------
 
+# Detect OS name
+ifeq ($(OS),)
+	OS := $(shell uname -s)
+endif
+
 # Tools setting
 CC  := gcc
 CXX := g++
@@ -10,7 +15,11 @@ AR  := ar rcs
 
 # Setting
 OUTDIR  := .
-OUTPUT  := $(OUTDIR)/libiso8583.so
+ifeq ($(OS),Windows_NT)
+	OUTPUT := $(OUTDIR)/libiso8583.dll
+else
+	OUTPUT := $(OUTDIR)/libiso8583.so
+endif
 TEMPDIR := temp-shared
 INCDIR  :=
 INCDIR  += -I../3rd/genutil
@@ -19,11 +28,16 @@ LIBDIR  :=
 CFLAGS  :=
 CFLAGS  += -Wall
 CFLAGS  += -O2
-CFLAGS  += -fPIC
-CFLAGS  += -fvisibility=hidden
 CFLAGS  += -DISO8583_MAKESHARED
+ifeq ($(OS),Linux)
+	CFLAGS += -fPIC
+	CFLAGS += -fvisibility=hidden
+endif
+ifeq ($(OS),Windows_NT)
+	CFLAGS += -D__USE_MINGW_ANSI_STDIO=1
+endif
 ifeq ($(MAKECMDGOALS),test)
-CFLAGS  += -DISO8583_DEBUGTEST
+	CFLAGS += -DISO8583_DEBUGTEST
 endif
 LDFLAGS :=
 LDFLAGS += -s
@@ -52,15 +66,27 @@ all: pre_step create_dir build_step post_step
 
 # Clean process
 clean:
+ifeq ($(OS),Windows_NT)
+	-del /Q $(subst /,\,$(OBJS))
+	-del /Q $(subst /,\,$(DEPS))
+	-del /Q $(subst /,\,$(OUTPUT))
+	-rmdir /Q $(subst /,\,$(TEMPDIR))
+else
 	-@rm -f $(OBJS) $(DEPS) $(OUTPUT)
 	-@rmdir $(TEMPDIR)
+endif
 
 # Build process
 
 pre_step:
 create_dir:
+ifeq ($(OS),Windows_NT)
+	@cmd /c if not exist $(subst /,\,$(TEMPDIR)) mkdir $(subst /,\,$(TEMPDIR))
+	@cmd /c if not exist $(subst /,\,$(OUTDIR)) mkdir $(subst /,\,$(OUTDIR))
+else
 	@test -d $(TEMPDIR) || mkdir $(TEMPDIR)
 	@test -d $(OUTDIR)  || mkdir $(OUTDIR)
+endif
 build_step: $(OUTPUT)
 post_step:
 
