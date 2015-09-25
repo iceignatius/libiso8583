@@ -1,0 +1,36 @@
+# ----------------------------------------------------------
+# ---- ISO 8583 Library ------------------------------------
+# ----------------------------------------------------------
+
+# Tools setting
+CC  := gcc
+CXX := g++
+LD  := gcc
+AR  := ar rcs
+
+# Path setting
+ifndef DESTDIR
+	DESTDIR = /usr/local
+endif
+
+# Processes
+
+.PHONY: all clean install uninstall test doc
+
+all:
+	cd .. && doxygen
+	sed -i -e 's,begin{document},usepackage{CJKutf8}\n\\begin{document}\n\\begin{CJK}{UTF8}{bsmi},' latex/refman.tex
+	sed -i -e 's,end{document},end{CJK}\n\\end{document},' latex/refman.tex
+	cd latex/ && make pdf
+	cp latex/refman.pdf ISO8583_Library_Document.pdf
+
+clean:
+	-rm -r html latex *.pdf
+
+install: all
+
+uninstall:
+
+test: all
+
+doc: all

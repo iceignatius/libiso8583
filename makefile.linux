@@ -24,8 +24,8 @@ all:
 clean:
 	cd lib  && $(MAKE) -f makefile-static.linux $(MAKECMDGOALS)
 	cd lib  && $(MAKE) -f makefile-shared.linux $(MAKECMDGOALS)
-	cd test && $(MAKE) -f makefile.linux $(MAKECMDGOALS)
-	-rm -r doc
+	cd test && $(MAKE) -f makefile.linux        $(MAKECMDGOALS)
+	cd doc  && $(MAKE) -f makefile.linux        $(MAKECMDGOALS)
 
 install:
 	cd lib && $(MAKE) -f makefile-static.linux $(MAKECMDGOALS)
@@ -46,8 +46,4 @@ test: all
 	cd test && $(MAKE) -f makefile.linux $(MAKECMDGOALS)
 
 doc:
-	doxygen
-	sed -i -e 's,begin{document},usepackage{CJKutf8}\n\\begin{document}\n\\begin{CJK}{UTF8}{bsmi},' doc/latex/refman.tex
-	sed -i -e 's,end{document},end{CJK}\n\\end{document},' doc/latex/refman.tex
-	cd doc/latex/ && make pdf
-	cp doc/latex/refman.pdf doc/ISO8583_Library_Document.pdf
+	cd doc && $(MAKE) -f makefile.linux $(MAKECMDGOALS)
