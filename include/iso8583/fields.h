@@ -24,6 +24,7 @@ extern "C" {
  *          Or it will be hard to encapsulate the
  *          encode and decode operations for field items.
  */
+#pragma pack(push,8)
 typedef struct iso8583_fields_t
 {
     /*
@@ -32,6 +33,7 @@ typedef struct iso8583_fields_t
     iso8583_fitem_t items[1+ISO8583_FITEM_ID_MAX];
     unsigned        count;
 } iso8583_fields_t;
+#pragma pack(pop)
 
 ISO8583_API(void) iso8583_fields_init      (iso8583_fields_t *obj);
 ISO8583_API(void) iso8583_fields_init_clone(iso8583_fields_t *obj, const iso8583_fields_t *src);

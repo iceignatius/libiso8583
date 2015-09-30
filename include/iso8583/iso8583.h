@@ -21,6 +21,7 @@ extern "C" {
  * @class iso8583_t
  * @brief ISO 8583 major object class.
  */
+#pragma pack(push,8)
 typedef struct iso8583_t
 {
     /*
@@ -30,6 +31,7 @@ typedef struct iso8583_t
     int              mti;
     iso8583_fields_t fields;
 } iso8583_t;
+#pragma pack(pop)
 
 ISO8583_API(void) iso8583_init      (iso8583_t *obj);
 ISO8583_API(void) iso8583_init_clone(iso8583_t *obj, const iso8583_t *src);

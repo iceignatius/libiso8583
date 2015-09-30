@@ -26,6 +26,7 @@ extern "C" {
  * @class iso8583_fitem_t
  * @brief Field item.
  */
+#pragma pack(push,8)
 typedef struct iso8583_fitem_t
 {
     /*
@@ -35,6 +36,7 @@ typedef struct iso8583_fitem_t
     void   *buf;
     size_t  size;
 } iso8583_fitem_t;
+#pragma pack(pop)
 
 ISO8583_API(void)iso8583_fitem_init      (iso8583_fitem_t *obj);
 ISO8583_API(void)iso8583_fitem_init_value(iso8583_fitem_t *obj, int id, const void *data, size_t size);

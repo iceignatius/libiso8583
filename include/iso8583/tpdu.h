@@ -22,6 +22,7 @@ extern "C" {
  * @class iso8583_tpdu_t
  * @brief TPDU.
  */
+#pragma pack(push,8)
 typedef struct iso8583_tpdu_t
 {
     /*
@@ -31,6 +32,7 @@ typedef struct iso8583_tpdu_t
     unsigned dest;
     unsigned src;
 } iso8583_tpdu_t;
+#pragma pack(pop)
 
 ISO8583_API(void) iso8583_tpdu_init(iso8583_tpdu_t *obj);
 
