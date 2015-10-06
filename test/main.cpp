@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "iso8583/internal_test.h"
 #include "iso8583/iso8583.h"
+#include "iso8583/helper.h"
 
 #ifndef ISO8583_DEBUGTEST
     #error This test program needs to work with ISO8583_DEBUGTEST defined!
@@ -222,12 +223,62 @@ void test_total_message()
     }
 }
 
+void test_helper_tools()
+{
+    ISO8583::TFields fields;
+    ISO8583::TFitem item;
+
+    // Integer value read write test.
+    {
+        fields.Clean();
+
+        assert( ISO8583::helper::SetInteger(fields, 3, 123456) );
+
+        assert( ( item = fields.GetItem(3) ) != fields.npos() );
+        assert( item.GetSize() == 3 );
+        assert( 0 == memcmp(item.GetData(), "\x12\x34\x56", 3) );
+
+        assert( 123456 == ISO8583::helper::GetInteger(fields, 3, 777) );
+        assert(    777 == ISO8583::helper::GetInteger(fields, 4, 777) );
+    }
+
+    // String value read write test.
+    {
+        fields.Clean();
+
+        assert( ISO8583::helper::SetString(fields, 39, "AB") );
+
+        assert( ( item = fields.GetItem(39) ) != fields.npos() );
+        assert( item.GetSize() == 2 );
+        assert( 0 == memcmp(item.GetData(), "AB", 2) );
+
+        assert( "AB" == ISO8583::helper::GetString(fields, 39) );
+        assert( ""   == ISO8583::helper::GetString(fields, 40) );
+    }
+
+    // Set local time test.
+    {
+        fields.Clean();
+
+        ISO8583::helper::SetLocalDateTime(fields, -886141800);  // Time stamp: -886141800, 1941/12/02 17:30.
+
+        assert( ( item = fields.GetItem(13) ) != fields.npos() );
+        assert( fields.GetItem(13).GetSize() == 2 );
+        assert( 0 == memcmp(item.GetData(), "\x12\x02", 2) );
+
+        assert( ( item = fields.GetItem(12) ) != fields.npos() );
+        assert( fields.GetItem(12).GetSize() == 3 );
+        assert( 0 == memcmp(item.GetData(), "\x17\x30\x00", 3) );
+    }
+}
+
 int main(int argc, char *argv[])
 {
     iso8583_internal_test();
     test_tpdu();
     test_mti();
     test_total_message();
+    test_helper_tools();
 
     return 0;
 }

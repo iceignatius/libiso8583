@@ -33,11 +33,16 @@
 		<Unit filename="../3rd/genutil/gen/bufstm.h" />
 		<Unit filename="../3rd/genutil/gen/inline.h" />
 		<Unit filename="../3rd/genutil/gen/jmpbk.h" />
+		<Unit filename="../3rd/genutil/gen/timeinf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../3rd/genutil/gen/timeinf.h" />
 		<Unit filename="../include/iso8583/errcode.h" />
 		<Unit filename="../include/iso8583/export.h" />
 		<Unit filename="../include/iso8583/fields.h" />
 		<Unit filename="../include/iso8583/fitem.h" />
 		<Unit filename="../include/iso8583/flags.h" />
+		<Unit filename="../include/iso8583/helper.h" />
 		<Unit filename="../include/iso8583/internal_test.h" />
 		<Unit filename="../include/iso8583/iso8583.h" />
 		<Unit filename="../include/iso8583/mti.h" />
@@ -51,6 +56,9 @@
 		</Unit>
 		<Unit filename="../src/finfo.h" />
 		<Unit filename="../src/fitem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/helper.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../src/internal_test.c">
