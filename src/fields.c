@@ -314,7 +314,7 @@ unsigned ISO8583_CALL iso8583_fields_get_count(const iso8583_fields_t *obj)
     return obj->count;
 }
 //------------------------------------------------------------------------------
-const iso8583_fitem_t* ISO8583_CALL iso8583_fields_get_item(const iso8583_fields_t *obj, unsigned id)
+const iso8583_fitem_t* ISO8583_CALL iso8583_fields_get_item(const iso8583_fields_t *obj, int id)
 {
     /**
      * @memberof iso8583_fields_t
@@ -400,7 +400,7 @@ int ISO8583_CALL iso8583_fields_insert(iso8583_fields_t *obj, const iso8583_fite
     return ISO8583_ERR_SUCCESS;
 }
 //------------------------------------------------------------------------------
-void ISO8583_CALL iso8583_fields_erase(iso8583_fields_t *obj, unsigned id)
+void ISO8583_CALL iso8583_fields_erase(iso8583_fields_t *obj, int id)
 {
     /**
      * @memberof iso8583_fields_t

@@ -47,12 +47,12 @@ ISO8583_API(int) iso8583_fields_encode(const iso8583_fields_t *obj, void *buf, s
 ISO8583_API(int) iso8583_fields_decode(      iso8583_fields_t *obj, const void *data, size_t size, int flags);
 
 ISO8583_API(unsigned              ) iso8583_fields_get_count(const iso8583_fields_t *obj);
-ISO8583_API(const iso8583_fitem_t*) iso8583_fields_get_item (const iso8583_fields_t *obj, unsigned id);
+ISO8583_API(const iso8583_fitem_t*) iso8583_fields_get_item (const iso8583_fields_t *obj, int id);
 ISO8583_API(const iso8583_fitem_t*) iso8583_fields_get_first(const iso8583_fields_t *obj);
 ISO8583_API(const iso8583_fitem_t*) iso8583_fields_get_next (const iso8583_fields_t *obj, const iso8583_fitem_t *prev);
 
 ISO8583_API(int ) iso8583_fields_insert(iso8583_fields_t *obj, const iso8583_fitem_t *item);
-ISO8583_API(void) iso8583_fields_erase (iso8583_fields_t *obj, unsigned id);
+ISO8583_API(void) iso8583_fields_erase (iso8583_fields_t *obj, int id);
 ISO8583_API(void) iso8583_fields_clean (iso8583_fields_t *obj);
 
 #ifdef __cplusplus
@@ -83,6 +83,10 @@ public:
 #if __cplusplus >= 201103L
     TFields& operator=(TFields &&src)      { iso8583_fields_movefrom  (this, &src); return *this; }  ///< @see iso8583_fields_t::iso8583_fields_movefrom
 #endif
+
+public:
+    iso8583_fields_t*       cptr()       { return this; }
+    const iso8583_fields_t* cptr() const { return this; }
 
 public:
     static const TFitem& npos()
