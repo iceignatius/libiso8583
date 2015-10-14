@@ -1,9 +1,59 @@
 #include <assert.h>
 #include <gen/bcd.h>
 #include <gen/timeinf.h>
+#include "mti.h"
 #include "finfo.h"
 #include "helper.h"
 
+//------------------------------------------------------------------------------
+static
+int mti_get_corresponding_fun(int mti)
+{
+    switch( iso8583_mti_get_function(mti) )
+    {
+    case ISO8583_MTI_FUN_REQUEST      :  return ISO8583_MTI_FUN_RESPONSE;
+    case ISO8583_MTI_FUN_RESPONSE     :  return ISO8583_MTI_FUN_REQUEST;
+    case ISO8583_MTI_FUN_ADVICE       :  return ISO8583_MTI_FUN_ADV_RESPONSE;
+    case ISO8583_MTI_FUN_ADV_RESPONSE :  return ISO8583_MTI_FUN_ADVICE;
+    case ISO8583_MTI_FUN_NOTI         :  return ISO8583_MTI_FUN_NOTI_ACK;
+    case ISO8583_MTI_FUN_NOTI_ACK     :  return ISO8583_MTI_FUN_NOTI;
+    case ISO8583_MTI_FUN_INST         :  return ISO8583_MTI_FUN_INST_ACK;
+    case ISO8583_MTI_FUN_INST_ACK     :  return ISO8583_MTI_FUN_INST;
+    }
+
+    return -1;
+}
+//------------------------------------------------------------------------------
+static
+int mti_get_corresponding_ori_from_resp(int mti)
+{
+    switch( iso8583_mti_get_origin(mti) )
+    {
+    case ISO8583_MTI_ORI_ACQ           :  return ISO8583_MTI_ORI_ACQ;
+    case ISO8583_MTI_ORI_ACQ_REPEAT    :  return ISO8583_MTI_ORI_ACQ;
+    case ISO8583_MTI_ORI_ISSUER        :  return ISO8583_MTI_ORI_ISSUER;
+    case ISO8583_MTI_ORI_ISSUER_REPEAT :  return ISO8583_MTI_ORI_ISSUER;
+    case ISO8583_MTI_ORI_OTHER         :  return ISO8583_MTI_ORI_OTHER;
+    case ISO8583_MTI_ORI_OTHER_REPEAT  :  return ISO8583_MTI_ORI_OTHER;
+    }
+
+    return -1;
+}
+//------------------------------------------------------------------------------
+bool ISO8583_CALL iso8583_helper_check_mti(int resp, int req)
+{
+    /**
+     * Check MTI value of a response message.
+     *
+     * @param resp MTI of the response message.
+     * @param req  MTI of the request message.
+     * @return TRUE if check passed; and FALSE if not.
+     */
+    return ( iso8583_mti_get_version(resp)             == iso8583_mti_get_version(req)  ) &&
+           ( iso8583_mti_get_class(resp)               == iso8583_mti_get_class(req)    ) &&
+           ( mti_get_corresponding_fun(resp)           == iso8583_mti_get_function(req) ) &&
+           ( mti_get_corresponding_ori_from_resp(resp) == iso8583_mti_get_origin(req)   );
+}
 //------------------------------------------------------------------------------
 uint64_t ISO8583_CALL iso8583_helper_get_int(const iso8583_fields_t *fields, int id, uint64_t errval)
 {

@@ -16,6 +16,8 @@
 extern "C" {
 #endif
 
+ISO8583_API(bool) iso8583_helper_check_mti(int resp, int req);
+
 ISO8583_API(uint64_t) iso8583_helper_get_int(const iso8583_fields_t *fields, int id, uint64_t errval);
 ISO8583_API(bool)     iso8583_helper_set_int(      iso8583_fields_t *fields, int id, uint64_t value);
 
@@ -50,6 +52,13 @@ namespace ISO8583
 /// Encapsulated helper.
 namespace helper
 {
+
+inline
+bool CheckMTI(int resp, int req)
+{
+    /// @see ::iso8583_helper_check_mti
+    return iso8583_helper_check_mti(resp, req);
+}
 
 inline
 uint64_t GetInteger(const TFields &fields, int id, uint64_t errval)
