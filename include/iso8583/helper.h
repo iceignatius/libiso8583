@@ -18,6 +18,8 @@ extern "C" {
 
 ISO8583_API(bool) iso8583_helper_check_mti(int resp, int req);
 
+ISO8583_API(bool) iso8583_helper_set_bin(iso8583_fields_t *fields, int id, const void *data, size_t size);
+
 ISO8583_API(uint64_t) iso8583_helper_get_int(const iso8583_fields_t *fields, int id, uint64_t errval);
 ISO8583_API(bool)     iso8583_helper_set_int(      iso8583_fields_t *fields, int id, uint64_t value);
 

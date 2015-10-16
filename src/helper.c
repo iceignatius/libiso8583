@@ -55,6 +55,32 @@ bool ISO8583_CALL iso8583_helper_check_mti(int resp, int req)
            ( mti_get_corresponding_ori_from_resp(resp) == iso8583_mti_get_origin(req)   );
 }
 //------------------------------------------------------------------------------
+ISO8583_API(bool) iso8583_helper_set_bin(iso8583_fields_t *fields, int id, const void *data, size_t size)
+{
+    /**
+     * Set binary data to field item.
+     *
+     * @param fields The field item container to be operated.
+     * @param id     A field ID to set field value.
+     * @param data   The data to set to the field item.
+     * @param size   Size of data to set.
+     * @return TRUE if succeed; and FALSE if failed.
+     */
+    assert( fields );
+
+    if( !data || !size ) return false;
+    if( id < ISO8583_FITEM_ID_MIN || ISO8583_FITEM_ID_MAX < id ) return false;
+
+    iso8583_fitem_t item;
+    iso8583_fitem_init_value(&item, id, data, size);
+
+    bool res = !iso8583_fields_insert(fields, &item);
+
+    iso8583_fitem_deinit(&item);
+
+    return res;
+}
+//------------------------------------------------------------------------------
 uint64_t ISO8583_CALL iso8583_helper_get_int(const iso8583_fields_t *fields, int id, uint64_t errval)
 {
     /**
