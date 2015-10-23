@@ -108,6 +108,6 @@ $(TEMPDIR)/%.o: ../src/%.cpp
 
 # User extended process
 
-install: all
+install:
 
 test: all

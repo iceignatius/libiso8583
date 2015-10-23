@@ -94,7 +94,7 @@ $(TEMPDIR)/%.o: %.cpp
 
 # User extended process
 
-install: all
+install:
 
 test: all
 	./libiso8583_test
