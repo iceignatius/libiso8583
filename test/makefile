@@ -23,6 +23,7 @@ endif
 TEMPDIR := temp
 INCDIR  :=
 INCDIR  += -I../include
+INCDIR  += -I../3rd/genutil
 LIBDIR  :=
 LIBDIR  += -L../lib
 CFLAGS  :=
@@ -36,6 +37,9 @@ SRCS    :=
 SRCS    += main.cpp
 LIBS    :=
 LIBS    += -liso8583_s
+ifeq ($(OS),Linux)
+    LIBS += -lrt
+endif
 OBJS    := $(notdir $(SRCS))
 OBJS    := $(addprefix $(TEMPDIR)/,$(OBJS))
 OBJS    := $(OBJS:%.c=%.o)

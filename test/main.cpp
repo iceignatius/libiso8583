@@ -1,8 +1,10 @@
 #include <assert.h>
 #include <stdint.h>
+#include <gen/bufstm.h>
 #include "iso8583/internal_test.h"
 #include "iso8583/iso8583.h"
 #include "iso8583/helper.h"
+#include "iso8583/exchange.h"
 
 #ifndef ISO8583_DEBUGTEST
     #error This test program needs to work with ISO8583_DEBUGTEST defined!
@@ -272,6 +274,68 @@ void test_helper_tools()
     }
 }
 
+int test_exchange_on_send(bufostm_t *stream, const void *data, size_t size)
+{
+    if( size > 7 ) size = 7;
+    return bufostm_write(stream, data, size) ? size : -1;
+}
+
+int test_exchange_on_recv(bufistm_t *stream, void *buf, size_t size)
+{
+    if( size > 7 ) size = 7;
+    return bufistm_read(stream, buf, size) ? size : -1;
+}
+
+void test_exchange()
+{
+    int flags = ISO8583_FLAG_HAVE_SIZEHDR |
+                ISO8583_FLAG_HAVE_TPDU    |
+                ISO8583_FLAG_LVAR_COMPRESSED;
+
+    ISO8583::TISO8583 sample_msg;
+    sample_msg.SetMTI(0x1234);
+    ISO8583::helper::SetSTAN(sample_msg.Fields(), 7);
+
+    uint8_t sample_bin[1024];
+    int sample_size = sample_msg.Encode(sample_bin, sizeof(sample_bin), flags);
+    assert( sample_size > 0 );
+
+    // Send test.
+    {
+        uint8_t buf[1024];
+
+        bufostm_t stream;
+        bufostm_init(&stream, buf, sizeof(buf));
+
+        ISO8583::TExchange exg(flags,
+                               &stream,
+                               (int(*)(void*,const void*,size_t)) test_exchange_on_send,
+                               NULL);
+
+        assert( ISO8583_ERR_SUCCESS == exg.Send(sample_msg, 3*1000) );
+
+        assert( sample_size == (int)bufostm_get_datasize(&stream) );
+        assert( 0 == memcmp(buf, sample_bin, sample_size) );
+    }
+
+    // Receive test.
+    {
+        bufistm_t stream;
+        bufistm_init(&stream, sample_bin, sample_size);
+
+        ISO8583::TExchange exg(flags,
+                               &stream,
+                               NULL,
+                               (int(*)(void*,void*,size_t)) test_exchange_on_recv);
+
+        ISO8583::TISO8583 msg;
+        assert( ISO8583_ERR_SUCCESS == exg.Recv(msg, 3*1000) );
+
+        assert( msg.GetMTI() == sample_msg.GetMTI() );
+        assert( ISO8583::helper::GetSTAN(msg.Fields()) == ISO8583::helper::GetSTAN(sample_msg.Fields()) );
+    }
+}
+
 int main(int argc, char *argv[])
 {
     iso8583_internal_test();
@@ -279,6 +343,7 @@ int main(int argc, char *argv[])
     test_mti();
     test_total_message();
     test_helper_tools();
+    test_exchange();
 
     return 0;
 }

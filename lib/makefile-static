@@ -35,8 +35,10 @@ LDFLAGS :=
 LDFLAGS += -s
 SRCS    :=
 SRCS    += ../3rd/genutil/gen/bcd.c
+SRCS    += ../3rd/genutil/gen/systime.c
 SRCS    += ../3rd/genutil/gen/timeinf.c
 SRCS    += ../src/bitmap.c
+SRCS    += ../src/exchange.c
 SRCS    += ../src/fields.c
 SRCS    += ../src/fitem.c
 SRCS    += ../src/helper.c
@@ -46,6 +48,9 @@ SRCS    += ../src/lvar.c
 SRCS    += ../src/mti.c
 SRCS    += ../src/tpdu.c
 LIBS    :=
+ifeq ($(OS),Linux)
+    LIBS += -lrt
+endif
 OBJS    := $(notdir $(SRCS))
 OBJS    := $(addprefix $(TEMPDIR)/,$(OBJS))
 OBJS    := $(OBJS:%.c=%.o)

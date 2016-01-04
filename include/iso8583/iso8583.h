@@ -95,6 +95,8 @@ namespace ISO8583
  */
 class TISO8583 : protected iso8583_t
 {
+    friend class TExchange;
+
 public:
     TISO8583()                               { iso8583_init      (this); }                    ///< @see iso8583_t::iso8583_init
     TISO8583(const TISO8583 &src)            { iso8583_init_clone(this, &src); }              ///< @see iso8583_t::iso8583_init_clone
