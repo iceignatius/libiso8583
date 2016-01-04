@@ -24,6 +24,9 @@
         ...
         if( ... ) JMPBK_THROW(7);  // Throw an error code here, the code can be any value except ZERO.
         ...
+        if( ... ) JMPBK_THROW(0);  // Break and go to error catch block.
+                                   // Throw ZERO value means that you do not care what the final error code is.
+        ...
         ...  // The statements here will be skipped if we has throw an error code above.
         ...  // Then the flow will jump to JMPBLK_END, or one of the catch blocks if it has.
         ...  // And note that the flow will jump to JMPBK_FINAL block after the catch blocks
@@ -82,48 +85,57 @@
 
     @endverbatim
  */
-
-#include <setjmp.h>
+/**
+ * @file
+ * @attention The JMPBK tool may have some limits:
+ * @li It does not support nested usage.
+ * @li It can not jump through function calls, and can be used in a single function.
+ * @li It does not support duplicated JUMBK process in a function.
+ */
 
 /// Block begin.
-#define JMPBK_BEGIN                                                 \
-        {                                                           \
-            jmp_buf __jmpbk_jmpenv;                                 \
-            int     __jmpbk_errcode = setjmp(__jmpbk_jmpenv);       \
-            switch( __jmpbk_errcode )                               \
-            {                                                       \
-                case 0:                                             \
+#define JMPBK_BEGIN                                     \
+        {                                               \
+            int  __jmpbk_errcode = 0;                   \
+        __jmpbk_begin:                                  \
+            switch( __jmpbk_errcode )                   \
+            {                                           \
+                case 0:                                 \
                 {
 
 /// Catch specific error code.
-#define JMPBK_CATCH(errcode)                                        \
-                }                                                   \
-                break;                                              \
-                case (errcode):                                     \
+#define JMPBK_CATCH(errcode)                            \
+                }                                       \
+                break;                                  \
+                case (errcode):                         \
                 {
 
 /// Catch all error codes.
-#define JMPBK_CATCH_ALL                                             \
-                }                                                   \
-                break;                                              \
-                default:                                            \
+#define JMPBK_CATCH_ALL                                 \
+                }                                       \
+                break;                                  \
+                default:                                \
                 {
 
 /// Final process.
-#define JMPBK_FINAL                                                 \
-                }                                                   \
-            }                                                       \
-            {                                                       \
+#define JMPBK_FINAL                                     \
+                }                                       \
+            }                                           \
+            {                                           \
                 {
 
 /// Block end.
-#define JMPBK_END                                                   \
-                }                                                   \
-            }                                                       \
+#define JMPBK_END                                       \
+                }                                       \
+            }                                           \
         }
 
 /// Throw an error code.
-#define JMPBK_THROW(errcode)  longjmp(__jmpbk_jmpenv, errcode)
+#define JMPBK_THROW(errcode)                            \
+        do{                                             \
+            __jmpbk_errcode = errcode ? errcode : -1;   \
+            goto __jmpbk_begin;                         \
+        } while(0)
 
 /// The error code thrown by @ref JMPBK_THROW.
 #define JMPBK_ERRCODE  __jmpbk_errcode
