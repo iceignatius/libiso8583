@@ -10,6 +10,7 @@
 #define _ISO8583_HELPER_H_
 
 #include <stdbool.h>
+#include <stdint.h>
 #include "fields.h"
 
 #ifdef __cplusplus
