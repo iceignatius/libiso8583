@@ -5,10 +5,10 @@
 #include "exchange.h"
 
 //------------------------------------------------------------------------------
-void iso8583_exg_init(iso8583_exg_t *cfg, int                encode_flags,
-                                          void              *userarg,
-                                          iso8583_on_send_t  on_send,
-                                          iso8583_on_recv_t  on_recv)
+void ISO8583_CALL iso8583_exg_init(iso8583_exg_t *cfg, int                encode_flags,
+                                                       void              *userarg,
+                                                       iso8583_on_send_t  on_send,
+                                                       iso8583_on_recv_t  on_recv)
 {
     /**
      * @memberof iso8583_exg_t
@@ -81,7 +81,7 @@ int recv_bin(const iso8583_exg_t *cfg, timectr_t *timer, uint8_t *buf, size_t si
     return size ? ISO8583_ERR_TIMEOUT : ISO8583_ERR_SUCCESS;
 }
 //------------------------------------------------------------------------------
-int iso8583_exg_send(const iso8583_exg_t *cfg, const iso8583_t *msg, unsigned timeout)
+int ISO8583_CALL iso8583_exg_send(const iso8583_exg_t *cfg, const iso8583_t *msg, unsigned timeout)
 {
     /**
      * @memberof iso8583_exg_t
@@ -105,7 +105,7 @@ int iso8583_exg_send(const iso8583_exg_t *cfg, const iso8583_t *msg, unsigned ti
     return send_bin(cfg, &timer, buf, size);
 }
 //------------------------------------------------------------------------------
-int iso8583_exg_recv(const iso8583_exg_t *cfg, iso8583_t *msg, unsigned timeout)
+int ISO8583_CALL iso8583_exg_recv(const iso8583_exg_t *cfg, iso8583_t *msg, unsigned timeout)
 {
     /**
      * @memberof iso8583_exg_t
