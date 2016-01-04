@@ -5,7 +5,7 @@
 授權：ZLib Licence.<br/>
 
 ### 建置
-* 在程式庫目錄下直接以 make 指令，並依據作業系統指定對應的 makefile，即可完成程式的建置。
+* 在程式庫目錄下直接使用 make 指令即可完成程式的建置。
 * 使用 make 帶 install 參數可以進行安裝(Windows 不支援)。
 * 亦可使用 make 帶 doc 參數產生說明文件
   (需要先安裝 graphviz、doxygen-latex、latex-cjk-chinese 等套件)。
