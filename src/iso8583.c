@@ -274,7 +274,7 @@ int ISO8583_CALL iso8583_decode(iso8583_t *obj, const void *data, size_t size, i
     {
         int readsz;
 
-        iso8583_clean(obj);
+        iso8583_clear(obj);
 
         if( flags & ISO8583_FLAG_HAVE_SIZEHDR )
         {
@@ -298,7 +298,7 @@ int ISO8583_CALL iso8583_decode(iso8583_t *obj, const void *data, size_t size, i
     }
     JMPBK_CATCH_ALL
     {
-        iso8583_clean(obj);
+        iso8583_clear(obj);
         res = JMPBK_ERRCODE;
     }
     JMPBK_END
@@ -306,7 +306,7 @@ int ISO8583_CALL iso8583_decode(iso8583_t *obj, const void *data, size_t size, i
     return res;
 }
 //------------------------------------------------------------------------------
-void ISO8583_CALL iso8583_clean(iso8583_t *obj)
+void ISO8583_CALL iso8583_clear(iso8583_t *obj)
 {
     /**
      * @memberof iso8583_t
@@ -318,7 +318,7 @@ void ISO8583_CALL iso8583_clean(iso8583_t *obj)
 
     obj->mti = 0;
     iso8583_tpdu_init(&obj->tpdu);
-    iso8583_fields_clean(&obj->fields);
+    iso8583_fields_clear(&obj->fields);
 }
 //------------------------------------------------------------------------------
 int ISO8583_CALL iso8583_get_mti(const iso8583_t *obj)

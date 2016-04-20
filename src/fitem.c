@@ -268,11 +268,11 @@ int ISO8583_CALL iso8583_fitem_decode(iso8583_fitem_t *obj, const void *data,
     return res;
 }
 //------------------------------------------------------------------------------
-void ISO8583_CALL iso8583_fitem_clean(iso8583_fitem_t *obj)
+void ISO8583_CALL iso8583_fitem_clear(iso8583_fitem_t *obj)
 {
     /**
      * @memberof iso8583_fitem_t
-     * @brief Clean all values it contained.
+     * @brief Clear all values it contained.
      *
      * @param obj Object instance.
      */

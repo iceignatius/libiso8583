@@ -56,7 +56,7 @@ int bitmap_decode(bitmap_t *obj, const void *data, size_t size, int flags)
     int  decode_size = extend_mode ? 16 : 8;
     if( size < decode_size ) return ISO8583_ERR_BUF_NOT_ENOUGH;
 
-    bitmap_clean(obj);
+    bitmap_clear(obj);
 
     int id_max = extend_mode ? ISO8583_BITMAP_ID_MAX : 64;
     for(int id=ISO8583_BITMAP_ID_MIN; id<=id_max; ++id)
@@ -114,7 +114,7 @@ int bitmap_set_id(bitmap_t *obj, int id)
     return ISO8583_ERR_SUCCESS;
 }
 //------------------------------------------------------------------------------
-void bitmap_clean(bitmap_t *obj)
+void bitmap_clear(bitmap_t *obj)
 {
     assert( obj );
     memset(obj, 0, sizeof(*obj));

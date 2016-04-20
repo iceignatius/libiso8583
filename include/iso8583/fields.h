@@ -53,7 +53,7 @@ ISO8583_API(const iso8583_fitem_t*) iso8583_fields_get_next (const iso8583_field
 
 ISO8583_API(int ) iso8583_fields_insert(iso8583_fields_t *obj, const iso8583_fitem_t *item);
 ISO8583_API(void) iso8583_fields_erase (iso8583_fields_t *obj, int id);
-ISO8583_API(void) iso8583_fields_clean (iso8583_fields_t *obj);
+ISO8583_API(void) iso8583_fields_clear (iso8583_fields_t *obj);
 
 #ifdef __cplusplus
 }  // extern "C"
@@ -144,7 +144,7 @@ public:
 
     int  Insert(const TFitem &item) { return iso8583_fields_insert(this, &item); }  ///< @see iso8583_fields_t::iso8583_fields_insert
     void Erase (unsigned id)        {        iso8583_fields_erase (this, id); }     ///< @see iso8583_fields_t::iso8583_fields_erase
-    void Clean ()                   {        iso8583_fields_clean (this); }         ///< @see iso8583_fields_t::iso8583_fields_clean
+    void Clear ()                   {        iso8583_fields_clear (this); }         ///< @see iso8583_fields_t::iso8583_fields_clear
 
 };
 

@@ -232,7 +232,7 @@ void test_helper_tools()
 
     // Integer value read write test.
     {
-        fields.Clean();
+        fields.Clear();
 
         assert( ISO8583::helper::SetInteger(fields, 3, 123456) );
 
@@ -246,7 +246,7 @@ void test_helper_tools()
 
     // String value read write test.
     {
-        fields.Clean();
+        fields.Clear();
 
         assert( ISO8583::helper::SetString(fields, 39, "AB") );
 
@@ -260,7 +260,7 @@ void test_helper_tools()
 
     // Set local time test.
     {
-        fields.Clean();
+        fields.Clear();
 
         ISO8583::helper::SetLocalDateTime(fields, -886141800);  // Time stamp: -886141800, 1941/12/02 17:30.
 

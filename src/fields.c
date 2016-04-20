@@ -109,7 +109,7 @@ void ISO8583_CALL iso8583_fields_movefrom(iso8583_fields_t *obj, iso8583_fields_
 static
 void buildup_bitmap(bitmap_t *bmp, const iso8583_fields_t *fields)
 {
-    bitmap_clean(bmp);
+    bitmap_clear(bmp);
 
     for(const iso8583_fitem_t *item = iso8583_fields_get_first(fields);
         item;
@@ -223,7 +223,7 @@ int read_field_items(bufistm_t *stream, iso8583_fields_t *fields, const bitmap_t
     int total_readsz = 0;
     JMPBK_BEGIN
     {
-        iso8583_fields_clean(fields);
+        iso8583_fields_clear(fields);
 
         for(int id=bitmap_get_first_id(bmp); id; id=bitmap_get_next_id(bmp, id))
         {
@@ -278,7 +278,7 @@ int ISO8583_CALL iso8583_fields_decode(iso8583_fields_t *obj, const void *data, 
     {
         int readsz;
 
-        iso8583_fields_clean(obj);
+        iso8583_fields_clear(obj);
 
         bitmap_t bmp;
         bitmap_init(&bmp);
@@ -293,7 +293,7 @@ int ISO8583_CALL iso8583_fields_decode(iso8583_fields_t *obj, const void *data, 
     }
     JMPBK_CATCH_ALL
     {
-        iso8583_fields_clean(obj);
+        iso8583_fields_clear(obj);
         res = JMPBK_ERRCODE;
     }
     JMPBK_END
@@ -417,11 +417,11 @@ void ISO8583_CALL iso8583_fields_erase(iso8583_fields_t *obj, int id)
     iso8583_fitem_t *item = &obj->items[id];
     if( !item->id ) return;
 
-    iso8583_fitem_clean(item);
+    iso8583_fitem_clear(item);
     -- obj->count;
 }
 //------------------------------------------------------------------------------
-void ISO8583_CALL iso8583_fields_clean(iso8583_fields_t *obj)
+void ISO8583_CALL iso8583_fields_clear(iso8583_fields_t *obj)
 {
     /**
      * @memberof iso8583_fields_t
@@ -434,7 +434,7 @@ void ISO8583_CALL iso8583_fields_clean(iso8583_fields_t *obj)
     obj->count = 0;
     for(int id=ISO8583_FITEM_ID_MIN; id<=ISO8583_FITEM_ID_MAX; ++id)
     {
-        iso8583_fitem_clean(&obj->items[id]);
+        iso8583_fitem_clear(&obj->items[id]);
     }
 }
 //------------------------------------------------------------------------------

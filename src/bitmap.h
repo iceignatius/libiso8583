@@ -26,6 +26,6 @@ int  bitmap_get_first_id(const bitmap_t *obj);
 int  bitmap_get_next_id (const bitmap_t *obj, int prev_id);
 
 int  bitmap_set_id(bitmap_t *obj, int id);
-void bitmap_clean (bitmap_t *obj);
+void bitmap_clear (bitmap_t *obj);
 
 #endif

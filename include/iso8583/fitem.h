@@ -53,7 +53,7 @@ ISO8583_API(int) iso8583_fitem_decode(      iso8583_fitem_t *obj, const void *da
                                                                   int         flags,
                                                                   int         id);
 
-ISO8583_API(void) iso8583_fitem_clean(iso8583_fitem_t *obj);
+ISO8583_API(void) iso8583_fitem_clear(iso8583_fitem_t *obj);
 
 ISO8583_API(int ) iso8583_fitem_get_id(const iso8583_fitem_t *obj);
 ISO8583_API(void) iso8583_fitem_set_id(      iso8583_fitem_t *obj, int id);
