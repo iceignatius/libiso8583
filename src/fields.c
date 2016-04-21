@@ -123,12 +123,12 @@ static
 int write_bitmap(bufostm_t *stream, const bitmap_t *bmp, int flags)
 {
     int fillsz = bitmap_encode(bmp,
-                               bufostm_get_writebuf(stream),
+                               bufostm_get_buf(stream),
                                bufostm_get_restsize(stream),
                                flags);
     if( fillsz < 0 ) return fillsz;
 
-    return bufostm_write_notify(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufostm_commit_write(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 static
@@ -141,11 +141,11 @@ int write_field_items(bufostm_t *stream, const iso8583_fields_t *fields, int fla
         item = iso8583_fields_get_next(fields, item))
     {
         int fillsz = iso8583_fitem_encode(item,
-                                          bufostm_get_writebuf(stream),
+                                          bufostm_get_buf(stream),
                                           bufostm_get_restsize(stream),
                                           flags);
         if( fillsz < 0 ) return fillsz;
-        if( !bufostm_write_notify(stream, fillsz) ) return ISO8583_ERR_BUF_NOT_ENOUGH;
+        if( !bufostm_commit_write(stream, fillsz) ) return ISO8583_ERR_BUF_NOT_ENOUGH;
 
         total_fillsz += fillsz;
     }
@@ -206,12 +206,12 @@ static
 int read_bitmap(bufistm_t *stream, bitmap_t *bmp, int flags)
 {
     int readsz = bitmap_decode(bmp,
-                               bufistm_get_readbuf(stream),
+                               bufistm_get_buf(stream),
                                bufistm_get_restsize(stream),
                                flags);
     if( readsz < 0 ) return readsz;
 
-    return bufistm_read_notify(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufistm_commit_read(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 static
@@ -228,13 +228,13 @@ int read_field_items(bufistm_t *stream, iso8583_fields_t *fields, const bitmap_t
         for(int id=bitmap_get_first_id(bmp); id; id=bitmap_get_next_id(bmp, id))
         {
             int readsz = iso8583_fitem_decode(&item,
-                                              bufistm_get_readbuf(stream),
+                                              bufistm_get_buf(stream),
                                               bufistm_get_restsize(stream),
                                               flags,
                                               id);
             if( readsz < 0 ) JMPBK_THROW(readsz);
 
-            if( !bufistm_read_notify(stream, readsz) ) JMPBK_THROW(ISO8583_ERR_BUF_NOT_ENOUGH);
+            if( !bufistm_commit_read(stream, readsz) ) JMPBK_THROW(ISO8583_ERR_BUF_NOT_ENOUGH);
 
             total_readsz += readsz;
             iso8583_fields_insert(fields, &item);

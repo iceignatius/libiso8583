@@ -39,6 +39,13 @@ bool      timeinf_is_equal   (const timeinf_t *timeinf1, const timeinf_t *timein
 char* timeinf_to_datestr(const timeinf_t *timeinf, char *buf, size_t bufsz, const char *delimiter);
 char* timeinf_to_timestr(const timeinf_t *timeinf, char *buf, size_t bufsz, const char *delimiter);
 
+char* timeinf_to_datetimestr(const timeinf_t *timeinf,
+                             char            *buf,
+                             size_t           bufsz,
+                             const char      *datedeli,
+                             const char      *timedeli,
+                             const char      *middeli);
+
 unsigned timeinf_get_day_of_year(const timeinf_t *timeinf);
 
 #ifdef __cplusplus

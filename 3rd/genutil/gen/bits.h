@@ -45,13 +45,11 @@ void bits_clear_bit(void *bits, unsigned index)
 }
 
 INLINE
-void bits_set_bit_onoff(void *bits, unsigned index, int on)
+void bits_switch_bit(void *bits, unsigned index, int value)
 {
     /// Set specified bit to 1 or 0.
-    if( on )
-        bits_set_bit(bits, index);
-    else
-        bits_clear_bit(bits, index);
+    /// @note The @a value can be ONE or ZERO only.
+    ( value )?( bits_set_bit(bits, index) ):( bits_clear_bit(bits, index) );
 }
 
 #ifdef __cplusplus

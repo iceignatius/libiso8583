@@ -1,4 +1,4 @@
-# Main Page # {#mainpage}
+# Introduction # {#mainpage}
 
 名稱：Ignatius General Utility (genutil).<br/>
 作者：王文佑。<br/>

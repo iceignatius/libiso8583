@@ -49,7 +49,7 @@ INLINE void bufistm_init(bufistm_t *stream, const void *buf, size_t size)
     stream->size_read = 0;
 }
 
-INLINE const void* bufistm_get_readbuf(const bufistm_t *stream)
+INLINE const void* bufistm_get_buf(const bufistm_t *stream)
 {
     /**
      * @memberof bufistm_t
@@ -60,7 +60,7 @@ INLINE const void* bufistm_get_readbuf(const bufistm_t *stream)
      *
      * @attention The object will not be responsible about how you use the buffer.
      *            User can read data by their own way,
-     *            and then call ::bufistm_read_notify to notify
+     *            and then call ::bufistm_commit_read to notify
      *            how many data that you had read.
      */
     assert( stream );
@@ -117,11 +117,11 @@ INLINE bool bufistm_read(bufistm_t *stream, void *buf, size_t size)
     return true;
 }
 
-INLINE bool bufistm_read_notify(bufistm_t *stream, size_t size)
+INLINE bool bufistm_commit_read(bufistm_t *stream, size_t size)
 {
     /**
      * @memberof bufistm_t
-     * @brief   Notify data read.
+     * @brief   Commit data read.
      * @details Notify the object that we already read some data from the read buffer directly.
      *
      * @param stream Object instance.
@@ -149,7 +149,7 @@ INLINE bool bufistm_skip(bufistm_t *stream, size_t size)
      * @param size   The size that want to be skipped from the current read position.
      * @return TRUE if succeed; and FALSE if not.
      */
-    return bufistm_read_notify(stream, size);
+    return bufistm_commit_read(stream, size);
 }
 
 
@@ -181,7 +181,7 @@ INLINE void bufostm_init(bufostm_t *stream, void *buf, size_t size)
     stream->size_write = 0;
 }
 
-INLINE void* bufostm_get_writebuf(bufostm_t *stream)
+INLINE void* bufostm_get_buf(bufostm_t *stream)
 {
     /**
      * @memberof bufostm_t
@@ -192,7 +192,7 @@ INLINE void* bufostm_get_writebuf(bufostm_t *stream)
      *
      * @attention The object will not be responsible about how you use the buffer.
      *            User can write data by their own way,
-     *            and then call ::bufostm_write_notify to notify
+     *            and then call ::bufostm_commit_write to notify
      *            how many data that you had wrote.
      */
     assert( stream );
@@ -249,11 +249,11 @@ INLINE bool bufostm_write(bufostm_t *stream, const void *data, size_t size)
     return true;
 }
 
-INLINE bool bufostm_write_notify(bufostm_t *stream, size_t size)
+INLINE bool bufostm_commit_write(bufostm_t *stream, size_t size)
 {
     /**
      * @memberof bufostm_t
-     * @brief   Notify data read.
+     * @brief   Commit data write.
      * @details Notify the object that we already wrote some data to the write buffer directly
      *
      * @param stream Object instance.
@@ -295,5 +295,45 @@ INLINE bool bufostm_putbyte(bufostm_t *stream, uint8_t byte)
 #ifdef __cplusplus
 }  // extern "C"
 #endif
+
+#ifdef __cplusplus
+
+/**
+ * @brief C++ wrapper of @ref bufistm_t
+ */
+class TBufIStm : protected bufistm_t
+{
+public:
+    TBufIStm(const void *buf, size_t size) { bufistm_init(this, buf, size); }  ///< @see bufistm_t::bufistm_init
+
+public:
+    const void* Buffer() const               { return bufistm_get_buf(this); }            ///< @see bufistm_t::bufistm_get_buf
+    size_t      RestSize() const             { return bufistm_get_restsize(this); }       ///< @see bufistm_t::bufistm_get_restsize
+    size_t      ReadSize() const             { return bufistm_get_readsize(this); }       ///< @see bufistm_t::bufistm_get_readsize
+    bool        Read(void *buf, size_t size) { return bufistm_read(this, buf, size); }    ///< @see bufistm_t::bufistm_read
+    bool        CommitRead(size_t size)      { return bufistm_commit_read(this, size); }  ///< @see bufistm_t::bufistm_commit_read
+    bool        Skip(size_t size)            { return bufistm_skip(this, size); }         ///< @see bufistm_t::bufistm_skip
+
+};
+
+/**
+ * @brief C++ wrapper of @ref bufostm_t
+ */
+class TBufOStm : protected bufostm_t
+{
+public:
+    TBufOStm(void *buf, size_t size) { bufostm_init(this, buf, size); }  ///< @see bufostm_t::bufostm_init
+
+public:
+    void*  Buffer()                             { return bufostm_get_buf(this); }             ///< @see bufostm_t::bufostm_get_buf
+    size_t RestSize() const                     { return bufostm_get_restsize(this); }        ///< @see bufostm_t::bufostm_get_restsize
+    size_t DataSize() const                     { return bufostm_get_datasize(this); }        ///< @see bufostm_t::bufostm_get_datasize
+    bool   Write(const void *data, size_t size) { return bufostm_write(this, data, size); }   ///< @see bufostm_t::bufostm_write
+    bool   CommitWrite(size_t size)             { return bufostm_commit_write(this, size); }  ///< @see bufostm_t::bufostm_commit_write
+    bool   PutByte(uint8_t byte)                { return bufostm_putbyte(this, byte); }       ///< @see bufostm_t::bufostm_putbyte
+
+};
+
+#endif // __cplusplus
 
 #endif

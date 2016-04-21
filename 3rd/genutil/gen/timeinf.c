@@ -289,7 +289,7 @@ char* timeinf_to_datestr(const timeinf_t *timeinf, char *buf, size_t bufsz, cons
      * @param buf       A buffer to receive the result data.
      * @param bufsz     Size of the output buffer.
      * @param delimiter The delimiter to be used to separate each item,
-     *                  and can be NULL if not needed.
+     *                  and can be NULL to use default delimiter.
      * @return @a buf will be returned.
      */
     if( !buf || !bufsz ) return buf;
@@ -317,7 +317,7 @@ char* timeinf_to_timestr(const timeinf_t *timeinf, char *buf, size_t bufsz, cons
      * @param buf       A buffer to receive the result data.
      * @param bufsz     Size of the output buffer.
      * @param delimiter The delimiter to be used to separate each item,
-     *                  and can be NULL if not needed.
+     *                  and can be NULL to use default delimiter.
      * @return @a buf will be returned.
      */
     if( !buf || !bufsz ) return buf;
@@ -331,6 +331,51 @@ char* timeinf_to_timestr(const timeinf_t *timeinf, char *buf, size_t bufsz, cons
              delimiter,
              timeinf->minute,
              delimiter,
+             timeinf->second);
+
+    return buf;
+}
+//------------------------------------------------------------------------------
+char* timeinf_to_datetimestr(const timeinf_t *timeinf,
+                             char            *buf,
+                             size_t           bufsz,
+                             const char      *datedeli,
+                             const char      *timedeli,
+                             const char      *middeli)
+{
+    /**
+     * @brief Print time (exclude date) information to a string
+     *
+     * @param timeinf  The time information to be printed.
+     * @param buf      A buffer to receive the result data.
+     * @param bufsz    Size of the output buffer.
+     * @param datedeli The delimiter to be used to format date string,
+     *                  and can be NULL to use default delimiter.
+     * @param timedeli The delimiter to be used to format date string,
+     *                  and can be NULL to use default delimiter.
+     * @param middeli  The delimiter to be used between date and time string,
+     *                  and can be NULL to use default delimiter.
+     * @return @a buf will be returned.
+     */
+    if( !buf || !bufsz ) return buf;
+
+    datedeli = datedeli ? datedeli : "";
+    timedeli = timedeli ? timedeli : "";
+    middeli  = middeli  ? middeli  : "";
+
+    snprintf(buf,
+             bufsz,
+             "%u%s%02u%s%02u" "%s" "%02u%s%02u%s%02u",
+             timeinf->year,
+             datedeli,
+             timeinf->month,
+             datedeli,
+             timeinf->day,
+             middeli,
+             timeinf->hour,
+             timedeli,
+             timeinf->minute,
+             timedeli,
              timeinf->second);
 
     return buf;

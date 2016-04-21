@@ -99,36 +99,36 @@ static
 int write_tpdu(bufostm_t *stream, const iso8583_tpdu_t *tpdu, int flags)
 {
     int fillsz = iso8583_tpdu_encode(tpdu,
-                                     bufostm_get_writebuf(stream),
+                                     bufostm_get_buf(stream),
                                      bufostm_get_restsize(stream),
                                      flags);
     if( fillsz < 0 ) return fillsz;
 
-    return bufostm_write_notify(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufostm_commit_write(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 static
 int write_mti(bufostm_t *stream, int mti, int flags)
 {
     int fillsz = iso8583_mti_encode(mti,
-                                    bufostm_get_writebuf(stream),
+                                    bufostm_get_buf(stream),
                                     bufostm_get_restsize(stream),
                                     flags);
     if( fillsz < 0 ) return fillsz;
 
-    return bufostm_write_notify(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufostm_commit_write(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 static
 int write_fields(bufostm_t *stream, const iso8583_fields_t *fields, int flags)
 {
     int fillsz = iso8583_fields_encode(fields,
-                                       bufostm_get_writebuf(stream),
+                                       bufostm_get_buf(stream),
                                        bufostm_get_restsize(stream),
                                        flags);
     if( fillsz < 0 ) return fillsz;
 
-    return bufostm_write_notify(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufostm_commit_write(stream, fillsz) ? fillsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 int ISO8583_CALL iso8583_encode(const iso8583_t *obj, void *buf, size_t size, int flags)
@@ -162,8 +162,8 @@ int ISO8583_CALL iso8583_encode(const iso8583_t *obj, void *buf, size_t size, in
         if( flags & ISO8583_FLAG_HAVE_SIZEHDR )
         {
             // Save 2 bytes for size header.
-            sizehdr = bufostm_get_writebuf(&stream);
-            fillsz  = bufostm_write_notify(&stream, 2);
+            sizehdr = bufostm_get_buf(&stream);
+            fillsz  = bufostm_commit_write(&stream, 2);
             if( fillsz < 0 ) JMPBK_THROW(ISO8583_ERR_BUF_NOT_ENOUGH);
         }
 
@@ -215,36 +215,36 @@ static
 int read_tpdu(bufistm_t *stream, iso8583_tpdu_t *tpdu, int flags)
 {
     int readsz = iso8583_tpdu_decode(tpdu,
-                                     bufistm_get_readbuf(stream),
+                                     bufistm_get_buf(stream),
                                      bufistm_get_restsize(stream),
                                      flags);
     if( readsz < 0 ) return readsz;
 
-    return bufistm_read_notify(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufistm_commit_read(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 static
 int read_mti(bufistm_t *stream, int *mti, int flags)
 {
     int readsz = iso8583_mti_decode(mti,
-                                    bufistm_get_readbuf(stream),
+                                    bufistm_get_buf(stream),
                                     bufistm_get_restsize(stream),
                                     flags);
     if( readsz < 0 ) return readsz;
 
-    return bufistm_read_notify(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufistm_commit_read(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 static
 int read_fields(bufistm_t *stream, iso8583_fields_t *fields, int flags)
 {
     int readsz = iso8583_fields_decode(fields,
-                                       bufistm_get_readbuf(stream),
+                                       bufistm_get_buf(stream),
                                        bufistm_get_restsize(stream),
                                        flags);
     if( readsz < 0 ) return readsz;
 
-    return bufistm_read_notify(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
+    return bufistm_commit_read(stream, readsz) ? readsz : ISO8583_ERR_BUF_NOT_ENOUGH;
 }
 //------------------------------------------------------------------------------
 int ISO8583_CALL iso8583_decode(iso8583_t *obj, const void *data, size_t size, int flags)
