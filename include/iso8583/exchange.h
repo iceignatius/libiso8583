@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-#define ISO8583_EXG_BUFSIZE 1024  // Size of the internal data buffer.
+#define ISO8583_EXG_BUFSIZE 8192  // Size of the internal data buffer.
 
 /**
  * @brief Send data.
