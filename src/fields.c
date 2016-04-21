@@ -418,6 +418,8 @@ void ISO8583_CALL iso8583_fields_erase(iso8583_fields_t *obj, int id)
     if( !item->id ) return;
 
     iso8583_fitem_clear(item);
+    iso8583_fitem_set_id(item, 0);
+
     -- obj->count;
 }
 //------------------------------------------------------------------------------
@@ -434,7 +436,10 @@ void ISO8583_CALL iso8583_fields_clear(iso8583_fields_t *obj)
     obj->count = 0;
     for(int id=ISO8583_FITEM_ID_MIN; id<=ISO8583_FITEM_ID_MAX; ++id)
     {
-        iso8583_fitem_clear(&obj->items[id]);
+        iso8583_fitem_t *item = &obj->items[id];
+
+        iso8583_fitem_clear(item);
+        iso8583_fitem_set_id(item, 0);
     }
 }
 //------------------------------------------------------------------------------
