@@ -133,7 +133,7 @@ int ISO8583_CALL iso8583_exg_recv(const iso8583_exg_t *cfg, iso8583_t *msg, unsi
     // Calculate size.
     size_t payload_size = ( buf[0] << 8 ) | buf[1];
     size_t packet_size = header_size + payload_size;
-    assert( packet_size <= ISO8583_EXG_BUFSIZE );
+    if( packet_size > ISO8583_EXG_BUFSIZE ) return ISO8583_ERR_BUF_NOT_ENOUGH;
 
     // Receive the rest data.
     if(( errcode = recv_bin(cfg, &timer, buf+header_size, payload_size) )) return errcode;
