@@ -6,15 +6,16 @@
 
 typedef enum finfo_eletype_t
 {
-    FINFO_ELE_A     = 0x01,
-    FINFO_ELE_N     = 0x02,
-    FINFO_ELE_S     = 0x04,
+    FINFO_ELE_A     = 1 << 0,
+    FINFO_ELE_N     = 1 << 1,
+    FINFO_ELE_S     = 1 << 2,
     FINFO_ELE_AN    = FINFO_ELE_A | FINFO_ELE_N,
     FINFO_ELE_AS    = FINFO_ELE_A | FINFO_ELE_S,
     FINFO_ELE_NS    = FINFO_ELE_N | FINFO_ELE_S,
     FINFO_ELE_ANS   = FINFO_ELE_A | FINFO_ELE_N | FINFO_ELE_S,
-    FINFO_ELE_B     = 0x08,
-    FINFO_ELE_Z     = 0x10,
+    FINFO_ELE_B     = 1 << 3,
+    FINFO_ELE_Z     = 1 << 4,
+    FINFO_ELE_PAN   = 1 << 5,
 } finfo_eletype_t;
 
 typedef enum finfo_lenmode_t
@@ -36,7 +37,7 @@ static const finfo_t finfo_list[] =
     // Field_ID  Element_type   Length_mode       Maximum_size
               {  0,             0,                  0 },
     /*   1 */ {  FINFO_ELE_B  , FINFO_LEN_FIXED ,  64 },    // Extend bitmap.
-    /*   2 */ {  FINFO_ELE_N  , FINFO_LEN_LLVAR ,  19 },    // Primary account number (PAN).
+    /*   2 */ {  FINFO_ELE_PAN, FINFO_LEN_LLVAR ,  19 },    // Primary account number (PAN).
     /*   3 */ {  FINFO_ELE_N  , FINFO_LEN_FIXED ,   6 },    // Processing code.
     /*   4 */ {  FINFO_ELE_N  , FINFO_LEN_FIXED ,  12 },    // Amount, transaction.
     /*   5 */ {  FINFO_ELE_N  , FINFO_LEN_FIXED ,  12 },    // Amount, settlement.

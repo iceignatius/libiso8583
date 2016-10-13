@@ -27,6 +27,9 @@ ISO8583_API(bool)     iso8583_helper_set_int(      iso8583_fields_t *fields, int
 ISO8583_API(char*) iso8583_helper_get_str(const iso8583_fields_t *fields, int id, char *buf, size_t bufsz);
 ISO8583_API(bool)  iso8583_helper_set_str(      iso8583_fields_t *fields, int id, const char *str);
 
+ISO8583_API(uint64_t) iso8583_helper_get_pan(const iso8583_fields_t *fields);
+ISO8583_API(bool)     iso8583_helper_set_pan(      iso8583_fields_t *fields, uint64_t pan);
+
 ISO8583_API(unsigned) iso8583_helper_get_proccode(const iso8583_fields_t *fields);
 ISO8583_API(void)     iso8583_helper_set_proccode(      iso8583_fields_t *fields, unsigned proccode);
 
@@ -90,6 +93,20 @@ bool SetString(TFields &fields, int id, const std::string &str)
 {
     /// @see ::iso8583_helper_set_str
     return iso8583_helper_set_str(fields.cptr(), id, str.c_str());
+}
+
+inline
+uint64_t GetPAN(const TFields &fields)
+{
+    /// @see ::iso8583_helper_get_int
+    return iso8583_helper_get_pan(fields.cptr());
+}
+
+inline
+bool SetPAN(TFields &fields, uint64_t pan)
+{
+    /// @see ::iso8583_helper_set_int
+    return iso8583_helper_set_pan(fields.cptr(), pan);
 }
 
 inline

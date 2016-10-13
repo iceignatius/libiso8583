@@ -142,7 +142,7 @@ const finfo_t* get_finfo(int id)
 static
 int elecount_to_bytes(finfo_eletype_t eletype, unsigned elecount)
 {
-    if( !( eletype & ~FINFO_ELE_N ) )
+    if( !( eletype & ~( FINFO_ELE_N | FINFO_ELE_PAN ) ) )
         return ( elecount + 1 ) >> 1;  // Convert BCD counts to byte counts.
     else if( !( eletype & ~FINFO_ELE_B ) )
         return ( elecount + ( 8 - 1 ) ) >> 3;  // Convert bit counts to byte counts.

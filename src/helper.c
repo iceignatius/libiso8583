@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <gen/bcd.h>
 #include <gen/timeinf.h>
+#include "panval.h"
 #include "mti.h"
 #include "finfo.h"
 #include "helper.h"
@@ -196,6 +197,42 @@ bool ISO8583_CALL iso8583_helper_set_str(iso8583_fields_t *fields, int id, const
     iso8583_fitem_deinit(&item);
 
     return res;
+}
+//------------------------------------------------------------------------------
+uint64_t ISO8583_CALL iso8583_helper_get_pan(const iso8583_fields_t *fields)
+{
+    /**
+     * Get PAN value.
+     *
+     * @param fields The field item container to be operated.
+     * @return The PAN value; or ZERO if read failed.
+     */
+    assert( fields );
+
+    const iso8583_fitem_t *item = iso8583_fields_get_item(fields, 2);
+    if( !item ) return 0;
+
+    const uint8_t *data = iso8583_fitem_get_data(item);
+    size_t         size = iso8583_fitem_get_size(item);
+    if( !data || !size ) return 0;
+
+    return panval_decode(data, size);
+}
+//------------------------------------------------------------------------------
+bool ISO8583_CALL iso8583_helper_set_pan(iso8583_fields_t *fields, uint64_t pan)
+{
+    /**
+     * Set PAN value.
+     *
+     * @param fields The field item container to be operated.
+     * @param pan    The PAN value to set.
+     * @return TRUE if succeed; and FALSE if failed.
+     */
+    assert( fields );
+
+    uint8_t data[16];
+    size_t size = panval_encode(data, sizeof(data), pan);
+    return size && iso8583_helper_set_bin(fields, 2, data, size);
 }
 //------------------------------------------------------------------------------
 unsigned ISO8583_CALL iso8583_helper_get_proccode(const iso8583_fields_t *fields)

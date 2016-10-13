@@ -92,7 +92,7 @@ void test_total_message()
         0x70, 0x18, 0x01, 0x00, 0x06, 0xA0, 0x00, 0x08,
 
         // Field 2
-        0x08, 0x40, 0x12, 0x88, 0x18, 0x88, 0x81, 0x88, 0x88,
+        0x08, 0x40, 0x12, 0x88, 0x18, 0x88, 0x81, 0x88, 0x8F,
 
         // Field 3
         0x00, 0x24, 0x00,
@@ -129,7 +129,7 @@ void test_total_message()
         'U','s','e','r',' ','d','e','f','i','n','e','d',' ','m','e','s','s','a','g','e','.',
     };
 
-    static const uint8_t pan      [] = { 0x40, 0x12, 0x88, 0x18, 0x88, 0x81, 0x88, 0x88 };
+    static const uint8_t pan      [] = { 0x40, 0x12, 0x88, 0x18, 0x88, 0x81, 0x88, 0x8F };
     static const uint8_t proccode [] = { 0x00, 0x24, 0x00 };
     static const uint8_t amount   [] = { 0x00, 0x00, 0x00, 0x24, 0x00, 0x00 };
     static const uint8_t localtime[] = { 0x13, 0x15, 0x30 };
@@ -256,6 +256,32 @@ void test_helper_tools()
 
         assert( "AB" == ISO8583::helper::GetString(fields, 39) );
         assert( ""   == ISO8583::helper::GetString(fields, 40) );
+    }
+
+    // PAN read write test - case 1.
+    {
+        fields.Clear();
+
+        assert( ISO8583::helper::SetPAN(fields, 13579) );
+
+        assert( ( item = fields.GetItem(2) ) != fields.npos() );
+        assert( item.GetSize() == 3 );
+        assert( 0 == memcmp(item.GetData(), "\x13\x57\x9F", 3) );
+
+        assert( 13579 == ISO8583::helper::GetPAN(fields) );
+    }
+
+    // PAN read write test - case 2.
+    {
+        fields.Clear();
+
+        assert( ISO8583::helper::SetPAN(fields, 135792) );
+
+        assert( ( item = fields.GetItem(2) ) != fields.npos() );
+        assert( item.GetSize() == 3 );
+        assert( 0 == memcmp(item.GetData(), "\x13\x57\x92", 3) );
+
+        assert( 135792 == ISO8583::helper::GetPAN(fields) );
     }
 
     // Set local time test.

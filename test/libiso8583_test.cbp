@@ -95,6 +95,10 @@
 		<Unit filename="../src/mti.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../src/panval.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/panval.h" />
 		<Unit filename="../src/tpdu.c">
 			<Option compilerVar="CC" />
 		</Unit>
