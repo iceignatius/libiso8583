@@ -23,7 +23,7 @@ endif
 TEMPDIR := temp
 INCDIR  :=
 INCDIR  += -I../include
-INCDIR  += -I../3rd/genutil
+INCDIR  += -I../submod/genutil
 LIBDIR  :=
 LIBDIR  += -L../lib
 CFLAGS  :=
