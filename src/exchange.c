@@ -50,7 +50,7 @@ int send_bin(const iso8583_exg_t *cfg, timectr_t *timer, const uint8_t *data, si
         }
         else
         {
-            systime_sleep_fragment();
+            systime_sleep_awhile();
         }
     }
 
@@ -74,7 +74,7 @@ int recv_bin(const iso8583_exg_t *cfg, timectr_t *timer, uint8_t *buf, size_t si
         }
         else
         {
-            systime_sleep_fragment();
+            systime_sleep_awhile();
         }
     }
 
